@@ -79,20 +79,26 @@ export function AdminSidebar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-50 w-full border-b bg-background md:hidden">
+      <div className="fixed top-0 left-0 z-50 w-full border-b bg-white/80 backdrop-blur-glass md:hidden">
         <div className="flex h-16 items-center px-4">
           <SidebarTrigger />
-          <span className="ml-4 font-display text-lg font-bold">Administration</span>
+          <span className="ml-4 font-display text-lg font-semibold text-content">
+            Administration
+          </span>
         </div>
       </div>
 
-      <Sidebar variant={isMobile ? "floating" : "sidebar"}>
-        <SidebarHeader className="border-b p-6 bg-background">
-          <span className="font-display text-lg font-bold">Administration</span>
+      <Sidebar variant={isMobile ? "floating" : "sidebar"} className="glass-sidebar">
+        <SidebarHeader className="p-6">
+          <span className="font-display text-lg font-semibold text-content">
+            Administration
+          </span>
         </SidebarHeader>
-        <SidebarContent className="bg-background">
+        <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Menu</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-content-tertiary">
+              Menu
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {menuItems.map((item) => (
@@ -101,6 +107,7 @@ export function AdminSidebar() {
                       onClick={() => handleNavigation(item.tab)}
                       isActive={currentTab === item.tab}
                       tooltip={item.title}
+                      className="hover:bg-hover"
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
@@ -111,7 +118,7 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <div className="bg-background">
+        <div className="glass-card mx-4 mb-4 rounded-lg">
           <UserProfileDisplay />
         </div>
       </Sidebar>

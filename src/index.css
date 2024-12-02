@@ -4,48 +4,35 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 60 33% 98%;
+    --foreground: 240 2% 8%;
+    
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 221 90% 50%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222 47% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221 90% 50%;
-    --radius: 0.75rem;
-  }
+    --card-foreground: 240 2% 8%;
  
-  .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 217 19% 27%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 19% 27%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217 19% 27%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217 19% 27%;
-    --input: 217 19% 27%;
-    --ring: 224 76.3% 48%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 2% 8%;
+ 
+    --primary: 240 58% 70%;
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 40 29% 94%;
+    --secondary-foreground: 240 2% 8%;
+ 
+    --muted: 40 29% 94%;
+    --muted-foreground: 25 2% 37%;
+ 
+    --accent: 40 29% 94%;
+    --accent-foreground: 240 2% 8%;
+ 
+    --destructive: 12 51% 62%;
+    --destructive-foreground: 0 0% 100%;
+ 
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 240 58% 70%;
+ 
+    --radius: 1rem;
   }
 }
 
@@ -66,23 +53,27 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1 {
-    @apply text-3xl font-bold tracking-tight;
+    @apply text-3xl font-semibold tracking-tight text-content;
   }
   h2 {
-    @apply text-2xl font-semibold tracking-tight;
+    @apply text-2xl font-semibold tracking-tight text-content;
   }
   h3 {
-    @apply text-xl font-semibold tracking-tight;
+    @apply text-xl font-semibold tracking-tight text-content;
   }
   h4 {
-    @apply text-lg font-semibold;
+    @apply text-lg font-semibold text-content;
   }
   p {
-    @apply leading-relaxed;
+    @apply leading-relaxed text-content-secondary;
   }
-  .mono {
-    @apply font-mono;
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-glass shadow-glass border border-white/20;
+  }
+  .glass-sidebar {
+    @apply bg-white/80 backdrop-blur-glass shadow-glass border-r border-divider;
   }
 }
