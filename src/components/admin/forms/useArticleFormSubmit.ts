@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleFormValues } from "./types";
+import { logAction } from "@/utils/logger";
 
 export const useArticleFormSubmit = (article: any | undefined, onCancel: () => void) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,6 +81,13 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
           throw updateError;
         }
         console.log("Article updated successfully:", updateData);
+
+        await logAction({
+          action: "update",
+          entityType: "article",
+          entityId: article.id,
+          details: { previous: article, updated: articleData }
+        });
       } else {
         console.log("Creating new article");
         const { data: insertData, error: insertError } = await supabase
@@ -94,6 +102,13 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
         }
         articleId = insertData.id;
         console.log("New article created with ID:", articleId);
+
+        await logAction({
+          action: "create",
+          entityType: "article",
+          entityId: articleId,
+          details: articleData
+        });
       }
 
       // Mettre à jour les relations avec les allergènes
