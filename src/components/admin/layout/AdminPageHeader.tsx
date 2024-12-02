@@ -15,10 +15,9 @@ export function AdminPageHeader({
   ...props
 }: AdminPageHeaderProps) {
   const isMobile = useIsMobile();
-  console.log("AdminPageHeader rendering");
 
   return (
-    <header 
+    <div 
       className={cn(
         "flex flex-col gap-4",
         isMobile ? "p-4 pb-2" : "p-4 md:gap-8 md:p-6",
@@ -50,6 +49,6 @@ export function AdminPageHeader({
           </div>
         )}
       </div>
-    </header>
+    </div>
   );
 }

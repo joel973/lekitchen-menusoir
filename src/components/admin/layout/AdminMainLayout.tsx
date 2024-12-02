@@ -12,12 +12,11 @@ interface AdminMainLayoutProps {
 
 export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
   const isMobile = useIsMobile();
-  console.log("AdminMainLayout rendering");
 
   if (isMobile) {
     return (
-      <>
-        <nav className="sticky top-0 z-50 w-full border-b backdrop-blur-sm">
+      <div className="min-h-screen">
+        <div className="sticky top-0 z-50 w-full border-b backdrop-blur-sm">
           <div className="container flex h-14 items-center">
             <Sheet>
               <SheetTrigger asChild>
@@ -30,18 +29,22 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
               </SheetContent>
             </Sheet>
           </div>
-        </nav>
-        {children}
-      </>
+        </div>
+        <main className={cn("flex-1", className)}>
+          {children}
+        </main>
+      </div>
     );
   }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
-      <aside className="hidden border-r glass-sidebar lg:block">
+      <div className="hidden border-r bg-card lg:block">
         <AdminSidebar />
-      </aside>
-      {children}
+      </div>
+      <main className={cn("flex-1 p-4 md:p-6", className)}>
+        {children}
+      </main>
     </div>
   );
 }
