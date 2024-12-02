@@ -7,6 +7,10 @@ export const articleSchema = z.object({
   categorie_id: z.string().min(1, "La catégorie est requise"),
   statut: z.enum(["actif", "inactif", "rupture"]),
   url_image: z.string().optional(),
+  image_file: z
+    .instanceof(FileList)
+    .optional()
+    .transform((file) => (file?.length ? file : undefined)),
 });
 
 export type ArticleFormValues = z.infer<typeof articleSchema>;

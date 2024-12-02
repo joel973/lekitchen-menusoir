@@ -1,46 +1,42 @@
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
-interface Category {
-  id: string;
-  nom: string;
-  mode_affichage: string;
-  ordre: number;
+interface CategoryNavProps {
+  selectedCategory?: string;
+  onSelectCategory: (categoryId: string | undefined) => void;
 }
 
-export const CategoryNav = () => {
+export function CategoryNav({
+  selectedCategory,
+  onSelectCategory,
+}: CategoryNavProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
 
-  const { data: categories, isLoading } = useQuery({
+  const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("*")
         .order("ordre");
-      
-      if (error) {
-        console.error("Error fetching categories:", error);
-        throw error;
-      }
-      
-      return data as Category[];
+      if (error) throw error;
+      return data;
     },
   });
 
   const checkScroll = () => {
     const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const { scrollLeft, scrollWidth, clientWidth } = container;
-    setShowLeftArrow(scrollLeft > 0);
-    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+    if (container) {
+      setShowLeftArrow(container.scrollLeft > 0);
+      setShowRightArrow(
+        container.scrollLeft < container.scrollWidth - container.clientWidth
+      );
+    }
   };
 
   useEffect(() => {
@@ -55,67 +51,66 @@ export const CategoryNav = () => {
         window.removeEventListener("resize", checkScroll);
       };
     }
-  }, [categories]);
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const scrollAmount = direction === "left" ? -200 : 200;
-    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    if (container) {
+      const scrollAmount = container.clientWidth * 0.5;
+      container.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
   };
 
-  if (isLoading) {
-    return (
-      <div className="w-full bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-20 z-40 border-b">
-        <div className="flex w-max space-x-4 p-6">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-10 w-32 animate-pulse rounded-full bg-secondary"
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="relative w-full bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-20 z-40 border-b fade-in">
-      {showLeftArrow && (
-        <button
-          onClick={() => scroll("left")}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 md:hidden bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-2 rounded-full shadow-lg"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-      )}
-      <div
-        ref={scrollContainerRef}
-        className="flex overflow-x-auto scrollbar-hide space-x-4 p-6"
-      >
-        {categories?.map((category) => (
+    <div className="fixed top-20 left-0 right-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="relative flex items-center">
+        {showLeftArrow && (
           <button
-            key={category.id}
+            onClick={() => scroll("left")}
+            className="absolute left-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background shadow-md md:hidden"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+        )}
+        <div
+          ref={scrollContainerRef}
+          className="no-scrollbar flex items-center gap-2 overflow-x-auto px-6 py-4"
+        >
+          <button
+            onClick={() => onSelectCategory(undefined)}
             className={cn(
-              "menu-transition inline-flex items-center rounded-full px-8 py-3 text-sm font-medium tracking-tight transition-colors whitespace-nowrap",
-              category.ordre === 0
-                ? "bg-primary text-primary-foreground shadow-md"
-                : "bg-secondary/80 hover:bg-secondary text-muted-foreground hover:text-foreground"
+              "rounded-full bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/80",
+              !selectedCategory && "bg-primary text-primary-foreground"
             )}
           >
-            {category.nom}
+            Tous
           </button>
-        ))}
+          {categories?.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => onSelectCategory(category.id)}
+              className={cn(
+                "whitespace-nowrap rounded-full bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary/80",
+                selectedCategory === category.id &&
+                  "bg-primary text-primary-foreground"
+              )}
+            >
+              {category.nom}
+            </button>
+          ))}
+        </div>
+        {showRightArrow && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-background shadow-md md:hidden"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        )}
       </div>
-      {showRightArrow && (
-        <button
-          onClick={() => scroll("right")}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 md:hidden bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-2 rounded-full shadow-lg"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
-      )}
     </div>
   );
-};
+}

@@ -7,17 +7,34 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { UseFormReturn } from "react-hook-form";
-import { ArticleFormValues } from "./types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useFormContext } from "react-hook-form";
 
-interface ArticleFormFieldsProps {
-  form: UseFormReturn<ArticleFormValues>;
-  categories: any[];
-}
+export function ArticleFormFields() {
+  const form = useFormContext();
 
-export function ArticleFormFields({ form, categories }: ArticleFormFieldsProps) {
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("categories")
+        .select("*")
+        .order("ordre");
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
-    <>
+    <div className="grid gap-4">
       <FormField
         control={form.control}
         name="nom"
@@ -66,19 +83,20 @@ export function ArticleFormFields({ form, categories }: ArticleFormFieldsProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel>Catégorie</FormLabel>
-            <FormControl>
-              <select
-                {...field}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="">Sélectionner une catégorie</option>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner une catégorie" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
                 {categories?.map((category) => (
-                  <option key={category.id} value={category.id}>
+                  <SelectItem key={category.id} value={category.id}>
                     {category.nom}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </FormControl>
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}
@@ -90,42 +108,51 @@ export function ArticleFormFields({ form, categories }: ArticleFormFieldsProps) 
         render={({ field }) => (
           <FormItem>
             <FormLabel>Statut</FormLabel>
-            <FormControl>
-              <select
-                {...field}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <option value="actif">Actif</option>
-                <option value="inactif">Inactif</option>
-                <option value="rupture">Rupture</option>
-              </select>
-            </FormControl>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sélectionner un statut" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                <SelectItem value="actif">Actif</SelectItem>
+                <SelectItem value="inactif">Inactif</SelectItem>
+                <SelectItem value="rupture">Rupture</SelectItem>
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}
       />
-
-      <FormItem>
-        <FormLabel>Image</FormLabel>
-        <FormControl>
-          <Input type="file" accept="image/*" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
 
       <FormField
         control={form.control}
-        name="url_image"
-        render={({ field }) => (
+        name="image_file"
+        render={({ field: { onChange, value, ...field } }) => (
           <FormItem>
-            <FormLabel>URL de l'image (optionnel)</FormLabel>
+            <FormLabel>Image</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={(e) => onChange(e.target.files)}
+                {...field}
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-    </>
+
+      {form.watch("url_image") && (
+        <div className="mt-2">
+          <img
+            src={form.watch("url_image")}
+            alt="Preview"
+            className="max-w-[200px] rounded-md"
+          />
+        </div>
+      )}
+    </div>
   );
 }

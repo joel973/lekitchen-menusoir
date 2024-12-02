@@ -1,14 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { articleSchema, type ArticleFormValues } from "./forms/types";
+import { ArticleFormFields } from "./forms/ArticleFormFields";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
-import { ArticleFormFields } from "./forms/ArticleFormFields";
-import { articleSchema, type ArticleFormValues } from "./forms/types";
+import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface ArticleFormProps {
   article?: any;
@@ -16,64 +15,65 @@ interface ArticleFormProps {
 }
 
 export function ArticleForm({ article, onCancel }: ArticleFormProps) {
-  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const queryClient = useQueryClient();
-  const [isUploading, setIsUploading] = useState(false);
-
-  const { data: categories } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("ordre");
-      
-      if (error) throw error;
-      return data;
-    },
-  });
+  const { toast } = useToast();
 
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
-    defaultValues: article || {
-      nom: "",
-      description: "",
-      prix: "",
-      categorie_id: "",
-      statut: "actif",
-      url_image: "",
-    },
+    defaultValues: article
+      ? {
+          ...article,
+          prix: article.prix.toString(),
+        }
+      : {
+          statut: "actif",
+        },
   });
 
+  const handleImageUpload = async (file: File): Promise<string | null> => {
+    console.log("Uploading image:", file.name);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+
+    const { error: uploadError, data } = await supabase.storage
+      .from('article-images')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      console.error('Error uploading image:', uploadError);
+      toast({
+        variant: "destructive",
+        title: "Erreur lors de l'upload de l'image",
+        description: uploadError.message,
+      });
+      return null;
+    }
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('article-images')
+      .getPublicUrl(filePath);
+
+    console.log("Image uploaded successfully:", publicUrl);
+    return publicUrl;
+  };
+
   const onSubmit = async (values: ArticleFormValues) => {
+    console.log("Form values:", values);
+    setIsSubmitting(true);
     try {
-      setIsUploading(true);
       let imageUrl = values.url_image;
 
-      // Handle file upload if a new file is selected
-      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-      if (fileInput?.files?.length) {
-        const file = fileInput.files[0];
-        const fileExt = file.name.split('.').pop();
-        const filePath = `${crypto.randomUUID()}.${fileExt}`;
-
-        const { error: uploadError, data } = await supabase.storage
-          .from('article-images')
-          .upload(filePath, file);
-
-        if (uploadError) {
-          console.error('Error uploading file:', uploadError);
-          throw uploadError;
+      // Handle image upload if a new file is selected
+      if (values.image_file && values.image_file.length > 0) {
+        const uploadedUrl = await handleImageUpload(values.image_file[0]);
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
         }
-
-        const { data: { publicUrl } } = supabase.storage
-          .from('article-images')
-          .getPublicUrl(filePath);
-
-        imageUrl = publicUrl;
       }
 
-      const submitData = {
+      const articleData = {
         nom: values.nom,
         description: values.description,
         prix: parseFloat(values.prix),
@@ -82,50 +82,55 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
         url_image: imageUrl,
       };
 
-      console.log('Submitting data:', submitData);
+      console.log("Submitting article data:", articleData);
 
-      const { error } = article
-        ? await supabase
-            .from("articles")
-            .update(submitData)
-            .eq("id", article.id)
-        : await supabase.from("articles").insert(submitData);
+      if (article?.id) {
+        const { error } = await supabase
+          .from("articles")
+          .update(articleData)
+          .eq("id", article.id);
 
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("articles").insert([articleData]);
+        if (error) throw error;
       }
 
+      await queryClient.invalidateQueries({ queryKey: ["admin-articles"] });
       toast({
-        title: article ? "Article modifié" : "Article créé",
-        description: "Les modifications ont été enregistrées",
+        title: "Succès",
+        description: article?.id
+          ? "Article modifié avec succès"
+          : "Article créé avec succès",
       });
-
-      queryClient.invalidateQueries({ queryKey: ["admin-articles"] });
       onCancel();
-    } catch (error) {
-      console.error("Error saving article:", error);
+    } catch (error: any) {
+      console.error("Error submitting form:", error);
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue",
         variant: "destructive",
+        title: "Erreur",
+        description: error.message,
       });
     } finally {
-      setIsUploading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <ArticleFormFields form={form} categories={categories || []} />
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <ArticleFormFields />
         <div className="flex justify-end gap-4">
-          <Button type="button" variant="outline" onClick={onCancel}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={isSubmitting}
+          >
             Annuler
           </Button>
-          <Button type="submit" disabled={isUploading}>
-            {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {article ? "Modifier" : "Créer"}
+          <Button type="submit" disabled={isSubmitting}>
+            {article?.id ? "Modifier" : "Créer"}
           </Button>
         </div>
       </form>
