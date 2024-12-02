@@ -1,7 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
-import { type ToastType } from "@/components/ui/toast";
+import { type Toast } from "@/components/ui/use-toast";
 
-export const handleImageUpload = async (file: File, toast: ToastType): Promise<string | null> => {
+export const handleImageUpload = async (file: File, toast: Toast): Promise<string | null> => {
   console.log("Uploading image:", file.name);
   const fileExt = file.name.split('.').pop();
   const fileName = `${Math.random()}.${fileExt}`;
