@@ -34,18 +34,18 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   const { onSubmit, isSubmitting } = useArticleFormSubmit(article, onCancel);
 
   return (
-    <div className="container max-w-2xl mx-auto px-4">
-      <Card>
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">
+    <div className="container max-w-3xl mx-auto p-4 md:p-6 space-y-6">
+      <Card className="border-0 shadow-md">
+        <CardHeader className="px-6 py-5 border-b space-y-1">
+          <CardTitle className="text-2xl font-display">
             {article?.id ? "Modifier un article" : "Nouvel article"}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <ArticleFormFields />
-              <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-4">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
                 <Button
                   type="button"
                   variant="outline"

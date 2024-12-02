@@ -23,10 +23,10 @@ export function StatusSelect() {
       name="statut"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Statut</FormLabel>
+          <FormLabel className="text-base font-semibold">Statut</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="h-12">
                 <SelectValue placeholder="Sélectionner un statut" />
               </SelectTrigger>
             </FormControl>

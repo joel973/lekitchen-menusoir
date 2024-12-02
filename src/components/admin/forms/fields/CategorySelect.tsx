@@ -37,10 +37,10 @@ export function CategorySelect() {
       name="categorie_id"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Catégorie</FormLabel>
+          <FormLabel className="text-base font-semibold">Catégorie</FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger>
+              <SelectTrigger className="h-12">
                 <SelectValue placeholder="Sélectionner une catégorie" />
               </SelectTrigger>
             </FormControl>

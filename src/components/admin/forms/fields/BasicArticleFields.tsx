@@ -13,7 +13,7 @@ export function BasicArticleFields() {
   const form = useFormContext();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <FormField
         control={form.control}
         name="nom"
@@ -35,7 +35,7 @@ export function BasicArticleFields() {
           <FormItem>
             <FormLabel className="text-base font-semibold">Description</FormLabel>
             <FormControl>
-              <Textarea {...field} className="min-h-[100px]" />
+              <Textarea {...field} className="min-h-[120px] resize-none" />
             </FormControl>
             <FormMessage />
           </FormItem>
