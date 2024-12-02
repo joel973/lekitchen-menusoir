@@ -62,8 +62,8 @@ export function AdminSidebar() {
     console.log("Avant navigation - URL actuelle:", window.location.href);
     console.log("Tab demandé:", tab);
     
-    // Utilisation de navigate avec un chemin absolu
-    navigate(`/admin?tab=${tab}`, { replace: true });
+    // Utilisation de navigate avec le bon chemin /equipe
+    navigate(`/equipe?tab=${tab}`, { replace: true });
     
     console.log("Après navigation - Nouvelle URL:", window.location.href);
   };
