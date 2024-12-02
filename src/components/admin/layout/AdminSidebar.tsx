@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   Palette,
   Settings,
+  ListCheck,
 } from "lucide-react";
 import {
   Sidebar,
@@ -37,6 +38,11 @@ const menuItems = [
     tab: "allergenes",
   },
   {
+    title: "Labels",
+    icon: ListCheck,
+    tab: "labels",
+  },
+  {
     title: "Établissement",
     icon: Store,
     tab: "etablissement",
@@ -62,7 +68,6 @@ export function AdminSidebar() {
     console.log("Avant navigation - URL actuelle:", window.location.href);
     console.log("Tab demandé:", tab);
     
-    // Utilisation de navigate avec le bon chemin /equipe
     navigate(`/equipe?tab=${tab}`, { replace: true });
     
     console.log("Après navigation - Nouvelle URL:", window.location.href);
