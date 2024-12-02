@@ -15,8 +15,8 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen w-full bg-surface">
-        <div className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
+      <div className="min-h-screen w-full">
+        <div className="sticky top-0 z-50 w-full border-b backdrop-blur-sm">
           <div className="container flex h-14 items-center">
             <Sheet>
               <SheetTrigger asChild>
