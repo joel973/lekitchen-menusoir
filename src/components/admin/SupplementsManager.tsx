@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { SupplementForm } from "./SupplementForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { SupplementsList } from "./SupplementsList";
 import { AdminPageLayout } from "./shared/AdminPageLayout";
