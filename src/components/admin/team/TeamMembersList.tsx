@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { RoleSelector } from "./RoleSelector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User, Trash2, Ban, Edit } from "lucide-react";
+import { User, Edit } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { UpdateTeamMember } from "./UpdateTeamMember";
@@ -27,38 +27,30 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
         .select("*")
         .order("role", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching team members:", error);
+        throw error;
+      }
       return data;
     },
   });
 
-  const deleteMutation = useMutation({
+  const deactivateMutation = useMutation({
     mutationFn: async (userId: string) => {
-      const { error } = await supabase.auth.admin.deleteUser(userId);
+      const { error } = await supabase
+        .from("profiles")
+        .update({ active: false })
+        .eq("id", userId);
+      
       if (error) throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["team-members"] });
-      toast.success("Membre supprimé avec succès");
+      toast.success("Membre désactivé avec succès");
     },
     onError: (error: any) => {
-      toast.error(error.message || "Erreur lors de la suppression du membre");
-    },
-  });
-
-  const banMutation = useMutation({
-    mutationFn: async ({ userId, isBanned }: { userId: string; isBanned: boolean }) => {
-      const { error } = await supabase.auth.admin.updateUserById(userId, {
-        ban_duration: isBanned ? "none" : null,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["team-members"] });
-      toast.success("Statut du membre mis à jour");
-    },
-    onError: (error: any) => {
-      toast.error(error.message || "Erreur lors de la mise à jour du statut");
+      console.error("Error deactivating member:", error);
+      toast.error("Erreur lors de la désactivation du membre");
     },
   });
 
@@ -66,14 +58,10 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     return <div>Chargement...</div>;
   }
 
-  const handleDelete = (memberId: string) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce membre ?")) {
-      deleteMutation.mutate(memberId);
+  const handleDeactivate = (memberId: string) => {
+    if (window.confirm("Êtes-vous sûr de vouloir désactiver ce membre ?")) {
+      deactivateMutation.mutate(memberId);
     }
-  };
-
-  const handleBanToggle = (memberId: string) => {
-    banMutation.mutate({ userId: memberId, isBanned: false });
   };
 
   return (
@@ -135,16 +123,9 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleBanToggle(member.id)}
+                    onClick={() => handleDeactivate(member.id)}
                   >
-                    <Ban className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDelete(member.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
+                    {member.active ? "Désactiver" : "Activé"}
                   </Button>
                 </div>
               )}
