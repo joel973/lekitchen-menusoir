@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useArticleFormSubmit } from "./forms/useArticleFormSubmit";
 import { useLoadExistingRelations } from "./forms/useLoadExistingRelations";
-import { Card, CardContent } from "@/components/ui/card";
 import { Archive } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
@@ -79,51 +78,47 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   };
 
   return (
-    <Card className="max-w-3xl mx-auto">
-      <CardContent className="p-6">
-        <Form {...form}>
-          <form 
-            onSubmit={(e) => {
-              console.log("Form submit event triggered");
-              form.handleSubmit(handleSubmit)(e);
-            }} 
-            className="space-y-8"
-          >
-            <ArticleFormFields />
-            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onCancel}
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto"
-                >
-                  Annuler
-                </Button>
-                {article && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={handleArchive}
-                    className="w-full sm:w-auto"
-                  >
-                    <Archive className="h-4 w-4 mr-2" />
-                    Archiver
-                  </Button>
-                )}
-              </div>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
+    <Form {...form}>
+      <form 
+        onSubmit={(e) => {
+          console.log("Form submit event triggered");
+          form.handleSubmit(handleSubmit)(e);
+        }} 
+        className="space-y-8"
+      >
+        <ArticleFormFields />
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="w-full sm:w-auto"
+            >
+              Annuler
+            </Button>
+            {article && (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleArchive}
                 className="w-full sm:w-auto"
               >
-                {article ? "Modifier" : "Créer"}
+                <Archive className="h-4 w-4 mr-2" />
+                Archiver
               </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            )}
+          </div>
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
+            {article ? "Modifier" : "Créer"}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
