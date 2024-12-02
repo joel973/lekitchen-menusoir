@@ -6,6 +6,7 @@ import { SupplementForm } from "./SupplementForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { SupplementsList } from "./SupplementsList";
+import { AdminPageLayout } from "./shared/AdminPageLayout";
 
 export function SupplementsManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -43,31 +44,39 @@ export function SupplementsManager() {
 
   if (isCreating || editingSupplement) {
     return (
-      <SupplementForm
-        supplement={editingSupplement}
-        onCancel={() => {
-          setIsCreating(false);
-          setEditingSupplement(null);
-        }}
-      />
+      <AdminPageLayout
+        title={editingSupplement ? "Modifier un supplément" : "Nouveau supplément"}
+      >
+        <SupplementForm
+          supplement={editingSupplement}
+          onCancel={() => {
+            setIsCreating(false);
+            setEditingSupplement(null);
+          }}
+        />
+      </AdminPageLayout>
     );
   }
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-2xl font-display">Suppléments</CardTitle>
+    <AdminPageLayout
+      title="Suppléments"
+      description="Gérez les suppléments disponibles pour vos articles"
+      actions={
         <Button onClick={() => setIsCreating(true)} size="sm">
           <Plus className="h-4 w-4 mr-2" />
           Nouveau supplément
         </Button>
-      </CardHeader>
-      <CardContent>
-        <SupplementsList
-          supplements={supplements || []}
-          onEdit={setEditingSupplement}
-        />
-      </CardContent>
-    </Card>
+      }
+    >
+      <Card>
+        <CardContent className="p-0">
+          <SupplementsList
+            supplements={supplements || []}
+            onEdit={setEditingSupplement}
+          />
+        </CardContent>
+      </Card>
+    </AdminPageLayout>
   );
 }
