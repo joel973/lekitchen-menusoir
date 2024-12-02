@@ -14,6 +14,7 @@ interface ArticleCardProps {
   status?: "actif" | "inactif" | "rupture";
   allergenes?: { nom: string }[];
   labels?: { nom: string; couleur: string; ordre: number }[];
+  supplements?: { nom: string; prix: number }[];
   className?: string;
 }
 
@@ -25,6 +26,7 @@ export const ArticleCard = ({
   status = "actif",
   allergenes = [],
   labels = [],
+  supplements = [],
   className,
 }: ArticleCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,6 +91,7 @@ export const ArticleCard = ({
         image={image}
         allergenes={allergenes}
         labels={labels}
+        supplements={supplements}
       />
     </>
   );
