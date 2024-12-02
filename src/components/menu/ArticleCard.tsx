@@ -45,12 +45,9 @@ export const ArticleCard = ({
             )}
           </div>
           <div className="ml-2">
-            <Badge 
-              variant={status === "available" ? "default" : "secondary"}
-              className="menu-transition hover:scale-105"
-            >
-              {price.toFixed(2)} €
-            </Badge>
+            <span className="font-display text-lg font-semibold text-primary">
+              {price.toFixed(2)}€
+            </span>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
