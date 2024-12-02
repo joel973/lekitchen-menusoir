@@ -71,7 +71,7 @@
     @apply leading-relaxed text-content-secondary;
   }
   .glass-card {
-    @apply bg-white/85 backdrop-blur-glass shadow-glass border border-white/10 transition-all duration-200;
+    @apply bg-white/95 backdrop-blur-glass shadow-glass border border-white/10 transition-all duration-200;
   }
   .glass-sidebar {
     @apply bg-white/95 backdrop-blur-glass shadow-glass border-r border-white/10 transition-all duration-200;
