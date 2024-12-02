@@ -2,10 +2,16 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertOctagon, EyeOff, Eye } from "lucide-react";
+import { AlertOctagon, EyeOff, Eye, Tags } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface RushArticleCardProps {
   article: any;
@@ -101,6 +107,11 @@ export function RushArticleCard({
 
   const isVisible = article.statut === "actif";
 
+  // Get the names of selected labels
+  const selectedLabelsNames = labels
+    .filter((label) => articleLabels.includes(label.id))
+    .map((label) => label.nom);
+
   return (
     <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200 w-full">
       <div className="p-6 space-y-6">
@@ -163,32 +174,44 @@ export function RushArticleCard({
           </div>
         </div>
 
-        {/* Labels Section */}
+        {/* Labels Section with Dropdown */}
         <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-900">Labels :</h4>
-          <div className="grid grid-cols-2 gap-4">
-            {labels.map((label) => (
-              <div
-                key={label.id}
-                className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg"
-              >
-                <Checkbox
-                  id={`label-${article.id}-${label.id}`}
-                  checked={articleLabels.includes(label.id)}
-                  onCheckedChange={(checked) =>
-                    toggleLabel(label.id, checked as boolean)
-                  }
-                  disabled={isUpdating}
-                />
-                <label
-                  htmlFor={`label-${article.id}-${label.id}`}
-                  className="text-sm font-medium text-gray-700 cursor-pointer select-none"
-                >
-                  {label.nom}
-                </label>
-              </div>
-            ))}
+          <div className="flex items-center justify-between">
+            <h4 className="font-medium text-sm text-gray-900">Labels :</h4>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Tags className="h-4 w-4 mr-2" />
+                  Gérer les labels
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {labels.map((label) => (
+                  <DropdownMenuItem
+                    key={label.id}
+                    onClick={() => toggleLabel(label.id, articleLabels.includes(label.id))}
+                    className="flex items-center justify-between cursor-pointer"
+                  >
+                    <span>{label.nom}</span>
+                    {articleLabels.includes(label.id) && (
+                      <Badge variant="secondary" className="ml-2">
+                        Activé
+                      </Badge>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
+          {selectedLabelsNames.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {selectedLabelsNames.map((labelName) => (
+                <Badge key={labelName} variant="secondary">
+                  {labelName}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </Card>
