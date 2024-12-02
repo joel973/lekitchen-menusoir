@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Pencil } from "lucide-react";
 import { ArticleForm } from "./ArticleForm";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -17,7 +16,6 @@ import {
 export function ArticlesManager() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<any>(null);
 
   const { data: categories } = useQuery({
@@ -78,29 +76,23 @@ export function ArticlesManager() {
     },
   });
 
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-    setSelectedArticle(null);
-    refetch();
-  };
-
-  const handleEditArticle = (article: any) => {
-    setSelectedArticle(article);
-    setIsDialogOpen(true);
-  };
+  if (selectedArticle) {
+    return (
+      <ArticleForm
+        article={selectedArticle}
+        onCancel={() => {
+          setSelectedArticle(null);
+          refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1>Articles</h1>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>Ajouter un article</Button>
-          </DialogTrigger>
-          <DialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-background p-6 shadow-lg rounded-lg">
-            <ArticleForm article={selectedArticle} onCancel={handleDialogClose} />
-          </DialogContent>
-        </Dialog>
+        <Button onClick={() => setSelectedArticle({})}>Ajouter un article</Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4">
@@ -152,7 +144,7 @@ export function ArticlesManager() {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => handleEditArticle(article)}
+                onClick={() => setSelectedArticle(article)}
                 className="ml-4"
               >
                 <Pencil className="h-4 w-4" />
