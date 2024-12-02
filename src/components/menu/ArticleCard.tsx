@@ -45,28 +45,27 @@ export const ArticleCard = ({
         <div className="min-w-0 flex-1">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
             <div className="space-y-1.5 min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="font-display text-base sm:text-lg tracking-tight">
-                  {title}
-                </h3>
-                {sortedLabels.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {sortedLabels.map((label) => (
-                      <Badge
-                        key={label.nom}
-                        variant="outline"
-                        className="bg-white uppercase text-[9px] tracking-wider px-1.5 py-0 rounded-[2px]"
-                        style={{ 
-                          borderColor: label.couleur,
-                          color: label.couleur
-                        }}
-                      >
-                        {label.nom}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <h3 className="font-display text-base sm:text-lg tracking-tight">
+                {title}
+              </h3>
+              
+              {sortedLabels.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {sortedLabels.map((label) => (
+                    <Badge
+                      key={label.nom}
+                      variant="outline"
+                      className="bg-white uppercase text-[8px] tracking-wider px-1.5 py-0 rounded-[2px]"
+                      style={{ 
+                        borderColor: label.couleur,
+                        color: label.couleur
+                      }}
+                    >
+                      {label.nom}
+                    </Badge>
+                  ))}
+                </div>
+              )}
               
               {description && (
                 <p className="text-sm text-muted-foreground line-clamp-1">
@@ -89,7 +88,7 @@ export const ArticleCard = ({
             </div>
 
             <div className="flex-shrink-0">
-              <span className="font-mono text-base sm:text-lg font-medium tracking-tight whitespace-nowrap">
+              <span className="text-base sm:text-lg font-medium tracking-tight whitespace-nowrap text-content">
                 {price.toFixed(2)} €
               </span>
             </div>
