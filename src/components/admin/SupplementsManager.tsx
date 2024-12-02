@@ -1,18 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { SupplementForm } from "./SupplementForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import { SupplementsList } from "./SupplementsList";
 
 export function SupplementsManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -21,6 +14,7 @@ export function SupplementsManager() {
   const { data: supplements, isLoading } = useQuery({
     queryKey: ["supplements"],
     queryFn: async () => {
+      console.log("Fetching supplements with linked articles");
       const { data, error } = await supabase
         .from("supplements")
         .select(`
@@ -34,7 +28,11 @@ export function SupplementsManager() {
         `)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching supplements:", error);
+        throw error;
+      }
+      console.log("Fetched supplements:", data);
       return data;
     },
   });
@@ -65,42 +63,10 @@ export function SupplementsManager() {
         </Button>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Prix</TableHead>
-              <TableHead>Articles liés</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {supplements?.map((supplement) => (
-              <TableRow key={supplement.id}>
-                <TableCell>{supplement.nom}</TableCell>
-                <TableCell>{supplement.description}</TableCell>
-                <TableCell>{supplement.prix.toFixed(2)} €</TableCell>
-                <TableCell>
-                  {supplement.articles_supplements?.map((as: any) => (
-                    <span key={as.articles.id} className="mr-2">
-                      {as.articles.nom}
-                    </span>
-                  ))}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setEditingSupplement(supplement)}
-                  >
-                    Modifier
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <SupplementsList
+          supplements={supplements || []}
+          onEdit={setEditingSupplement}
+        />
       </CardContent>
     </Card>
   );
