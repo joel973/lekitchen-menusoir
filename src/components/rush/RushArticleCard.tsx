@@ -1,4 +1,3 @@
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { AlertOctagon, EyeOff, Eye, Tags } from "lucide-react";
@@ -42,7 +41,7 @@ export function RushArticleCard({
   const selectedLabels = labels.filter((label) => articleLabels.includes(label.id));
 
   return (
-    <div className="group overflow-hidden hover:bg-secondary/30 transition-colors duration-300 cursor-pointer">
+    <div className="group overflow-hidden border rounded-lg hover:bg-secondary/30 transition-colors duration-300 cursor-pointer">
       <div className="p-4 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <ArticleHeader
