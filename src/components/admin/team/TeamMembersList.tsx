@@ -38,22 +38,27 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     },
   });
 
-  const deactivateMutation = useMutation({
-    mutationFn: async (userId: string) => {
+  const toggleActivationMutation = useMutation({
+    mutationFn: async ({ userId, active }: { userId: string; active: boolean }) => {
+      console.log("Toggling activation for user:", userId, "to:", active);
       const { error } = await supabase
         .from("profiles")
-        .update({ active: false })
+        .update({ active })
         .eq("id", userId);
       
       if (error) throw error;
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["team-members"] });
-      toast.success("Membre désactivé avec succès");
+      toast.success(
+        variables.active 
+          ? "Membre réactivé avec succès" 
+          : "Membre désactivé avec succès"
+      );
     },
     onError: (error: any) => {
-      console.error("Error deactivating member:", error);
-      toast.error("Erreur lors de la désactivation du membre");
+      console.error("Error toggling member activation:", error);
+      toast.error("Erreur lors de la modification du statut du membre");
     },
   });
 
@@ -61,9 +66,17 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     return <div>Chargement...</div>;
   }
 
-  const handleDeactivate = (memberId: string) => {
-    if (window.confirm("Êtes-vous sûr de vouloir désactiver ce membre ?")) {
-      deactivateMutation.mutate(memberId);
+  const handleToggleActivation = (member: Profile) => {
+    const newStatus = !member.active;
+    const message = newStatus 
+      ? "Êtes-vous sûr de vouloir réactiver ce membre ?" 
+      : "Êtes-vous sûr de vouloir désactiver ce membre ?";
+
+    if (window.confirm(message)) {
+      toggleActivationMutation.mutate({ 
+        userId: member.id, 
+        active: newStatus 
+      });
     }
   };
 
@@ -78,7 +91,10 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
       </TableHeader>
       <TableBody>
         {members?.map((member) => (
-          <TableRow key={member.id}>
+          <TableRow 
+            key={member.id}
+            className={!member.active ? "opacity-50" : undefined}
+          >
             <TableCell className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
                 <User className="w-4 h-4" />
@@ -87,11 +103,18 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                 <div className="font-medium">
                   {member.first_name} {member.last_name}
                 </div>
-                {member.id === currentUserId && (
-                  <Badge variant="secondary" className="mt-1">
-                    Vous
-                  </Badge>
-                )}
+                <div className="flex gap-2">
+                  {member.id === currentUserId && (
+                    <Badge variant="secondary">
+                      Vous
+                    </Badge>
+                  )}
+                  {!member.active && (
+                    <Badge variant="destructive">
+                      Désactivé
+                    </Badge>
+                  )}
+                </div>
               </div>
             </TableCell>
             <TableCell>
@@ -126,9 +149,9 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => handleDeactivate(member.id)}
+                    onClick={() => handleToggleActivation(member)}
                   >
-                    {member.active ? "Désactiver" : "Activé"}
+                    {member.active ? "Désactiver" : "Réactiver"}
                   </Button>
                 </div>
               )}
