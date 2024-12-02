@@ -119,10 +119,6 @@ export function ArticlesManager() {
             onClick={() => setSelectedArticle({})} 
             size="sm" 
             className="w-full sm:w-auto"
-            style={{ 
-              backgroundColor: "var(--primary)",
-              color: "var(--primary-foreground)" 
-            }}
           >
             <Plus className="h-4 w-4 mr-2" />
             Nouvel article
