@@ -62,15 +62,15 @@ export function LabelsManager() {
     const oldIndex = labels.findIndex((label) => label.id === active.id);
     const newIndex = labels.findIndex((label) => label.id === over.id);
     
-    const newOrder = arrayMove(labels, oldIndex, newIndex);
+    const newOrder = arrayMove([...labels], oldIndex, newIndex);
     
     // Update ordre in the database
     try {
       const updates = newOrder.map((label, index) => ({
         id: label.id,
-        nom: label.nom, // Include the required nom field
+        nom: label.nom,
         ordre: index,
-        couleur: label.couleur, // Include existing couleur to preserve it
+        couleur: label.couleur,
       }));
 
       const { error } = await supabase
@@ -78,6 +78,9 @@ export function LabelsManager() {
         .upsert(updates, { onConflict: "id" });
 
       if (error) throw error;
+
+      // Invalidate the query to refetch the updated order
+      await queryClient.invalidateQueries({ queryKey: ["labels"] });
     } catch (error: any) {
       console.error("Error updating order:", error);
       toast({
