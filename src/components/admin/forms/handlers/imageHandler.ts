@@ -1,7 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
-import { type Toast } from "@/components/ui/use-toast";
+import { type ToastProps } from "@/components/ui/toast";
 
-export const handleImageUpload = async (file: File, toast: Toast): Promise<string | null> => {
+export const handleImageUpload = async (
+  file: File, 
+  toast: { toast: (props: ToastProps) => void }
+): Promise<string | null> => {
   console.log("Uploading image:", file.name);
   const fileExt = file.name.split('.').pop();
   const fileName = `${Math.random()}.${fileExt}`;
@@ -13,7 +16,7 @@ export const handleImageUpload = async (file: File, toast: Toast): Promise<strin
 
   if (uploadError) {
     console.error('Error uploading image:', uploadError);
-    toast({
+    toast.toast({
       variant: "destructive",
       title: "Erreur lors de l'upload de l'image",
       description: uploadError.message,

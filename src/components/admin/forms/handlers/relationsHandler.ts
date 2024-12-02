@@ -1,11 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
-import { type Toast } from "@/components/ui/use-toast";
+import { type ToastProps } from "@/components/ui/toast";
 import { ArticleFormValues } from "../types";
 
 export const updateArticleRelations = async (
   articleId: string,
   values: ArticleFormValues,
-  toast: Toast
+  toast: { toast: (props: ToastProps) => void }
 ) => {
   console.log("=== Updating relations ===");
   await updateAllergenes(articleId, values.allergenes);

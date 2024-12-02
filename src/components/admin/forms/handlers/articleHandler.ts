@@ -1,10 +1,10 @@
 import { supabase } from "@/integrations/supabase/client";
-import { type Toast } from "@/components/ui/use-toast";
+import { type ToastProps } from "@/components/ui/toast";
 
 export const createOrUpdateArticle = async (
   articleId: string | undefined, 
   articleData: any,
-  toast: Toast
+  toast: { toast: (props: ToastProps) => void }
 ): Promise<string | null> => {
   if (articleId) {
     console.log("Updating existing article with ID:", articleId);
