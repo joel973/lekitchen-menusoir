@@ -31,9 +31,9 @@ export function CustomizationManager() {
     try {
       const formData = new FormData(e.currentTarget);
       const updates = {
-        couleur_primaire: formData.get("couleur_primaire"),
-        couleur_secondaire: formData.get("couleur_secondaire"),
-        pied_page_texte: formData.get("pied_page_texte"),
+        couleur_primaire: formData.get("couleur_primaire")?.toString() || "",
+        couleur_secondaire: formData.get("couleur_secondaire")?.toString() || "",
+        pied_page_texte: formData.get("pied_page_texte")?.toString() || "",
       };
 
       const { error } = await supabase
@@ -62,7 +62,7 @@ export function CustomizationManager() {
           <CardTitle>Logo</CardTitle>
         </CardHeader>
         <CardContent>
-          <LogoUpload currentLogoUrl={parametres.logo_url} />
+          <LogoUpload logoUrl={parametres.logo_url} />
         </CardContent>
       </Card>
 
@@ -80,7 +80,7 @@ export function CustomizationManager() {
                 type="color"
                 id="couleur_primaire"
                 name="couleur_primaire"
-                defaultValue={parametres.couleur_primaire}
+                defaultValue={parametres.couleur_primaire || "#000000"}
               />
             </div>
 
@@ -92,7 +92,7 @@ export function CustomizationManager() {
                 type="color"
                 id="couleur_secondaire"
                 name="couleur_secondaire"
-                defaultValue={parametres.couleur_secondaire}
+                defaultValue={parametres.couleur_secondaire || "#000000"}
               />
             </div>
 
