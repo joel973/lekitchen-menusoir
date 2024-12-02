@@ -5,11 +5,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 interface SortableRowProps {
-  label: any;
+  category: any;
   onEdit: () => void;
 }
 
-export function SortableRow({ label, onEdit }: SortableRowProps) {
+export function SortableRow({ category, onEdit }: SortableRowProps) {
   const {
     attributes,
     listeners,
@@ -17,7 +17,7 @@ export function SortableRow({ label, onEdit }: SortableRowProps) {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: label.id });
+  } = useSortable({ id: category.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -37,18 +37,10 @@ export function SortableRow({ label, onEdit }: SortableRowProps) {
           >
             <GripVertical className="h-4 w-4 text-muted-foreground" />
           </button>
-          {label.nom}
+          {category.nom}
         </div>
       </TableCell>
-      <TableCell>
-        <div className="flex items-center gap-2">
-          <div
-            className="w-6 h-6 rounded border"
-            style={{ backgroundColor: label.couleur }}
-          />
-          {label.couleur}
-        </div>
-      </TableCell>
+      <TableCell>{category.mode_affichage}</TableCell>
       <TableCell>
         <Button variant="ghost" size="sm" onClick={onEdit}>
           Modifier

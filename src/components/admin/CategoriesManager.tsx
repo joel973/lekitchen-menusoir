@@ -1,9 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -13,10 +12,35 @@ import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { SortableRow } from "./SortableRow";
+import { useToast } from "@/hooks/use-toast";
 
 export function CategoriesManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   const { data: categories, isLoading } = useQuery({
     queryKey: ["admin-categories"],
@@ -30,6 +54,48 @@ export function CategoriesManager() {
       return data;
     },
   });
+
+  const handleDragEnd = async (event: any) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id && categories) {
+      const oldIndex = categories.findIndex((cat) => cat.id === active.id);
+      const newIndex = categories.findIndex((cat) => cat.id === over.id);
+
+      const newOrder = arrayMove(categories, oldIndex, newIndex);
+
+      // Optimistically update the UI
+      queryClient.setQueryData(["admin-categories"], newOrder);
+
+      // Update the order in the database
+      try {
+        const updates = newOrder.map((category, index) => ({
+          id: category.id,
+          ordre: index,
+        }));
+
+        const { error } = await supabase
+          .from("categories")
+          .upsert(updates, { onConflict: "id" });
+
+        if (error) throw error;
+
+        toast({
+          title: "Ordre mis à jour",
+          description: "L'ordre des catégories a été mis à jour avec succès",
+        });
+      } catch (error) {
+        console.error("Error updating order:", error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de la mise à jour de l'ordre",
+          variant: "destructive",
+        });
+        // Revert the optimistic update
+        queryClient.invalidateQueries({ queryKey: ["admin-categories"] });
+      }
+    }
+  };
 
   if (isLoading) {
     return <div>Chargement...</div>;
@@ -72,27 +138,28 @@ export function CategoriesManager() {
               <TableRow>
                 <TableHead>Nom</TableHead>
                 <TableHead>Mode d'affichage</TableHead>
-                <TableHead>Ordre</TableHead>
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories?.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.nom}</TableCell>
-                  <TableCell>{category.mode_affichage}</TableCell>
-                  <TableCell>{category.ordre}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingCategory(category)}
-                    >
-                      Modifier
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={categories?.map((cat) => cat.id) || []}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {categories?.map((category) => (
+                    <SortableRow
+                      key={category.id}
+                      category={category}
+                      onEdit={() => setEditingCategory(category)}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
             </TableBody>
           </Table>
         </CardContent>
