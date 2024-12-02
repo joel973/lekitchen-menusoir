@@ -50,9 +50,9 @@ export function ArticlesManager() {
     },
   });
 
-  const handleArticleSubmit = async () => {
+  const handleDialogClose = () => {
     setIsDialogOpen(false);
-    await refetch();
+    refetch();
   };
 
   return (
@@ -64,7 +64,7 @@ export function ArticlesManager() {
             <Button>Ajouter un article</Button>
           </DialogTrigger>
           <DialogContent className="max-w-3xl">
-            <ArticleForm onSubmit={handleArticleSubmit} />
+            <ArticleForm onCancel={handleDialogClose} />
           </DialogContent>
         </Dialog>
       </div>
