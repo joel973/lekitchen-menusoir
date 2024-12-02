@@ -32,7 +32,7 @@ export const ArticleCard = ({
       <div className="flex items-center gap-6 p-6">
         {image && (
           <div className="relative flex-shrink-0">
-            <div className="h-16 w-16 overflow-hidden rounded-md">
+            <div className="h-16 w-16 overflow-hidden rounded-sm">
               <img
                 src={image}
                 alt={title}
@@ -45,17 +45,17 @@ export const ArticleCard = ({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1.5 flex-1 min-w-0">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <h3 className="font-display text-lg tracking-tight truncate">
                   {title}
                 </h3>
                 {sortedLabels.length > 0 && (
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-1">
                     {sortedLabels.map((label) => (
                       <Badge
                         key={label.nom}
                         variant="outline"
-                        className="bg-white uppercase text-[10px] tracking-wider px-2 py-0.5"
+                        className="bg-white uppercase text-[9px] tracking-wider px-1.5 py-0 rounded-[2px]"
                         style={{ 
                           borderColor: label.couleur,
                           color: label.couleur
@@ -75,11 +75,11 @@ export const ArticleCard = ({
               )}
 
               {allergenes.length > 0 && (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {allergenes.map((allergene) => (
                     <span
                       key={allergene.nom}
-                      className="text-[10px] uppercase tracking-wider text-content-tertiary"
+                      className="text-[9px] uppercase tracking-wider text-content-tertiary"
                     >
                       {allergene.nom}
                     </span>

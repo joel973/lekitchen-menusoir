@@ -27,14 +27,14 @@ export const CategoryNav = ({
   return (
     <nav className="sticky top-20 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container h-14 flex items-center overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 px-4">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => onSelectCategory(undefined)}
             className={cn(
-              "rounded-sm font-medium transition-colors hover:bg-secondary/50",
-              !selectedCategory && "bg-secondary/50"
+              "rounded-[4px] font-medium transition-colors hover:bg-secondary",
+              !selectedCategory && "bg-secondary text-content"
             )}
           >
             Tout voir
@@ -46,8 +46,8 @@ export const CategoryNav = ({
               size="sm"
               onClick={() => onSelectCategory(category.id)}
               className={cn(
-                "rounded-sm font-medium transition-colors hover:bg-secondary/50",
-                selectedCategory === category.id && "bg-secondary/50"
+                "rounded-[4px] font-medium transition-colors hover:bg-secondary",
+                selectedCategory === category.id && "bg-secondary text-content"
               )}
             >
               {category.nom}
