@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ArticleModal } from "./ArticleModal";
+import { ChevronRight } from "lucide-react";
 
 interface ArticleCardProps {
   title: string;
@@ -50,14 +51,14 @@ export const ArticleCard = ({
           )}
 
           <div className="min-w-0 flex-1">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
-              <div className="space-y-1.5 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-4">
+              <div className="space-y-1 min-w-0">
                 <h3 className="font-display text-base sm:text-lg tracking-tight">
                   {title}
                 </h3>
                 
                 {sortedLabels.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-1">
+                  <div className="flex flex-wrap gap-1">
                     {sortedLabels.map((label) => (
                       <Badge
                         key={label.nom}
@@ -75,10 +76,14 @@ export const ArticleCard = ({
                 )}
               </div>
 
-              <div className="flex-shrink-0">
+              <div className="flex items-center gap-3">
                 <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
                   {price.toFixed(2)} €
                 </span>
+                <button className="text-[10px] text-content-tertiary uppercase tracking-wider flex items-center gap-0.5 group-hover:text-content transition-colors">
+                  Plus d'infos
+                  <ChevronRight className="w-3 h-3" />
+                </button>
               </div>
             </div>
           </div>
