@@ -109,7 +109,6 @@ export const ArticleCard = ({
         image={image}
         allergenes={allergenes}
         labels={labels}
-        status={status}
       />
     </>
   );

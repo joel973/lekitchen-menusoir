@@ -6,6 +6,8 @@ interface ArticleGridProps {
   selectedCategory?: string;
 }
 
+type ArticleStatus = "actif" | "inactif" | "rupture";
+
 export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
   const { data: articles } = useQuery({
     queryKey: ["articles", selectedCategory],
@@ -64,7 +66,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
           image={article.url_image}
           allergenes={article.allergenes}
           labels={article.labels}
-          status={article.statut}
+          status={article.statut as ArticleStatus}
         />
       ))}
     </div>
