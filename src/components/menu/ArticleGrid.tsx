@@ -22,7 +22,27 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
 
       let query = supabase
         .from("articles")
-        .select("*")
+        .select(`
+          *,
+          categories (
+            id,
+            nom
+          ),
+          articles_allergenes (
+            allergenes (
+              id,
+              nom
+            )
+          ),
+          articles_labels (
+            labels (
+              id,
+              nom,
+              couleur,
+              ordre
+            )
+          )
+        `)
         .eq("statut", "actif")
         .order("created_at", { ascending: false });
 
@@ -36,7 +56,14 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
 
       const { data, error } = await query;
       if (error) throw error;
-      return data;
+
+      // Transform the data to flatten the structure
+      return data.map(article => ({
+        ...article,
+        allergenes: article.articles_allergenes?.map(aa => aa.allergenes) || [],
+        labels: (article.articles_labels?.map(al => al.labels) || [])
+          .sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+      }));
     },
   });
 
@@ -60,6 +87,8 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
             description={article.description}
             price={article.prix}
             image={article.url_image}
+            allergenes={article.allergenes}
+            labels={article.labels}
           />
         ))}
       </div>
