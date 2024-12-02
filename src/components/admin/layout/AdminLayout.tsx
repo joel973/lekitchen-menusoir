@@ -6,14 +6,12 @@ import {
   Store,
   Tag,
   UtensilsCrossed,
-  LogOut,
   AlertTriangle,
   Palette,
 } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -24,7 +22,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { UserProfileDisplay } from "../UserProfileDisplay";
 
 const menuItems = [
   {
@@ -86,21 +84,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, [navigate, session]);
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast.success("Déconnexion réussie");
-      navigate("/login");
-    } catch (error) {
-      console.error("Erreur lors de la déconnexion:", error);
-      toast.error("Erreur lors de la déconnexion");
-    }
-  };
-
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
-        <Sidebar>
+        <Sidebar className="border-r">
           <SidebarHeader className="border-b px-6 py-3">
             <h2 className="font-display text-lg font-bold">Administration</h2>
           </SidebarHeader>
@@ -123,15 +110,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               </SidebarGroupContent>
             </SidebarGroup>
           </SidebarContent>
-          <SidebarFooter className="border-t p-4">
-            <button
-              onClick={handleLogout}
-              className="flex w-full items-center gap-2 text-sm text-red-600 hover:text-red-800"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Se déconnecter</span>
-            </button>
-          </SidebarFooter>
+          <UserProfileDisplay />
         </Sidebar>
         <main className="flex-1 overflow-auto p-6">
           <div className="mx-auto max-w-7xl">
