@@ -3,7 +3,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { SupplementFormValues } from "./types";
-import { logAction } from "@/utils/logger";
 
 export const useSupplementFormSubmit = (supplement: any | undefined, onCancel: () => void) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,26 +26,12 @@ export const useSupplementFormSubmit = (supplement: any | undefined, onCancel: (
           .eq("id", supplement.id);
 
         if (updateError) throw updateError;
-
-        await logAction({
-          action: "update",
-          entityType: "supplement",
-          entityId: supplement.id,
-          details: { previous: supplement, updated: supplementData }
-        });
       } else {
         const { error: insertError } = await supabase
           .from("supplements")
           .insert([supplementData]);
 
         if (insertError) throw insertError;
-
-        await logAction({
-          action: "create",
-          entityType: "supplement",
-          entityId: supplement?.id,
-          details: supplementData
-        });
       }
 
       await queryClient.invalidateQueries({ queryKey: ["supplements"] });

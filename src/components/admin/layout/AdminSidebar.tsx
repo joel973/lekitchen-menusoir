@@ -7,7 +7,6 @@ import {
   ListCheck,
   Filter,
   Users,
-  ClipboardList,
   Plus,
   LogOut,
 } from "lucide-react";
@@ -65,11 +64,6 @@ const menuItems = [
     title: "Paramètres",
     icon: Settings,
     tab: "parametres",
-  },
-  {
-    title: "Logs",
-    icon: ClipboardList,
-    tab: "logs",
   },
 ];
 

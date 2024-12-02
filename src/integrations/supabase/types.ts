@@ -248,44 +248,6 @@ export type Database = {
         }
         Relationships: []
       }
-      logs: {
-        Row: {
-          action: string
-          created_at: string
-          details: Json | null
-          entity_id: string
-          entity_type: string
-          id: string
-          user_id: string | null
-        }
-        Insert: {
-          action: string
-          created_at?: string
-          details?: Json | null
-          entity_id: string
-          entity_type: string
-          id?: string
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          created_at?: string
-          details?: Json | null
-          entity_id?: string
-          entity_type?: string
-          id?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       parametres: {
         Row: {
           background_color: string | null
