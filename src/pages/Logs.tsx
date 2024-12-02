@@ -5,7 +5,7 @@ export default function Logs() {
   return (
     <AdminLayout>
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Logs du système</h1>
+        <h1 className="text-2xl font-bold mb-6">Logs système</h1>
         <LogsTable />
       </div>
     </AdminLayout>
