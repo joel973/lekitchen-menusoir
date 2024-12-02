@@ -38,14 +38,17 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
   };
 
   const onSubmit = async (values: ArticleFormValues) => {
-    console.log("Starting form submission with values:", values);
-    console.log("Article being edited:", article);
-    
-    setIsSubmitting(true);
     try {
+      console.log("=== Starting form submission ===");
+      console.log("Form values:", values);
+      console.log("Article being edited:", article);
+      
+      setIsSubmitting(true);
+
       let imageUrl = values.url_image;
 
       if (values.image_file && values.image_file.length > 0) {
+        console.log("New image detected, starting upload...");
         const uploadedUrl = await handleImageUpload(values.image_file[0]);
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
@@ -66,41 +69,48 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
 
       if (article?.id) {
         console.log("Updating existing article with ID:", article.id);
-        const { error } = await supabase
+        const { data: updateData, error: updateError } = await supabase
           .from("articles")
           .update(articleData)
-          .eq("id", article.id);
+          .eq("id", article.id)
+          .select();
 
-        if (error) {
-          console.error("Error updating article:", error);
-          throw error;
+        if (updateError) {
+          console.error("Error updating article:", updateError);
+          throw updateError;
         }
-        console.log("Article updated successfully");
+        console.log("Article updated successfully:", updateData);
       } else {
         console.log("Creating new article");
-        const { data, error } = await supabase
+        const { data: insertData, error: insertError } = await supabase
           .from("articles")
           .insert([articleData])
           .select()
           .single();
 
-        if (error) {
-          console.error("Error creating article:", error);
-          throw error;
+        if (insertError) {
+          console.error("Error creating article:", insertError);
+          throw insertError;
         }
-        articleId = data.id;
+        articleId = insertData.id;
         console.log("New article created with ID:", articleId);
       }
 
       // Mettre à jour les relations avec les allergènes
       if (articleId) {
-        console.log("Updating allergenes relations for article:", articleId);
+        console.log("=== Updating relations ===");
+        console.log("Updating allergenes for article:", articleId);
         console.log("Selected allergenes:", values.allergenes);
         
-        await supabase
+        const { error: deleteAllergensError } = await supabase
           .from("articles_allergenes")
           .delete()
           .eq("article_id", articleId);
+
+        if (deleteAllergensError) {
+          console.error("Error deleting existing allergens:", deleteAllergensError);
+          throw deleteAllergensError;
+        }
 
         if (values.allergenes.length > 0) {
           const allergeneRelations = values.allergenes.map((allergeneId) => ({
@@ -108,6 +118,7 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
             allergene_id: allergeneId,
           }));
 
+          console.log("Inserting allergen relations:", allergeneRelations);
           const { error: allergenesError } = await supabase
             .from("articles_allergenes")
             .insert(allergeneRelations);
@@ -119,13 +130,18 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
           console.log("Allergenes relations updated successfully");
         }
 
-        console.log("Updating labels relations for article:", articleId);
+        console.log("Updating labels for article:", articleId);
         console.log("Selected labels:", values.labels);
         
-        await supabase
+        const { error: deleteLabelsError } = await supabase
           .from("articles_labels")
           .delete()
           .eq("article_id", articleId);
+
+        if (deleteLabelsError) {
+          console.error("Error deleting existing labels:", deleteLabelsError);
+          throw deleteLabelsError;
+        }
 
         if (values.labels.length > 0) {
           const labelRelations = values.labels.map((labelId) => ({
@@ -133,6 +149,7 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
             label_id: labelId,
           }));
 
+          console.log("Inserting label relations:", labelRelations);
           const { error: labelsError } = await supabase
             .from("articles_labels")
             .insert(labelRelations);
