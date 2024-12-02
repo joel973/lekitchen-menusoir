@@ -8,6 +8,8 @@ interface ArticleCardProps {
   price: number;
   image?: string;
   status?: "available" | "out-of-stock";
+  allergens?: string[];
+  prepTime?: string;
   className?: string;
 }
 
@@ -17,6 +19,8 @@ export const ArticleCard = ({
   price,
   image,
   status = "available",
+  allergens = [],
+  prepTime,
   className,
 }: ArticleCardProps) => {
   return (
@@ -26,11 +30,11 @@ export const ArticleCard = ({
           <img
             src={image}
             alt={title}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform hover:scale-105"
           />
         </div>
       )}
-      <CardHeader className="space-y-1 p-4">
+      <CardHeader className="space-y-2 p-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <h3 className="font-display text-lg font-medium leading-none">
@@ -45,6 +49,18 @@ export const ArticleCard = ({
               {price.toFixed(2)} €
             </Badge>
           </div>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {allergens.map((allergen, index) => (
+            <Badge key={index} variant="outline" className="text-xs">
+              {allergen}
+            </Badge>
+          ))}
+          {prepTime && (
+            <Badge variant="secondary" className="text-xs">
+              {prepTime}
+            </Badge>
+          )}
         </div>
       </CardHeader>
     </Card>
