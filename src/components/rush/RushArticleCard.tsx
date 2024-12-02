@@ -1,17 +1,16 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import { AlertOctagon, EyeOff, Eye, Tags } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { useLabelsManagement } from "./hooks/useLabelsManagement";
+import { useArticleStatus } from "./hooks/useArticleStatus";
+import { ArticleHeader } from "./components/ArticleHeader";
 
 interface RushArticleCardProps {
   article: any;
@@ -24,88 +23,21 @@ export function RushArticleCard({
   labels,
   onUpdate,
 }: RushArticleCardProps) {
-  const { toast } = useToast();
-  const [isUpdating, setIsUpdating] = useState(false);
-
-  const updateStatus = async (newStatus: string) => {
-    setIsUpdating(true);
-    try {
-      const { error } = await supabase
-        .from("articles")
-        .update({ statut: newStatus })
-        .eq("id", article.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Statut mis à jour",
-        description: `L'article "${article.nom}" est maintenant ${
-          newStatus === "actif"
-            ? "affiché"
-            : newStatus === "inactif"
-            ? "masqué"
-            : "en rupture"
-        }`,
-      });
-      onUpdate();
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de mettre à jour le statut",
-      });
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  const toggleLabel = async (labelId: string, currentlySelected: boolean) => {
-    console.log("Toggling label:", { labelId, currentlySelected });
-    setIsUpdating(true);
-    try {
-      if (currentlySelected) {
-        console.log("Removing label");
-        const { error } = await supabase
-          .from("articles_labels")
-          .delete()
-          .eq("article_id", article.id)
-          .eq("label_id", labelId);
-        if (error) throw error;
-      } else {
-        console.log("Adding label");
-        // First check if the relation already exists
-        const { data: existingLabel } = await supabase
-          .from("articles_labels")
-          .select("*")
-          .eq("article_id", article.id)
-          .eq("label_id", labelId)
-          .single();
-
-        if (!existingLabel) {
-          const { error } = await supabase
-            .from("articles_labels")
-            .insert({ article_id: article.id, label_id: labelId });
-          if (error) throw error;
-        }
-      }
-      onUpdate();
-    } catch (error: any) {
-      console.error("Error toggling label:", error);
-      toast({
-        variant: "destructive",
-        title: "Erreur",
-        description: "Impossible de mettre à jour les labels",
-      });
-    } finally {
-      setIsUpdating(false);
-    }
-  };
+  const { toggleLabel, isUpdating: isUpdatingLabels } = useLabelsManagement(
+    article.id,
+    onUpdate
+  );
+  const { updateStatus, isUpdating: isUpdatingStatus } = useArticleStatus(
+    article.id,
+    onUpdate
+  );
 
   const articleLabels = article.articles_labels?.map(
     (al: any) => al.label_id
   ) || [];
 
   const isVisible = article.statut === "actif";
+  const isDisabled = isUpdatingLabels || isUpdatingStatus;
 
   // Get the names of selected labels
   const selectedLabelsNames = labels
@@ -115,38 +47,18 @@ export function RushArticleCard({
   return (
     <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200 w-full">
       <div className="p-6 space-y-6">
-        {/* Header Section */}
         <div className="flex justify-between items-start gap-4">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-3">
-              <h3 className="text-lg font-semibold text-gray-900">{article.nom}</h3>
-              <Badge
-                variant={
-                  article.statut === "actif"
-                    ? "default"
-                    : article.statut === "inactif"
-                    ? "secondary"
-                    : "destructive"
-                }
-                className="capitalize"
-              >
-                {article.statut === "actif"
-                  ? "Affiché"
-                  : article.statut === "inactif"
-                  ? "Masqué"
-                  : "Rupture"}
-              </Badge>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {article.categories?.nom}
-            </p>
-          </div>
+          <ArticleHeader
+            nom={article.nom}
+            statut={article.statut}
+            categorie={article.categories?.nom}
+          />
           <div className="flex gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => updateStatus(isVisible ? "inactif" : "actif")}
-              disabled={isUpdating || article.statut === "rupture"}
+              disabled={isDisabled || article.statut === "rupture"}
               className="w-32"
             >
               {isVisible ? (
@@ -164,8 +76,10 @@ export function RushArticleCard({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => updateStatus(article.statut === "rupture" ? "actif" : "rupture")}
-              disabled={isUpdating}
+              onClick={() =>
+                updateStatus(article.statut === "rupture" ? "actif" : "rupture")
+              }
+              disabled={isDisabled}
               className="w-32"
             >
               <AlertOctagon className="h-4 w-4 mr-2" />
@@ -174,7 +88,6 @@ export function RushArticleCard({
           </div>
         </div>
 
-        {/* Labels Section with Dropdown */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h4 className="font-medium text-sm text-gray-900">Labels :</h4>
@@ -189,7 +102,9 @@ export function RushArticleCard({
                 {labels.map((label) => (
                   <DropdownMenuItem
                     key={label.id}
-                    onClick={() => toggleLabel(label.id, articleLabels.includes(label.id))}
+                    onClick={() =>
+                      toggleLabel(label.id, articleLabels.includes(label.id))
+                    }
                     className="flex items-center justify-between cursor-pointer"
                   >
                     <span>{label.nom}</span>
