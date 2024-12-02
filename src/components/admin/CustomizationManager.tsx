@@ -31,8 +31,8 @@ export function CustomizationManager() {
     try {
       const formData = new FormData(e.currentTarget);
       const updates = {
-        couleur_primaire: formData.get("couleur_primaire")?.toString() || "",
-        couleur_secondaire: formData.get("couleur_secondaire")?.toString() || "",
+        couleur_primaire: formData.get("couleur_primaire")?.toString() || "#000000",
+        couleur_secondaire: formData.get("couleur_secondaire")?.toString() || "#000000",
         pied_page_texte: formData.get("pied_page_texte")?.toString() || "",
       };
 
