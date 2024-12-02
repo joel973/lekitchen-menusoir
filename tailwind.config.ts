@@ -33,7 +33,7 @@ export default {
         },
         // Accents
         accent: {
-          DEFAULT: "#d73c3c",
+          DEFAULT: "#1f1f1f",
           secondary: "#61AAF2",
           success: "#7EBF8E",
           warning: "#D4A27F",
@@ -45,7 +45,7 @@ export default {
         hover: "#F6F1EB",
         // Composants de base
         primary: {
-          DEFAULT: "#d73c3c",
+          DEFAULT: "#1f1f1f",
           foreground: "#ffffff",
         },
         secondary: {
