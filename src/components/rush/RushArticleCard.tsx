@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Eye, EyeOff, XOctagon } from "lucide-react";
+import { AlertOctagon, EyeOff, Eye } from "lucide-react";
 
 interface RushArticleCardProps {
   article: any;
@@ -99,8 +99,10 @@ export function RushArticleCard({
     (al: any) => al.label_id
   ) || [];
 
+  const isVisible = article.statut === "actif";
+
   return (
-    <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200">
+    <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200 w-full">
       <div className="p-6 space-y-6">
         {/* Header Section */}
         <div className="flex justify-between items-start gap-4">
@@ -132,32 +134,31 @@ export function RushArticleCard({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => updateStatus("actif")}
-              disabled={isUpdating || article.statut === "actif"}
-              className="w-24"
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              Afficher
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => updateStatus("inactif")}
-              disabled={isUpdating || article.statut === "inactif"}
-              className="w-24"
-            >
-              <EyeOff className="h-4 w-4 mr-2" />
-              Masquer
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => updateStatus("rupture")}
+              onClick={() => updateStatus(isVisible ? "inactif" : "actif")}
               disabled={isUpdating || article.statut === "rupture"}
-              className="w-24"
+              className="w-32"
             >
-              <XOctagon className="h-4 w-4 mr-2" />
-              Rupture
+              {isVisible ? (
+                <>
+                  <EyeOff className="h-4 w-4 mr-2" />
+                  Masquer
+                </>
+              ) : (
+                <>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Afficher
+                </>
+              )}
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => updateStatus(article.statut === "rupture" ? "actif" : "rupture")}
+              disabled={isUpdating}
+              className="w-32"
+            >
+              <AlertOctagon className="h-4 w-4 mr-2" />
+              {article.statut === "rupture" ? "Disponible" : "Rupture"}
             </Button>
           </div>
         </div>
