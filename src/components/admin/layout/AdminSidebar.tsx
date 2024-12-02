@@ -3,11 +3,9 @@ import {
   Tag,
   UtensilsCrossed,
   AlertTriangle,
-  Palette,
   Settings,
   ListCheck,
   Filter,
-  Menu,
 } from "lucide-react";
 import {
   Sidebar,
@@ -23,7 +21,6 @@ import {
 } from "@/components/ui/sidebar";
 import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 
 const menuItems = [
   {
@@ -55,11 +52,6 @@ const menuItems = [
     title: "Établissement",
     icon: Store,
     tab: "etablissement",
-  },
-  {
-    title: "Personnalisation",
-    icon: Palette,
-    tab: "customization",
   },
   {
     title: "Paramètres",
