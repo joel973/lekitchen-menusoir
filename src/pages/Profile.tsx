@@ -1,18 +1,22 @@
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Profile() {
   return (
     <AdminLayout>
-      <Card>
-        <CardHeader>
-          <CardTitle>Mon profil</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+        <div className="p-6 border-b">
+          <div>
+            <h1 className="text-2xl font-bold">Mon profil</h1>
+            <p className="text-muted-foreground mt-1">
+              Gérez vos informations personnelles
+            </p>
+          </div>
+        </div>
+        <div className="p-6">
           <ProfileForm />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </AdminLayout>
   );
 }

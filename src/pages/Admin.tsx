@@ -19,21 +19,133 @@ export default function Admin() {
       case "rush":
         return <Rush />;
       case "articles":
-        return <ArticlesManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Articles</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez votre catalogue d'articles
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <ArticlesManager />
+            </div>
+          </div>
+        );
       case "categories":
-        return <CategoriesManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Catégories</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez vos catégories d'articles
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <CategoriesManager />
+            </div>
+          </div>
+        );
       case "allergenes":
-        return <AllergenesManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Allergènes</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez la liste des allergènes
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <AllergenesManager />
+            </div>
+          </div>
+        );
       case "labels":
-        return <LabelsManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Labels</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez les labels de vos articles
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <LabelsManager />
+            </div>
+          </div>
+        );
       case "customization":
-        return <CustomizationManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Personnalisation</h1>
+                <p className="text-muted-foreground mt-1">
+                  Personnalisez l'apparence de votre site
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <CustomizationManager />
+            </div>
+          </div>
+        );
       case "parametres":
-        return <ParametersManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Paramètres</h1>
+                <p className="text-muted-foreground mt-1">
+                  Configurez les paramètres de votre application
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <ParametersManager />
+            </div>
+          </div>
+        );
       case "etablissement":
-        return <EstablishmentManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Établissement</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez les informations de votre établissement
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <EstablishmentManager />
+            </div>
+          </div>
+        );
       case "team":
-        return <TeamManager />;
+        return (
+          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <div>
+                <h1 className="text-2xl font-bold">Équipe</h1>
+                <p className="text-muted-foreground mt-1">
+                  Gérez les membres de votre équipe
+                </p>
+              </div>
+            </div>
+            <div className="p-6">
+              <TeamManager />
+            </div>
+          </div>
+        );
       default:
         return <Rush />;
     }
