@@ -21,19 +21,16 @@ export function AdminPageLayout({
 
   return (
     <AdminMainLayout>
-      <AdminPageHeader 
-        title={title}
-        description={description}
-        actions={actions}
-        className={cn(
-          "glass-card rounded-lg",
-          isMobile ? "mb-2 rounded-none" : "mb-4"
-        )}
-      />
-      <div className={cn(
-        "container",
-        isMobile ? "p-2" : "py-6"
-      )}>
+      <div className="flex flex-col gap-4">
+        <AdminPageHeader 
+          title={title}
+          description={description}
+          actions={actions}
+          className={cn(
+            "glass-card rounded-lg",
+            isMobile ? "rounded-none" : ""
+          )}
+        />
         <Card className="relative overflow-hidden glass-card animate-scale-in">
           <div className={cn(
             "p-6",
