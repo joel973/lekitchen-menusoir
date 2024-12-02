@@ -117,11 +117,11 @@ export function ArticlesManager() {
       title="Liste des articles"
       actions={
         <div className="flex gap-2">
-          <Button onClick={() => setShowArchived(true)} variant="outline" size="sm">
+          <Button onClick={() => setShowArchived(true)} variant="outline" size="sm" className="hidden sm:flex">
             <Archive className="h-4 w-4 mr-2" />
             Articles archivés
           </Button>
-          <Button onClick={() => setSelectedArticle({})} size="sm">
+          <Button onClick={() => setSelectedArticle({})} size="sm" className="w-full sm:w-auto">
             <Plus className="h-4 w-4 mr-2" />
             Nouvel article
           </Button>
@@ -129,8 +129,8 @@ export function ArticlesManager() {
       }
     >
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-4">
+          <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Rechercher un article..."
@@ -143,7 +143,7 @@ export function ArticlesManager() {
             value={selectedCategory}
             onValueChange={(value) => setSelectedCategory(value === "all" ? undefined : value)}
           >
-            <SelectTrigger className="w-full sm:w-[200px]">
+            <SelectTrigger>
               <SelectValue placeholder="Toutes les catégories" />
             </SelectTrigger>
             <SelectContent>
@@ -155,32 +155,51 @@ export function ArticlesManager() {
               ))}
             </SelectContent>
           </Select>
+          
+          {/* Bouton Archives en version mobile */}
+          <Button 
+            onClick={() => setShowArchived(true)} 
+            variant="outline" 
+            size="sm" 
+            className="sm:hidden w-full justify-center"
+          >
+            <Archive className="h-4 w-4 mr-2" />
+            Articles archivés
+          </Button>
         </div>
 
         <div className="space-y-4">
           {articles?.map((article) => (
-            <Card key={article.id}>
-              <CardContent className="flex items-center p-4">
-                <div className="flex-1">
-                  <h3 className="font-semibold">{article.nom}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {article.description}
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2 text-sm text-muted-foreground">
+            <Card key={article.id} className="overflow-hidden">
+              <CardContent className="p-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-semibold truncate">{article.nom}</h3>
+                      {article.description && (
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {article.description}
+                        </p>
+                      )}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setSelectedArticle(article)}
+                      className="shrink-0 ml-4"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
                     <span>Prix: {article.prix} €</span>
                     <span>•</span>
                     <span>Catégorie: {article.categories?.nom}</span>
                     <span>•</span>
-                    <span>Statut: {article.statut}</span>
+                    <span className="capitalize">Statut: {article.statut}</span>
                   </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSelectedArticle(article)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
               </CardContent>
             </Card>
           ))}
