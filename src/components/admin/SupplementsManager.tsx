@@ -1,14 +1,22 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { useState } from "react";
 import { SupplementForm } from "./SupplementForm";
-import { SupplementsList } from "./SupplementsList";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 export function SupplementsManager() {
-  const [selectedSupplement, setSelectedSupplement] = useState<any>(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [editingSupplement, setEditingSupplement] = useState<any>(null);
 
   const { data: supplements, isLoading } = useQuery({
     queryKey: ["supplements"],
@@ -24,49 +32,76 @@ export function SupplementsManager() {
             )
           )
         `)
-        .order("nom");
-      
+        .order("created_at", { ascending: false });
+
       if (error) throw error;
       return data;
     },
   });
 
-  const handleEdit = (supplement: any) => {
-    setSelectedSupplement(supplement);
-    setIsFormOpen(true);
-  };
-
-  const handleClose = () => {
-    setSelectedSupplement(null);
-    setIsFormOpen(false);
-  };
-
   if (isLoading) {
     return <div>Chargement...</div>;
   }
 
-  if (isFormOpen) {
+  if (isCreating || editingSupplement) {
     return (
       <SupplementForm
-        supplement={selectedSupplement}
-        onCancel={handleClose}
+        supplement={editingSupplement}
+        onCancel={() => {
+          setIsCreating(false);
+          setEditingSupplement(null);
+        }}
       />
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Button onClick={() => setIsFormOpen(true)}>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-2xl font-display">Suppléments</CardTitle>
+        <Button onClick={() => setIsCreating(true)} size="sm">
           <Plus className="h-4 w-4 mr-2" />
           Nouveau supplément
         </Button>
-      </div>
-
-      <SupplementsList
-        supplements={supplements || []}
-        onEdit={handleEdit}
-      />
-    </div>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nom</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Prix</TableHead>
+              <TableHead>Articles liés</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {supplements?.map((supplement) => (
+              <TableRow key={supplement.id}>
+                <TableCell>{supplement.nom}</TableCell>
+                <TableCell>{supplement.description}</TableCell>
+                <TableCell>{supplement.prix.toFixed(2)} €</TableCell>
+                <TableCell>
+                  {supplement.articles_supplements?.map((as: any) => (
+                    <span key={as.articles.id} className="mr-2">
+                      {as.articles.nom}
+                    </span>
+                  ))}
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditingSupplement(supplement)}
+                  >
+                    Modifier
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
