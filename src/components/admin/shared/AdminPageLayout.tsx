@@ -1,7 +1,6 @@
 import { AdminMainLayout } from "../layout/AdminMainLayout";
 import { AdminPageHeader } from "../layout/AdminPageHeader";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -36,17 +35,12 @@ export function AdminPageLayout({
         isMobile ? "p-2" : "py-6"
       )}>
         <Card className="relative overflow-hidden glass-card animate-scale-in">
-          <ScrollArea className={cn(
-            "h-[calc(100vh-16rem)]",
-            isMobile && "h-[calc(100vh-12rem)]"
+          <div className={cn(
+            "p-6",
+            isMobile && "p-4"
           )}>
-            <div className={cn(
-              "p-6",
-              isMobile && "p-4"
-            )}>
-              {children}
-            </div>
-          </ScrollArea>
+            {children}
+          </div>
         </Card>
       </div>
     </AdminMainLayout>

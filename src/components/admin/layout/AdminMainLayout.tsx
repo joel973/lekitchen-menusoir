@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { AdminSidebar } from "./AdminSidebar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -32,11 +31,9 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
           </div>
         </div>
         <div className="flex flex-col">
-          <ScrollArea className="flex-1">
-            <main className={cn("flex-1", className)}>
-              {children}
-            </main>
-          </ScrollArea>
+          <main className={cn("flex-1", className)}>
+            {children}
+          </main>
         </div>
       </div>
     );
@@ -48,9 +45,9 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
         <AdminSidebar />
       </div>
       <div className="flex flex-col animate-fade-in">
-        <ScrollArea className="flex-1 h-screen">
-          <main className={cn("flex-1 p-4 md:p-6", className)}>{children}</main>
-        </ScrollArea>
+        <main className={cn("flex-1 p-4 md:p-6", className)}>
+          {children}
+        </main>
       </div>
     </div>
   );
