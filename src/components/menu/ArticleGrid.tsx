@@ -32,7 +32,7 @@ const demoArticles = [
 
 export const ArticleGrid = () => {
   return (
-    <div className="container py-6">
+    <div className="container py-8">
       <div className="flex flex-col divide-y">
         {demoArticles.map((article) => (
           <ArticleCard

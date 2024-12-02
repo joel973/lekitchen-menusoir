@@ -17,16 +17,16 @@ const demoCategories: Category[] = [
 
 export const CategoryNav = () => {
   return (
-    <ScrollArea className="w-full whitespace-nowrap bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-16 z-40 border-b fade-in">
-      <div className="flex w-max space-x-2 p-4">
+    <ScrollArea className="w-full whitespace-nowrap bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-20 z-40 border-b fade-in">
+      <div className="flex w-max space-x-4 p-6">
         {demoCategories.map((category) => (
           <button
             key={category.id}
             className={cn(
-              "menu-transition inline-flex items-center rounded-full px-6 py-2 text-sm font-medium tracking-tight transition-colors",
+              "menu-transition inline-flex items-center rounded-full px-8 py-3 text-sm font-medium tracking-tight transition-colors",
               category.active
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary/80 hover:bg-secondary"
+                ? "bg-primary text-primary-foreground shadow-md"
+                : "bg-secondary/80 hover:bg-secondary text-muted-foreground hover:text-foreground"
             )}
           >
             {category.name}
