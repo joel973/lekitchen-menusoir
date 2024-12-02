@@ -31,7 +31,7 @@ export const ArticleCard = ({
     )}>
       <div className="flex gap-4 p-4 sm:p-6">
         {image && (
-          <div className="relative flex-shrink-0">
+          <div className="relative flex-shrink-0 pt-1">
             <div className="h-16 w-16 overflow-hidden rounded-sm">
               <img
                 src={image}
