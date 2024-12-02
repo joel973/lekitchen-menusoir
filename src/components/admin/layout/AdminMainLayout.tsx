@@ -17,23 +17,23 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
   if (isMobile) {
     return (
       <div className="min-h-screen w-full bg-surface">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm border shadow-sm"
-            >
-              <Store className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-[280px] p-0">
-            <AdminSidebar />
-          </SheetContent>
-        </Sheet>
-        <div className="flex flex-col animate-fade-in pt-16">
-          <ScrollArea className="flex-1 h-[calc(100vh-4rem)]">
-            <main className={cn("flex-1 p-4", className)}>
+        <div className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
+          <div className="container flex h-14 items-center">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                  <Store className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[280px] p-0">
+                <AdminSidebar />
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <ScrollArea className="flex-1">
+            <main className={cn("flex-1", className)}>
               {children}
             </main>
           </ScrollArea>

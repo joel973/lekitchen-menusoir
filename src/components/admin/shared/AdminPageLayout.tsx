@@ -26,9 +26,15 @@ export function AdminPageLayout({
         title={title}
         description={description}
         actions={actions}
-        className="glass-card rounded-lg mb-4"
+        className={cn(
+          "glass-card rounded-lg",
+          isMobile ? "mb-2 rounded-none" : "mb-4"
+        )}
       />
-      <div className={cn("container", isMobile ? "p-0" : "py-6")}>
+      <div className={cn(
+        "container",
+        isMobile ? "p-2" : "py-6"
+      )}>
         <Card className="relative overflow-hidden glass-card animate-scale-in">
           <ScrollArea className={cn(
             "h-[calc(100vh-16rem)]",

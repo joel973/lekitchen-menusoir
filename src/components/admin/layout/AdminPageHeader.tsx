@@ -19,8 +19,8 @@ export function AdminPageHeader({
   return (
     <div 
       className={cn(
-        "flex flex-col gap-4 p-4",
-        !isMobile && "md:gap-8 md:p-6",
+        "flex flex-col gap-4",
+        isMobile ? "p-4 pb-2" : "p-4 md:gap-8 md:p-6",
         className
       )} 
       {...props}
@@ -30,7 +30,10 @@ export function AdminPageHeader({
         !isMobile && "flex-row items-center justify-between"
       )}>
         <div className="space-y-1">
-          <h1 className="text-xl font-bold md:text-2xl">{title}</h1>
+          <h1 className={cn(
+            "font-bold",
+            isMobile ? "text-lg" : "text-xl md:text-2xl"
+          )}>{title}</h1>
           {description && (
             <p className="text-sm text-muted-foreground md:text-base">
               {description}
