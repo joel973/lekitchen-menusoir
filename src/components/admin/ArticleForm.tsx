@@ -48,6 +48,7 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
 
   console.log("Form state:", form.formState);
   console.log("Form values:", form.getValues());
+  console.log("Form errors:", form.formState.errors);
 
   return (
     <Card className="max-w-3xl mx-auto">
@@ -56,6 +57,8 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
           <form 
             onSubmit={(e) => {
               console.log("Form submit event triggered");
+              const isValid = form.formState.isValid;
+              console.log("Form is valid:", isValid);
               form.handleSubmit(handleSubmit)(e);
             }} 
             className="space-y-8"
