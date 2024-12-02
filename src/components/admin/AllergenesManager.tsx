@@ -37,62 +37,51 @@ export function AllergenesManager() {
 
   if (isCreating || editingAllergene) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {editingAllergene ? "Modifier un allergène" : "Nouvel allergène"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AllergeneForm
-            allergene={editingAllergene}
-            onCancel={() => {
-              setIsCreating(false);
-              setEditingAllergene(null);
-            }}
-          />
-        </CardContent>
-      </Card>
+      <AllergeneForm
+        allergene={editingAllergene}
+        onCancel={() => {
+          setIsCreating(false);
+          setEditingAllergene(null);
+        }}
+      />
     );
   }
 
   return (
-    <div className="space-y-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle>Allergènes</CardTitle>
-          <Button onClick={() => setIsCreating(true)} size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvel allergène
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nom</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+        <CardTitle className="text-2xl font-display">Allergènes</CardTitle>
+        <Button onClick={() => setIsCreating(true)} size="sm">
+          <Plus className="h-4 w-4 mr-2" />
+          Nouvel allergène
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nom</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {allergenes?.map((allergene) => (
+              <TableRow key={allergene.id}>
+                <TableCell>{allergene.nom}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditingAllergene(allergene)}
+                  >
+                    Modifier
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {allergenes?.map((allergene) => (
-                <TableRow key={allergene.id}>
-                  <TableCell>{allergene.nom}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingAllergene(allergene)}
-                    >
-                      Modifier
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }

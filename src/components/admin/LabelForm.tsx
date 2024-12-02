@@ -15,6 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LabelFormProps {
   label?: any;
@@ -73,60 +74,70 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="nom"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nom</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="couleur"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Couleur</FormLabel>
-              <FormControl>
-                <div className="flex gap-2 items-center">
-                  <Input
-                    type="color"
-                    {...field}
-                    className="w-24 h-10 p-1 cursor-pointer"
-                  />
-                  <Input
-                    type="text"
-                    {...field}
-                    className="flex-1"
-                    placeholder="#E5DEFF"
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-end gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onCancel}
-            disabled={isSubmitting}
-          >
-            Annuler
-          </Button>
-          <Button type="submit" disabled={isSubmitting}>
-            {label?.id ? "Modifier" : "Créer"}
-          </Button>
-        </div>
-      </form>
-    </Form>
+    <Card className="max-w-2xl mx-auto">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-display">
+          {label ? "Modifier le label" : "Nouveau label"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="nom"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-semibold">Nom</FormLabel>
+                  <FormControl>
+                    <Input {...field} className="h-12" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="couleur"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-semibold">Couleur</FormLabel>
+                  <FormControl>
+                    <div className="flex gap-2 items-center">
+                      <Input
+                        type="color"
+                        {...field}
+                        className="w-24 h-12 p-1 cursor-pointer"
+                      />
+                      <Input
+                        type="text"
+                        {...field}
+                        className="h-12 flex-1"
+                        placeholder="#E5DEFF"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onCancel}
+                disabled={isSubmitting}
+                className="w-full sm:w-auto"
+              >
+                Annuler
+              </Button>
+              <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+                {label ? "Modifier" : "Créer"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
