@@ -72,14 +72,12 @@ export function LabelsCheckboxes() {
                   <DropdownMenuItem
                     key={label.id}
                     onClick={() =>
-                      toggleLabel(label.id, selectedLabels.includes(label.id))
+                      toggleLabel(
+                        label.id,
+                        selectedLabels.includes(label.id)
+                      )
                     }
-                    className="flex items-center justify-between cursor-pointer"
-                    style={{
-                      backgroundColor: selectedLabels.includes(label.id)
-                        ? `${label.couleur}20`
-                        : undefined,
-                    }}
+                    className="flex items-center justify-between cursor-pointer hover:bg-primary hover:text-primary-foreground"
                   >
                     <span>{label.nom}</span>
                     {selectedLabels.includes(label.id) && (
@@ -95,15 +93,7 @@ export function LabelsCheckboxes() {
             {selectedLabelsData && selectedLabelsData.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {selectedLabelsData.map((label) => (
-                  <Badge
-                    key={label.id}
-                    variant="secondary"
-                    style={{
-                      backgroundColor: `${label.couleur}20`,
-                      color: label.couleur,
-                      borderColor: label.couleur,
-                    }}
-                  >
+                  <Badge key={label.id} variant="secondary">
                     {label.nom}
                   </Badge>
                 ))}

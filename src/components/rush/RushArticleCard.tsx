@@ -101,7 +101,7 @@ export function RushArticleCard({
                     onClick={() =>
                       toggleLabel(label.id, articleLabels.includes(label.id))
                     }
-                    className="flex items-center justify-between cursor-pointer"
+                    className="flex items-center justify-between cursor-pointer hover:bg-primary hover:text-primary-foreground"
                     style={{ backgroundColor: articleLabels.includes(label.id) ? `${label.couleur}20` : undefined }}
                   >
                     <span>{label.nom}</span>
