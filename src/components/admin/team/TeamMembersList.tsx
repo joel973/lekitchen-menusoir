@@ -24,7 +24,7 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("*, auth_status:users!inner(banned)")
+        .select("*")
         .order("role", { ascending: false });
 
       if (error) throw error;
@@ -49,7 +49,7 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
   const banMutation = useMutation({
     mutationFn: async ({ userId, isBanned }: { userId: string; isBanned: boolean }) => {
       const { error } = await supabase.auth.admin.updateUserById(userId, {
-        ban_duration: isBanned ? null : "none",
+        ban_duration: isBanned ? "none" : null,
       });
       if (error) throw error;
     },
@@ -72,8 +72,8 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     }
   };
 
-  const handleBanToggle = (memberId: string, currentBanStatus: boolean) => {
-    banMutation.mutate({ userId: memberId, isBanned: !currentBanStatus });
+  const handleBanToggle = (memberId: string) => {
+    banMutation.mutate({ userId: memberId, isBanned: false });
   };
 
   return (
@@ -99,11 +99,6 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                 {member.id === currentUserId && (
                   <Badge variant="secondary" className="mt-1">
                     Vous
-                  </Badge>
-                )}
-                {member.auth_status?.banned && (
-                  <Badge variant="destructive" className="mt-1">
-                    Bloqué
                   </Badge>
                 )}
               </div>
@@ -140,7 +135,7 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() => handleBanToggle(member.id, member.auth_status?.banned)}
+                    onClick={() => handleBanToggle(member.id)}
                   >
                     <Ban className="h-4 w-4" />
                   </Button>
