@@ -21,12 +21,6 @@ export default function Admin() {
       case "articles":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Articles</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez votre catalogue d'articles
-              </p>
-            </div>
             <div className="p-6">
               <ArticlesManager />
             </div>
@@ -35,12 +29,6 @@ export default function Admin() {
       case "categories":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Catégories</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez vos catégories d'articles
-              </p>
-            </div>
             <div className="p-6">
               <CategoriesManager />
             </div>
@@ -49,12 +37,6 @@ export default function Admin() {
       case "allergenes":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Allergènes</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez la liste des allergènes
-              </p>
-            </div>
             <div className="p-6">
               <AllergenesManager />
             </div>
@@ -63,12 +45,6 @@ export default function Admin() {
       case "labels":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Labels</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez les labels de vos articles
-              </p>
-            </div>
             <div className="p-6">
               <LabelsManager />
             </div>
@@ -77,12 +53,6 @@ export default function Admin() {
       case "customization":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Personnalisation</h1>
-              <p className="text-muted-foreground mt-1">
-                Personnalisez l'apparence de votre site
-              </p>
-            </div>
             <div className="p-6">
               <CustomizationManager />
             </div>
@@ -91,12 +61,6 @@ export default function Admin() {
       case "parametres":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Paramètres</h1>
-              <p className="text-muted-foreground mt-1">
-                Configurez les paramètres de votre application
-              </p>
-            </div>
             <div className="p-6">
               <ParametersManager />
             </div>
@@ -105,12 +69,6 @@ export default function Admin() {
       case "etablissement":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Établissement</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez les informations de votre établissement
-              </p>
-            </div>
             <div className="p-6">
               <EstablishmentManager />
             </div>
@@ -119,12 +77,6 @@ export default function Admin() {
       case "team":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Équipe</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez les membres de votre équipe
-              </p>
-            </div>
             <div className="p-6">
               <TeamManager />
             </div>
