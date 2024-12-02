@@ -33,27 +33,34 @@ export function ProfileForm() {
     },
   });
 
-  const { data: profile } = useQuery({
+  const { data: profile, isLoading } = useQuery({
     queryKey: ["profile", session?.user?.id],
     enabled: !!session?.user?.id,
     queryFn: async () => {
+      console.log("Fetching profile for user:", session?.user?.id);
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", session?.user?.id)
-        .single();
+        .maybeSingle();
 
-      if (error) throw error;
-      return data;
+      console.log("Profile data:", data, "Error:", error);
+      
+      if (error) {
+        console.error("Error fetching profile:", error);
+        throw error;
+      }
+      
+      return data || { first_name: "", last_name: "" };
     },
   });
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      email: session?.user?.email || "",
-      first_name: profile?.first_name || "",
-      last_name: profile?.last_name || "",
+      email: "",
+      first_name: "",
+      last_name: "",
       password: "",
     },
     values: {
@@ -69,14 +76,17 @@ export function ProfileForm() {
       if (!session?.user?.id) throw new Error("User not found");
 
       const updates = {
+        id: session.user.id,
         first_name: values.first_name,
         last_name: values.last_name,
         updated_at: new Date().toISOString(),
       };
 
+      console.log("Updating profile with:", updates);
+
       const { error: profileError } = await supabase
         .from("profiles")
-        .update(updates)
+        .upsert(updates)
         .eq("id", session.user.id);
 
       if (profileError) throw profileError;
@@ -108,6 +118,10 @@ export function ProfileForm() {
 
   function onSubmit(values: ProfileFormValues) {
     updateProfile.mutate(values);
+  }
+
+  if (isLoading) {
+    return <div>Chargement...</div>;
   }
 
   return (
