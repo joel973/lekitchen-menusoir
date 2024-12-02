@@ -68,7 +68,9 @@ export function LabelsManager() {
     try {
       const updates = newOrder.map((label, index) => ({
         id: label.id,
+        nom: label.nom, // Include the required nom field
         ordre: index,
+        couleur: label.couleur, // Include existing couleur to preserve it
       }));
 
       const { error } = await supabase
