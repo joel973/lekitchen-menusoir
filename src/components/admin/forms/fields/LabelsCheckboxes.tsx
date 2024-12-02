@@ -8,7 +8,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Tags } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function LabelsCheckboxes() {
   const form = useFormContext();
@@ -25,6 +33,25 @@ export function LabelsCheckboxes() {
     },
   });
 
+  const selectedLabels = form.watch("labels") || [];
+
+  // Get the selected labels with their full data
+  const selectedLabelsData = labels?.filter((label) =>
+    selectedLabels.includes(label.id)
+  );
+
+  const toggleLabel = (labelId: string, currentlySelected: boolean) => {
+    const currentValues = form.getValues("labels") || [];
+    if (currentlySelected) {
+      form.setValue(
+        "labels",
+        currentValues.filter((id) => id !== labelId)
+      );
+    } else {
+      form.setValue("labels", [...currentValues, labelId]);
+    }
+  };
+
   return (
     <FormField
       control={form.control}
@@ -32,35 +59,56 @@ export function LabelsCheckboxes() {
       render={() => (
         <FormItem>
           <FormLabel>Labels</FormLabel>
-          <div className="grid grid-cols-2 gap-2">
-            {labels?.map((label) => (
-              <FormField
-                key={label.id}
-                control={form.control}
-                name="labels"
-                render={({ field }) => (
-                  <FormItem
+          <div className="space-y-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="w-[200px]">
+                  <Tags className="h-4 w-4 mr-2" />
+                  Gérer les labels
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56">
+                {labels?.map((label) => (
+                  <DropdownMenuItem
                     key={label.id}
-                    className="flex flex-row items-start space-x-3 space-y-0"
-                    style={{ backgroundColor: `${label.couleur}20` }}
+                    onClick={() =>
+                      toggleLabel(label.id, selectedLabels.includes(label.id))
+                    }
+                    className="flex items-center justify-between cursor-pointer"
+                    style={{
+                      backgroundColor: selectedLabels.includes(label.id)
+                        ? `${label.couleur}20`
+                        : undefined,
+                    }}
                   >
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value?.includes(label.id)}
-                        onCheckedChange={(checked) => {
-                          return checked
-                            ? field.onChange([...field.value, label.id])
-                            : field.onChange(
-                                field.value?.filter((value) => value !== label.id)
-                              );
-                        }}
-                      />
-                    </FormControl>
-                    <FormLabel className="font-normal">{label.nom}</FormLabel>
-                  </FormItem>
-                )}
-              />
-            ))}
+                    <span>{label.nom}</span>
+                    {selectedLabels.includes(label.id) && (
+                      <Badge variant="secondary" className="ml-2">
+                        Activé
+                      </Badge>
+                    )}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {selectedLabelsData && selectedLabelsData.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {selectedLabelsData.map((label) => (
+                  <Badge
+                    key={label.id}
+                    variant="secondary"
+                    style={{
+                      backgroundColor: `${label.couleur}20`,
+                      color: label.couleur,
+                      borderColor: label.couleur,
+                    }}
+                  >
+                    {label.nom}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
           <FormMessage />
         </FormItem>
