@@ -217,28 +217,49 @@ export type Database = {
       }
       parametres: {
         Row: {
+          background_color: string | null
+          card_background_color: string | null
+          card_shadow: string | null
+          category_button_color: string | null
           couleur_primaire: string | null
           couleur_secondaire: string | null
           created_at: string
+          header_text: string | null
+          header_text_color: string | null
           id: string
           logo_url: string | null
           pied_page_texte: string | null
+          use_logo: boolean | null
         }
         Insert: {
+          background_color?: string | null
+          card_background_color?: string | null
+          card_shadow?: string | null
+          category_button_color?: string | null
           couleur_primaire?: string | null
           couleur_secondaire?: string | null
           created_at?: string
+          header_text?: string | null
+          header_text_color?: string | null
           id?: string
           logo_url?: string | null
           pied_page_texte?: string | null
+          use_logo?: boolean | null
         }
         Update: {
+          background_color?: string | null
+          card_background_color?: string | null
+          card_shadow?: string | null
+          category_button_color?: string | null
           couleur_primaire?: string | null
           couleur_secondaire?: string | null
           created_at?: string
+          header_text?: string | null
+          header_text_color?: string | null
           id?: string
           logo_url?: string | null
           pied_page_texte?: string | null
+          use_logo?: boolean | null
         }
         Relationships: []
       }

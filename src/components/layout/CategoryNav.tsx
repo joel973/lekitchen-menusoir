@@ -21,6 +21,18 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
     },
   });
 
+  const { data: parametres } = useQuery({
+    queryKey: ["parametres"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("parametres")
+        .select("*")
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
+
   const scrollToCategory = (categoryId: string) => {
     const element = document.getElementById(`category-${categoryId}`);
     if (element) {
@@ -45,9 +57,16 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
                   size="sm"
                   onClick={() => scrollToCategory(category.id)}
                   className={cn(
-                    "rounded-[4px] font-medium transition-colors hover:bg-secondary whitespace-nowrap",
-                    selectedCategory === category.id && "bg-secondary text-content"
+                    "rounded-[4px] font-medium transition-colors whitespace-nowrap",
+                    selectedCategory === category.id && "text-content"
                   )}
+                  style={{
+                    backgroundColor: parametres?.category_button_color,
+                    "&:hover": {
+                      backgroundColor: parametres?.category_button_color,
+                      filter: "brightness(95%)",
+                    },
+                  }}
                 >
                   {category.nom}
                 </Button>

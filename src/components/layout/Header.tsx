@@ -21,19 +21,20 @@ export const Header = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-20 items-center">
         <a href="/" className="flex items-center gap-3">
-          {parametres?.logo_url && (
+          {parametres?.use_logo && parametres?.logo_url ? (
             <img
               src={parametres.logo_url}
               alt="Logo"
               className="h-10 w-auto object-contain"
             />
+          ) : (
+            <span 
+              className="font-display text-2xl font-bold tracking-tight"
+              style={{ color: parametres?.header_text_color }}
+            >
+              {parametres?.header_text}
+            </span>
           )}
-          <span 
-            className="font-display text-2xl font-bold tracking-tight"
-            style={{ color: parametres?.couleur_primaire }}
-          >
-            Le Kitchen
-          </span>
         </a>
       </div>
     </header>
