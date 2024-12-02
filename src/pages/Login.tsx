@@ -56,7 +56,6 @@ export default function Login() {
                 button_label: 'Se connecter',
                 loading_button_label: 'Connexion en cours...',
                 social_provider_text: 'Se connecter avec {{provider}}',
-                link_text: 'Vous avez déjà un compte ? Connectez-vous',
               },
               forgotten_password: {
                 link_text: 'Mot de passe oublié ?',
@@ -73,6 +72,13 @@ export default function Login() {
           providers={[]}
           view="sign_in"
           showLinks={true}
+          appearance={{
+            extend: true,
+            className: {
+              // Cache le lien "Don't have an account? Sign up"
+              anchor: 'last:hidden',
+            }
+          }}
         />
       </div>
     </div>
