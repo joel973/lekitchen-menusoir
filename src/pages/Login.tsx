@@ -31,6 +31,7 @@ export default function Login() {
           supabaseClient={supabase}
           appearance={{
             theme: ThemeSupa,
+            extend: true,
             variables: {
               default: {
                 colors: {
@@ -44,6 +45,7 @@ export default function Login() {
               button: 'w-full',
               input: 'rounded-md border-input bg-white',
               label: 'hidden',
+              anchor: 'last:hidden',
             }
           }}
           localization={{
@@ -72,13 +74,6 @@ export default function Login() {
           providers={[]}
           view="sign_in"
           showLinks={true}
-          appearance={{
-            extend: true,
-            className: {
-              // Cache le lien "Don't have an account? Sign up"
-              anchor: 'last:hidden',
-            }
-          }}
         />
       </div>
     </div>
