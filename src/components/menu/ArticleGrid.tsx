@@ -34,6 +34,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
           )
         `)
         .eq("statut", "actif")
+        .or("statut.eq.rupture")
         .order("created_at", { ascending: false });
 
       if (selectedCategory) {
@@ -63,6 +64,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
           image={article.url_image}
           allergenes={article.allergenes}
           labels={article.labels}
+          status={article.statut}
         />
       ))}
     </div>

@@ -10,7 +10,7 @@ interface ArticleCardProps {
   description?: string;
   price: number;
   image?: string;
-  status?: "available" | "out-of-stock";
+  status?: "actif" | "inactif" | "rupture";
   allergenes?: { nom: string }[];
   labels?: { nom: string; couleur: string; ordre: number }[];
   className?: string;
@@ -21,6 +21,7 @@ export const ArticleCard = ({
   description,
   price,
   image,
+  status = "actif",
   allergenes = [],
   labels = [],
   className,
@@ -28,11 +29,14 @@ export const ArticleCard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const sortedLabels = [...labels].sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
 
+  const isOutOfStock = status === "rupture";
+
   return (
     <>
       <Card 
         className={cn(
           "group overflow-hidden border-0 shadow-none hover:bg-secondary/30 transition-colors duration-300 cursor-pointer",
+          isOutOfStock && "opacity-50",
           className
         )}
         onClick={() => setIsModalOpen(true)}
@@ -77,9 +81,15 @@ export const ArticleCard = ({
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
-                  {price.toFixed(2)} €
-                </span>
+                {isOutOfStock ? (
+                  <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
+                    Rupture
+                  </Badge>
+                ) : (
+                  <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
+                    {price.toFixed(2)} €
+                  </span>
+                )}
                 <button className="text-[10px] text-content-tertiary uppercase tracking-wider flex items-center gap-0.5 group-hover:text-content transition-colors">
                   Plus d'infos
                   <ChevronRight className="w-3 h-3" />
@@ -99,6 +109,7 @@ export const ArticleCard = ({
         image={image}
         allergenes={allergenes}
         labels={labels}
+        status={status}
       />
     </>
   );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Header } from "@/components/layout/Header";
 import { CategoryNav } from "@/components/layout/CategoryNav";
 import { ArticleGrid } from "@/components/menu/ArticleGrid";
+import { Footer } from "@/components/layout/Footer";
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
@@ -16,6 +17,7 @@ const Index = () => {
         />
         <ArticleGrid selectedCategory={selectedCategory} />
       </main>
+      <Footer />
     </div>
   );
 };
