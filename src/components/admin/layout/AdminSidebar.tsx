@@ -79,7 +79,7 @@ export function AdminSidebar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-50 w-full border-b bg-white/80 backdrop-blur-glass md:hidden">
+      <div className="fixed top-0 left-0 z-50 w-full border-b bg-white md:hidden">
         <div className="flex h-16 items-center px-6">
           <SidebarTrigger />
           <span className="ml-4 font-display text-lg text-content">
@@ -88,7 +88,7 @@ export function AdminSidebar() {
         </div>
       </div>
 
-      <Sidebar variant={isMobile ? "floating" : "sidebar"} className="glass-sidebar">
+      <Sidebar variant={isMobile ? "floating" : "sidebar"} className="bg-white">
         <SidebarHeader className="p-8">
           <span className="font-display text-lg text-content">
             Administration
@@ -118,7 +118,7 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <div className="bg-white/95 backdrop-blur-glass border border-white/10 transition-all duration-200 mx-6 mb-6 rounded-xl">
+        <div className="mx-6 mb-6 rounded-xl">
           <UserProfileDisplay />
         </div>
       </Sidebar>
