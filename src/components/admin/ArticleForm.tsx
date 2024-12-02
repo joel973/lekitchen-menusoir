@@ -21,12 +21,13 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
     defaultValues: article
       ? {
           ...article,
-          prix: article.prix.toString(),
+          prix: article.prix?.toString() || "0",
           allergenes: [],
           labels: [],
         }
       : {
           statut: "actif",
+          prix: "0",
           allergenes: [],
           labels: [],
         },
