@@ -18,45 +18,20 @@ export const useProfileMutation = (setValue: UseFormSetValue<ProfileFormValues>)
         updated_at: new Date().toISOString(),
       };
 
-      console.log("Updating profile with:", updates);
-
       const { error: profileError } = await supabase
         .from("profiles")
         .upsert(updates);
 
       if (profileError) throw profileError;
 
-      // Handle password update if provided
-      if (values.password && values.password.length > 0) {
-        try {
-          const { error: passwordError } = await supabase.auth.updateUser({
-            password: values.password,
-          });
+      // Handle password update if all password fields are provided
+      if (values.current_password && values.new_password && values.confirm_password) {
+        const { error: passwordError } = await supabase.auth.updateUser({
+          password: values.new_password,
+        });
 
-          if (passwordError) {
-            // Check if it's a same password error
-            const errorBody = JSON.parse(passwordError.message);
-            if (errorBody?.code === "same_password") {
-              throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
-            }
-            throw passwordError;
-          }
-        } catch (error: any) {
-          console.error("Password update error:", error);
-          // If the error is already formatted (our custom message), throw it directly
-          if (error.message === "Le nouveau mot de passe doit être différent de l'ancien") {
-            throw error;
-          }
-          // Otherwise, try to parse the error message
-          try {
-            const errorBody = JSON.parse(error.message);
-            if (errorBody?.code === "same_password") {
-              throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
-            }
-          } catch {
-            // If parsing fails, throw the original error
-            throw error;
-          }
+        if (passwordError) {
+          throw new Error("Erreur lors de la mise à jour du mot de passe. Vérifiez votre mot de passe actuel.");
         }
       }
 
@@ -71,7 +46,10 @@ export const useProfileMutation = (setValue: UseFormSetValue<ProfileFormValues>)
     },
     onSuccess: () => {
       toast.success("Profil mis à jour avec succès");
-      setValue("password", ""); // Reset password field after successful update
+      // Reset password fields
+      setValue("current_password", "");
+      setValue("new_password", "");
+      setValue("confirm_password", "");
     },
     onError: (error: any) => {
       console.error("Error updating profile:", error);

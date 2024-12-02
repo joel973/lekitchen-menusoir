@@ -33,13 +33,17 @@ export function ProfileForm() {
       email: "",
       first_name: "",
       last_name: "",
-      password: "",
+      current_password: "",
+      new_password: "",
+      confirm_password: "",
     },
     values: {
       email: session?.user?.email || "",
       first_name: profile?.first_name || "",
       last_name: profile?.last_name || "",
-      password: "",
+      current_password: "",
+      new_password: "",
+      confirm_password: "",
     },
   });
 
@@ -98,19 +102,51 @@ export function ProfileForm() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Nouveau mot de passe (optionnel)</FormLabel>
-              <FormControl>
-                <Input {...field} type="password" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="space-y-4">
+          <h3 className="text-lg font-medium">Changer le mot de passe</h3>
+          
+          <FormField
+            control={form.control}
+            name="current_password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mot de passe actuel</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="new_password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nouveau mot de passe</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="confirm_password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirmer le nouveau mot de passe</FormLabel>
+                <FormControl>
+                  <Input {...field} type="password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button type="submit" className="w-full">
           Mettre à jour
