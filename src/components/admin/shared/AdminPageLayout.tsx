@@ -1,4 +1,5 @@
-import { PageHeader } from "./PageHeader";
+import { AdminMainLayout } from "../layout/AdminMainLayout";
+import { AdminPageHeader } from "../layout/AdminPageHeader";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -16,19 +17,19 @@ export function AdminPageLayout({
   actions,
 }: AdminPageLayoutProps) {
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        {description && (
-          <p className="text-lg text-muted-foreground">{description}</p>
-        )}
-        {actions && <div className="mt-4 flex gap-2">{actions}</div>}
+    <AdminMainLayout>
+      <AdminPageHeader 
+        title={title}
+        description={description}
+        actions={actions}
+      />
+      <div className="container py-6">
+        <Card className="relative overflow-hidden">
+          <ScrollArea className="h-[calc(100vh-12rem)]">
+            <div className="p-6">{children}</div>
+          </ScrollArea>
+        </Card>
       </div>
-      <Card className="flex-1">
-        <ScrollArea className="h-[calc(100vh-220px)]">
-          <div className="p-6">{children}</div>
-        </ScrollArea>
-      </Card>
-    </div>
+    </AdminMainLayout>
   );
 }
