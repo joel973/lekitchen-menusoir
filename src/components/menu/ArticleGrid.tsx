@@ -57,7 +57,6 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
       const { data, error } = await query;
       if (error) throw error;
 
-      // Transform the data to flatten the structure
       return data.map(article => ({
         ...article,
         allergenes: article.articles_allergenes?.map(aa => aa.allergenes) || [],
@@ -68,7 +67,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
   });
 
   return (
-    <div className="space-y-6 mt-20">
+    <div className="space-y-6">
       <div className="relative w-full max-w-xl mx-auto px-4">
         <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
@@ -79,7 +78,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
         />
       </div>
 
-      <div className="grid gap-2 p-4 md:grid-cols-2">
+      <div className="max-w-3xl mx-auto divide-y divide-border">
         {articles?.map((article) => (
           <ArticleCard
             key={article.id}
