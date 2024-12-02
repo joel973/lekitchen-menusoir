@@ -59,11 +59,13 @@ export function AdminSidebar() {
   const currentTab = searchParams.get("tab");
 
   const handleNavigation = (tab: string) => {
-    console.log("Navigating to tab:", tab);
-    navigate({
-      pathname: "/equipe",
-      search: `?tab=${tab}`,
-    });
+    console.log("Avant navigation - URL actuelle:", window.location.href);
+    console.log("Tab demandé:", tab);
+    
+    // Utilisation de navigate avec un chemin absolu
+    navigate(`/admin?tab=${tab}`, { replace: true });
+    
+    console.log("Après navigation - Nouvelle URL:", window.location.href);
   };
 
   return (
