@@ -60,7 +60,10 @@ export function AdminSidebar() {
 
   const handleNavigation = (tab: string) => {
     console.log("Navigating to tab:", tab);
-    navigate(`/equipe?tab=${tab}`);
+    navigate({
+      pathname: "/equipe",
+      search: `?tab=${tab}`,
+    });
   };
 
   return (
