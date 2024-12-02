@@ -99,7 +99,7 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
 
   return (
     <Card className="max-w-3xl mx-auto glass-card animate-scale-in">
-      <CardContent className="p-6">
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <BasicSupplementFields />
