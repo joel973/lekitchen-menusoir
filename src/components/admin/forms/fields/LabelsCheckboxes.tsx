@@ -77,7 +77,7 @@ export function LabelsCheckboxes() {
                         selectedLabels.includes(label.id)
                       )
                     }
-                    className="flex items-center justify-between cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                    className="flex items-center justify-between cursor-pointer data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
                   >
                     <span>{label.nom}</span>
                     {selectedLabels.includes(label.id) && (

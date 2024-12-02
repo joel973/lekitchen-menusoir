@@ -77,7 +77,7 @@ export function AllergenesCheckboxes() {
                         selectedAllergenes.includes(allergene.id)
                       )
                     }
-                    className="flex items-center justify-between cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                    className="flex items-center justify-between cursor-pointer data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
                   >
                     <span>{allergene.nom}</span>
                     {selectedAllergenes.includes(allergene.id) && (
