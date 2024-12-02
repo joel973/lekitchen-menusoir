@@ -62,22 +62,13 @@ export function ArticlesManager() {
 
   if (isCreating || editingArticle) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {editingArticle ? "Modifier un article" : "Nouvel article"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ArticleForm
-            article={editingArticle}
-            onCancel={() => {
-              setIsCreating(false);
-              setEditingArticle(null);
-            }}
-          />
-        </CardContent>
-      </Card>
+      <ArticleForm
+        article={editingArticle}
+        onCancel={() => {
+          setIsCreating(false);
+          setEditingArticle(null);
+        }}
+      />
     );
   }
 
