@@ -15,9 +15,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   {
@@ -71,7 +68,6 @@ export function AdminSidebar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab");
-  const isMobile = useIsMobile();
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -98,7 +94,7 @@ export function AdminSidebar() {
     navigate("/login");
   };
 
-  const sidebarContent = (
+  return (
     <div className="flex h-full flex-col gap-2">
       <div className="flex h-[60px] items-center border-b px-6">
         <h2 className="font-semibold">Administration</h2>
@@ -145,27 +141,6 @@ export function AdminSidebar() {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
-
-  if (isMobile) {
-    return (
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="fixed top-4 left-4">
-            <Store className="h-6 w-6" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-[280px] p-0">
-          {sidebarContent}
-        </SheetContent>
-      </Sheet>
-    );
-  }
-
-  return (
-    <div className="hidden border-r bg-card lg:block">
-      {sidebarContent}
     </div>
   );
 }
