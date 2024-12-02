@@ -17,10 +17,10 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
     return (
       <div className="min-h-screen">
         <div className="sticky top-0 z-50 w-full border-b backdrop-blur-sm">
-          <div className="container flex h-14 items-center">
+          <div className="flex h-14 items-center px-4">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="mr-2">
                   <Store className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -28,6 +28,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
                 <AdminSidebar />
               </SheetContent>
             </Sheet>
+            <h2 className="font-semibold">Administration</h2>
           </div>
         </div>
         <main className={cn("flex-1", className)}>
@@ -42,7 +43,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
       <div className="hidden border-r bg-card lg:block">
         <AdminSidebar />
       </div>
-      <main className={cn("flex-1 p-4 md:p-6", className)}>
+      <main className={cn("flex-1", className)}>
         {children}
       </main>
     </div>
