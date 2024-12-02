@@ -40,7 +40,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
   }
 
   return (
-    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr] bg-surface">
+    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-card lg:block">
         <AdminSidebar />
       </div>
