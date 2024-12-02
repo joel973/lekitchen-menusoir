@@ -20,72 +20,51 @@ export default function Admin() {
         return <Rush />;
       case "articles":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6 border-b">
-              <h1 className="text-2xl font-bold">Articles</h1>
-              <p className="text-muted-foreground mt-1">
-                Gérez votre catalogue d'articles
-              </p>
-            </div>
-            <div className="p-6">
-              <ArticlesManager />
-            </div>
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-6">Articles</h1>
+            <ArticlesManager />
           </div>
         );
       case "categories":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <CategoriesManager />
-            </div>
+          <div className="p-6">
+            <CategoriesManager />
           </div>
         );
       case "allergenes":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <AllergenesManager />
-            </div>
+          <div className="p-6">
+            <AllergenesManager />
           </div>
         );
       case "labels":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <LabelsManager />
-            </div>
+          <div className="p-6">
+            <LabelsManager />
           </div>
         );
       case "customization":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <CustomizationManager />
-            </div>
+          <div className="p-6">
+            <CustomizationManager />
           </div>
         );
       case "parametres":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <ParametersManager />
-            </div>
+          <div className="p-6">
+            <ParametersManager />
           </div>
         );
       case "etablissement":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <EstablishmentManager />
-            </div>
+          <div className="p-6">
+            <EstablishmentManager />
           </div>
         );
       case "team":
         return (
-          <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
-            <div className="p-6">
-              <TeamManager />
-            </div>
+          <div className="p-6">
+            <TeamManager />
           </div>
         );
       default:
