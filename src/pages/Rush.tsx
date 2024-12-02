@@ -8,7 +8,7 @@ export default function Rush() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="space-y-6 bg-white rounded-lg shadow-md">
+    <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
       <div className="p-6 border-b">
         <div>
           <h1 className="text-2xl font-bold">Rush - Gestion rapide</h1>
