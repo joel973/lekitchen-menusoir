@@ -22,7 +22,6 @@ export const ArticleCard = ({
   labels = [],
   className,
 }: ArticleCardProps) => {
-  // Trier les labels par ordre
   const sortedLabels = [...labels].sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
 
   return (
@@ -33,7 +32,7 @@ export const ArticleCard = ({
       <div className="flex items-center gap-6 p-6">
         {image && (
           <div className="relative flex-shrink-0">
-            <div className="h-16 w-16 overflow-hidden rounded-lg">
+            <div className="h-16 w-16 overflow-hidden rounded-md">
               <img
                 src={image}
                 alt={title}
@@ -45,7 +44,7 @@ export const ArticleCard = ({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1 flex-1 min-w-0">
+            <div className="space-y-1.5 flex-1 min-w-0">
               <div className="flex items-center gap-3">
                 <h3 className="font-display text-lg tracking-tight truncate">
                   {title}
@@ -55,8 +54,12 @@ export const ArticleCard = ({
                     {sortedLabels.map((label) => (
                       <Badge
                         key={label.nom}
-                        variant="secondary"
-                        className="bg-[#F5F5F5] hover:bg-[#F5F5F5] text-content-secondary border-0 uppercase text-[10px] tracking-wider px-2 py-0.5"
+                        variant="outline"
+                        className="bg-white uppercase text-[10px] tracking-wider px-2 py-0.5"
+                        style={{ 
+                          borderColor: label.couleur,
+                          color: label.couleur
+                        }}
                       >
                         {label.nom}
                       </Badge>
@@ -72,7 +75,7 @@ export const ArticleCard = ({
               )}
 
               {allergenes.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2">
                   {allergenes.map((allergene) => (
                     <span
                       key={allergene.nom}
@@ -86,7 +89,7 @@ export const ArticleCard = ({
             </div>
 
             <div className="flex-shrink-0">
-              <span className="font-display text-lg tracking-tight whitespace-nowrap">
+              <span className="font-mono text-lg font-medium tracking-tight whitespace-nowrap">
                 {price.toFixed(2)} €
               </span>
             </div>

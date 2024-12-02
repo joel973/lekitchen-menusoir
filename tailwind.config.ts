@@ -74,9 +74,9 @@ export default {
         foreground: "#141413",
       },
       borderRadius: {
-        lg: "1rem",
-        md: "0.75rem",
-        sm: "0.5rem",
+        lg: "0.5rem",
+        md: "0.375rem",
+        sm: "0.25rem",
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
