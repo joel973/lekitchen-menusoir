@@ -11,8 +11,8 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -81,7 +81,7 @@ export function AdminSidebar() {
       </div>
 
       <Sidebar variant={isMobile ? "floating" : "sidebar"}>
-        <SidebarHeader className="border-b p-6">
+        <SidebarHeader className="border-b p-6 bg-background">
           <span className="font-display text-lg font-bold">Administration</span>
         </SidebarHeader>
         <SidebarContent className="bg-background">
@@ -105,7 +105,9 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <UserProfileDisplay />
+        <div className="bg-background">
+          <UserProfileDisplay />
+        </div>
       </Sidebar>
     </>
   );
