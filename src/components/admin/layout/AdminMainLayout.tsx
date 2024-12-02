@@ -15,7 +15,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
 
   if (isMobile) {
     return (
-      <div className="min-h-screen w-full">
+      <div className="min-h-screen">
         <div className="sticky top-0 z-50 w-full border-b backdrop-blur-sm">
           <div className="container flex h-14 items-center">
             <Sheet>
@@ -30,25 +30,21 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
             </Sheet>
           </div>
         </div>
-        <div className="flex flex-col">
-          <main className={cn("flex-1", className)}>
-            {children}
-          </main>
-        </div>
+        <main className={cn("flex-1", className)}>
+          {children}
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-card lg:block">
         <AdminSidebar />
       </div>
-      <div className="flex flex-col animate-fade-in">
-        <main className={cn("flex-1 p-4 md:p-6", className)}>
-          {children}
-        </main>
-      </div>
+      <main className={cn("flex-1 p-4 md:p-6", className)}>
+        {children}
+      </main>
     </div>
   );
 }

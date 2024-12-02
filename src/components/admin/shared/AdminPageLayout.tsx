@@ -21,25 +21,18 @@ export function AdminPageLayout({
 
   return (
     <AdminMainLayout>
-      <div className="flex flex-col gap-4 bg-transparent">
-        <AdminPageHeader 
-          title={title}
-          description={description}
-          actions={actions}
-          className={cn(
-            "glass-card rounded-lg",
-            isMobile ? "rounded-none" : ""
-          )}
-        />
-        <Card className="relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
-          <div className={cn(
-            "p-0",
-            isMobile && "p-0"
-          )}>
-            {children}
-          </div>
-        </Card>
-      </div>
+      <AdminPageHeader 
+        title={title}
+        description={description}
+        actions={actions}
+        className={cn(
+          "glass-card rounded-lg",
+          isMobile ? "rounded-none" : ""
+        )}
+      />
+      <Card className="mt-4 relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
+        {children}
+      </Card>
     </AdminMainLayout>
   );
 }
