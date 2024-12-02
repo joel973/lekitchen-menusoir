@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   {
@@ -64,6 +65,7 @@ export function AdminSidebar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab");
+  const isMobile = useIsMobile();
 
   const handleNavigation = (tab: string) => {
     navigate(`/equipe?tab=${tab}`, { replace: true });
@@ -76,7 +78,7 @@ export function AdminSidebar() {
         <span className="font-display text-lg font-bold">Administration</span>
       </div>
 
-      <Sidebar>
+      <Sidebar variant={isMobile ? "floating" : "sidebar"}>
         <SidebarHeader className="border-b p-6">
           <span className="font-display text-lg font-bold">Administration</span>
         </SidebarHeader>
