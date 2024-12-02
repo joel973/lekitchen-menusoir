@@ -15,7 +15,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface LabelFormProps {
   label?: any;
@@ -74,65 +73,60 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <CardContent className="p-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="nom"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold">Nom</FormLabel>
-                  <FormControl>
-                    <Input {...field} className="h-12" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="couleur"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold">Couleur</FormLabel>
-                  <FormControl>
-                    <div className="flex gap-2 items-center">
-                      <Input
-                        type="color"
-                        {...field}
-                        className="w-24 h-12 p-1 cursor-pointer"
-                      />
-                      <Input
-                        type="text"
-                        {...field}
-                        className="h-12 flex-1"
-                        placeholder="#E5DEFF"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onCancel}
-                disabled={isSubmitting}
-                className="w-full sm:w-auto"
-              >
-                Annuler
-              </Button>
-              <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
-                {label ? "Modifier" : "Créer"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="nom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold">Nom</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="couleur"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold">Couleur</FormLabel>
+              <FormControl>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="color"
+                    {...field}
+                    className="w-24 p-1 cursor-pointer"
+                  />
+                  <Input
+                    type="text"
+                    {...field}
+                    placeholder="#E5DEFF"
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
+            Annuler
+          </Button>
+          <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
+            {label ? "Modifier" : "Créer"}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
