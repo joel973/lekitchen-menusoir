@@ -78,18 +78,34 @@ export const ArticleCard = ({
                     ))}
                   </div>
                 )}
+
+                {/* Prix en version desktop */}
+                <div className="hidden sm:block">
+                  {isOutOfStock ? (
+                    <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
+                      Rupture
+                    </Badge>
+                  ) : (
+                    <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
+                      {price.toFixed(2)} €
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="flex items-center gap-3">
-                {isOutOfStock ? (
-                  <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
-                    Rupture
-                  </Badge>
-                ) : (
-                  <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
-                    {price.toFixed(2)} €
-                  </span>
-                )}
+                {/* Prix en version mobile */}
+                <div className="sm:hidden">
+                  {isOutOfStock ? (
+                    <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
+                      Rupture
+                    </Badge>
+                  ) : (
+                    <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
+                      {price.toFixed(2)} €
+                    </span>
+                  )}
+                </div>
                 <button className="text-[10px] text-content-tertiary uppercase tracking-wider flex items-center gap-0.5 group-hover:text-content transition-colors">
                   Plus d'infos
                   <ChevronRight className="w-3 h-3" />
