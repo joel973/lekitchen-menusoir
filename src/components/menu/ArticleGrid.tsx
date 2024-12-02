@@ -41,14 +41,14 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="relative max-w-md mx-auto">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+    <div className="space-y-6 mt-20">
+      <div className="relative w-full max-w-xl mx-auto px-4">
+        <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Rechercher un article..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-9"
+          className="pl-9 w-full"
         />
       </div>
 
