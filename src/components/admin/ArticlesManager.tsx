@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Pencil } from "lucide-react";
 import { ArticleForm } from "./ArticleForm";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
@@ -18,6 +18,7 @@ export function ArticlesManager() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<any>(null);
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -79,7 +80,13 @@ export function ArticlesManager() {
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
+    setSelectedArticle(null);
     refetch();
+  };
+
+  const handleEditArticle = (article: any) => {
+    setSelectedArticle(article);
+    setIsDialogOpen(true);
   };
 
   return (
@@ -91,7 +98,7 @@ export function ArticlesManager() {
             <Button>Ajouter un article</Button>
           </DialogTrigger>
           <DialogContent className="max-w-3xl">
-            <ArticleForm onCancel={handleDialogClose} />
+            <ArticleForm article={selectedArticle} onCancel={handleDialogClose} />
           </DialogContent>
         </Dialog>
       </div>
@@ -128,8 +135,16 @@ export function ArticlesManager() {
         {articles?.map((article) => (
           <div 
             key={article.id} 
-            className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
+            className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm relative group"
           >
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity"
+              onClick={() => handleEditArticle(article)}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
             <h2 className="text-lg font-semibold">{article.nom}</h2>
             <p className="text-muted-foreground">{article.description}</p>
             <div className="mt-2 flex flex-wrap gap-2 text-sm text-muted-foreground">
