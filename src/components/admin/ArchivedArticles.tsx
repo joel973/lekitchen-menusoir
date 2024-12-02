@@ -3,9 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Plus, Pencil, Archive } from "lucide-react";
-import { ArticleForm } from "./ArticleForm";
-import { ArchivedArticles } from "./ArchivedArticles";
+import { Search, Undo2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Select,
   SelectContent,
@@ -15,11 +14,10 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function ArticlesManager() {
+export function ArchivedArticles() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
-  const [selectedArticle, setSelectedArticle] = useState<any>(null);
-  const [showArchived, setShowArchived] = useState(false);
+  const { toast } = useToast();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -34,9 +32,9 @@ export function ArticlesManager() {
   });
 
   const { data: articles, refetch } = useQuery({
-    queryKey: ["admin-articles", searchQuery, selectedCategory],
+    queryKey: ["archived-articles", searchQuery, selectedCategory],
     queryFn: async () => {
-      console.log("Fetching articles with filters:", {
+      console.log("Fetching archived articles with filters:", {
         search: searchQuery,
         category: selectedCategory,
       });
@@ -47,23 +45,9 @@ export function ArticlesManager() {
           categories (
             id,
             nom
-          ),
-          articles_allergenes (
-            allergene_id,
-            allergenes (
-              id,
-              nom
-            )
-          ),
-          articles_labels (
-            label_id,
-            labels (
-              id,
-              nom
-            )
           )
         `)
-        .neq('statut', 'archive')
+        .eq('statut', 'archive')
         .order("created_at", { ascending: false });
 
       if (searchQuery) {
@@ -80,55 +64,34 @@ export function ArticlesManager() {
     },
   });
 
-  if (selectedArticle) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold font-display">
-              {selectedArticle.id ? "Modifier un article" : "Nouvel article"}
-            </h1>
-          </div>
-        </div>
-        <ArticleForm
-          article={selectedArticle}
-          onCancel={() => {
-            setSelectedArticle(null);
-            refetch();
-          }}
-        />
-      </div>
-    );
-  }
+  const handleUnarchive = async (articleId: string) => {
+    try {
+      const { error } = await supabase
+        .from("articles")
+        .update({ statut: "actif" })
+        .eq("id", articleId);
 
-  if (showArchived) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold font-display">Articles archivés</h1>
-          <Button onClick={() => setShowArchived(false)} variant="outline">
-            Retour aux articles
-          </Button>
-        </div>
-        <ArchivedArticles />
-      </div>
-    );
-  }
+      if (error) throw error;
+
+      toast({
+        title: "Article restauré",
+        description: "L'article a été restauré avec succès",
+      });
+
+      refetch();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Erreur",
+        description: "Impossible de restaurer l'article",
+      });
+    }
+  };
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg font-semibold">Liste des articles</CardTitle>
-        <div className="flex gap-2">
-          <Button onClick={() => setShowArchived(true)} variant="outline" size="sm">
-            <Archive className="h-4 w-4 mr-2" />
-            Articles archivés
-          </Button>
-          <Button onClick={() => setSelectedArticle({})} size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvel article
-          </Button>
-        </div>
+        <CardTitle className="text-lg font-semibold">Articles archivés</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col sm:flex-row gap-4">
@@ -173,17 +136,16 @@ export function ArticlesManager() {
                     <span>Prix: {article.prix} €</span>
                     <span>•</span>
                     <span>Catégorie: {article.categories?.nom}</span>
-                    <span>•</span>
-                    <span>Statut: {article.statut}</span>
                   </div>
                 </div>
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setSelectedArticle(article)}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleUnarchive(article.id)}
                   className="ml-4"
                 >
-                  <Pencil className="h-4 w-4" />
+                  <Undo2 className="h-4 w-4 mr-2" />
+                  Restaurer
                 </Button>
               </div>
             </div>
