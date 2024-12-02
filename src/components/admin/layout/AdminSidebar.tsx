@@ -18,7 +18,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { UserProfileDisplay } from "../UserProfileDisplay";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const menuItems = [
   {
@@ -55,6 +55,13 @@ const menuItems = [
 
 export function AdminSidebar() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const currentTab = searchParams.get("tab");
+
+  const handleNavigation = (path: string) => {
+    console.log("Navigating to:", path);
+    navigate(path);
+  };
 
   return (
     <Sidebar className="border-r bg-white">
@@ -69,7 +76,8 @@ export function AdminSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    onClick={() => navigate(item.path)}
+                    onClick={() => handleNavigation(item.path)}
+                    isActive={currentTab === item.path.split("=")[1]}
                     className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors"
                   >
                     <item.icon className="h-5 w-5 text-gray-500" />
