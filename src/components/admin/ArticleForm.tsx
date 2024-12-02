@@ -14,6 +14,8 @@ interface ArticleFormProps {
 }
 
 export function ArticleForm({ article, onCancel }: ArticleFormProps) {
+  console.log("ArticleForm rendering with article:", article);
+  
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(articleSchema),
     defaultValues: article
@@ -33,11 +35,20 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   useLoadExistingRelations(article?.id, form.setValue);
   const { onSubmit, isSubmitting } = useArticleFormSubmit(article, onCancel);
 
+  const handleSubmit = async (values: ArticleFormValues) => {
+    console.log("Form submitted with values:", values);
+    try {
+      await onSubmit(values);
+    } catch (error) {
+      console.error("Error in form submission:", error);
+    }
+  };
+
   return (
     <Card className="max-w-3xl mx-auto">
       <CardContent className="p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
             <ArticleFormFields />
             <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
               <Button
