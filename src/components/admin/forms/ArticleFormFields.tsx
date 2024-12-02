@@ -3,6 +3,7 @@ import { CategorySelect } from "./fields/CategorySelect";
 import { StatusSelect } from "./fields/StatusSelect";
 import { AllergenesCheckboxes } from "./fields/AllergenesCheckboxes";
 import { LabelsCheckboxes } from "./fields/LabelsCheckboxes";
+import { SupplementsCheckboxes } from "./fields/SupplementsCheckboxes";
 import { ImageUpload } from "./fields/ImageUpload";
 
 export function ArticleFormFields() {
@@ -18,6 +19,7 @@ export function ArticleFormFields() {
           <AllergenesCheckboxes />
           <LabelsCheckboxes />
         </div>
+        <SupplementsCheckboxes />
         <ImageUpload />
       </div>
     </div>

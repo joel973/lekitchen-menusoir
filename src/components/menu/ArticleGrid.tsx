@@ -45,6 +45,13 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
               couleur,
               ordre
             )
+          ),
+          articles_supplements (
+            supplements (
+              id,
+              nom,
+              prix
+            )
           )
         `)
         .in('statut', ['actif', 'rupture']);
@@ -54,7 +61,8 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
       return data.map(article => ({
         ...article,
         allergenes: article.articles_allergenes?.map(aa => aa.allergenes) || [],
-        labels: article.articles_labels?.map(al => al.labels) || []
+        labels: article.articles_labels?.map(al => al.labels) || [],
+        supplements: article.articles_supplements?.map(as => as.supplements) || []
       }));
     },
   });
@@ -87,6 +95,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
                   image={article.url_image}
                   allergenes={article.allergenes}
                   labels={article.labels}
+                  supplements={article.supplements}
                   status={article.statut as ArticleStatus}
                 />
               ))}

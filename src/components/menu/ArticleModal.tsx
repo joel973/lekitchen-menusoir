@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 
 interface ArticleModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ interface ArticleModalProps {
   image?: string;
   allergenes?: { nom: string }[];
   labels?: { nom: string; couleur: string; ordre: number }[];
+  supplements?: { nom: string; prix: number }[];
 }
 
 export function ArticleModal({
@@ -26,6 +28,7 @@ export function ArticleModal({
   image,
   allergenes = [],
   labels = [],
+  supplements = [],
 }: ArticleModalProps) {
   const sortedLabels = [...labels].sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
 
@@ -90,6 +93,28 @@ export function ArticleModal({
                   ))}
                 </div>
               </div>
+            )}
+
+            {supplements.length > 0 && (
+              <>
+                <Separator className="my-4" />
+                <div className="space-y-2">
+                  <span className="text-sm font-medium">Suppléments disponibles</span>
+                  <div className="space-y-1">
+                    {supplements.map((supplement) => (
+                      <div
+                        key={supplement.nom}
+                        className="flex justify-between text-sm"
+                      >
+                        <span>{supplement.nom}</span>
+                        <span className="text-muted-foreground">
+                          +{supplement.prix.toFixed(2)} €
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
             )}
 
             <div className="pt-2">
