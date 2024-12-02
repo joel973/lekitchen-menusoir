@@ -118,7 +118,7 @@ export function AdminSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <div className="glass-card mx-6 mb-6 rounded-xl">
+        <div className="bg-white/95 backdrop-blur-glass border border-white/10 transition-all duration-200 mx-6 mb-6 rounded-xl">
           <UserProfileDisplay />
         </div>
       </Sidebar>
