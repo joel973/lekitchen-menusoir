@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { AdminSidebar } from "./AdminSidebar";
-import { Store } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -21,7 +21,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="mr-2">
-                  <Store className="h-5 w-5" />
+                  <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[280px] p-0">
