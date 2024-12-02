@@ -42,7 +42,7 @@ export function RushArticleCard({
   const selectedLabels = labels.filter((label) => articleLabels.includes(label.id));
 
   return (
-    <Card className="overflow-hidden border-0 shadow-none w-full">
+    <Card className="overflow-hidden border-0 shadow-none w-full bg-transparent">
       <div className="p-4 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <ArticleHeader

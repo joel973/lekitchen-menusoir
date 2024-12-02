@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:opacity-90",
+        default: "bg-primary text-white hover:opacity-90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -57,8 +57,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
 
     const getBackgroundColor = () => {
-      if (variant === 'default') {
-        return parametres?.couleur_primaire;
+      if (variant === 'default' && parametres?.couleur_primaire) {
+        return parametres.couleur_primaire;
       }
       return undefined;
     };
