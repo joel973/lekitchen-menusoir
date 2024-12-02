@@ -37,8 +37,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
             )
           )
         `)
-        .eq("statut", "actif")
-        .or("statut.eq.rupture");
+        .in('statut', ['actif', 'rupture']);
 
       if (selectedCategory) {
         query = query.eq("categorie_id", selectedCategory);
