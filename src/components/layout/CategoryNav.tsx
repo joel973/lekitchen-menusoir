@@ -27,18 +27,7 @@ export const CategoryNav = ({
   return (
     <nav className="sticky top-20 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container h-14 flex items-center overflow-x-auto no-scrollbar">
-        <div className="flex items-center gap-2 px-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => onSelectCategory(undefined)}
-            className={cn(
-              "rounded-[4px] font-medium transition-colors hover:bg-secondary",
-              !selectedCategory && "bg-secondary text-content"
-            )}
-          >
-            Tout voir
-          </Button>
+        <div className="flex items-center gap-2">
           {categories?.map((category) => (
             <Button
               key={category.id}
@@ -46,7 +35,7 @@ export const CategoryNav = ({
               size="sm"
               onClick={() => onSelectCategory(category.id)}
               className={cn(
-                "rounded-[4px] font-medium transition-colors hover:bg-secondary",
+                "rounded-[4px] font-medium transition-colors hover:bg-secondary whitespace-nowrap",
                 selectedCategory === category.id && "bg-secondary text-content"
               )}
             >
@@ -57,4 +46,4 @@ export const CategoryNav = ({
       </div>
     </nav>
   );
-};
+}

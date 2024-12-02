@@ -53,7 +53,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
   });
 
   return (
-    <div className="max-w-3xl mx-auto px-4 divide-y divide-border">
+    <div className="container px-4 sm:px-6 divide-y divide-border">
       {articles?.map((article) => (
         <ArticleCard
           key={article.id}
