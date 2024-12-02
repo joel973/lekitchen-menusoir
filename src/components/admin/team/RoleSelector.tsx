@@ -2,17 +2,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { Database } from "@/integrations/supabase/types";
+
+type UserRole = Database["public"]["Enums"]["user_role"];
 
 interface RoleSelectorProps {
   memberId: string;
-  currentRole: string;
+  currentRole: UserRole;
 }
 
 export function RoleSelector({ memberId, currentRole }: RoleSelectorProps) {
   const queryClient = useQueryClient();
 
   const updateRole = useMutation({
-    mutationFn: async (newRole: string) => {
+    mutationFn: async (newRole: UserRole) => {
       const { error } = await supabase
         .from("profiles")
         .update({ role: newRole })
@@ -33,7 +36,7 @@ export function RoleSelector({ memberId, currentRole }: RoleSelectorProps) {
   return (
     <Select
       defaultValue={currentRole}
-      onValueChange={(value) => updateRole.mutate(value)}
+      onValueChange={(value: UserRole) => updateRole.mutate(value)}
     >
       <SelectTrigger className="w-32">
         <SelectValue />
