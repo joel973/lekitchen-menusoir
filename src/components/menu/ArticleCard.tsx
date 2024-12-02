@@ -38,7 +38,7 @@ export const ArticleCard = ({
       >
         <div className="flex gap-4 p-4 sm:p-6">
           {image && (
-            <div className="relative flex-shrink-0 pt-1">
+            <div className="relative flex-shrink-0">
               <div className="h-16 w-16 overflow-hidden rounded-sm">
                 <img
                   src={image}
@@ -73,23 +73,10 @@ export const ArticleCard = ({
                     ))}
                   </div>
                 )}
-
-                {allergenes.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5">
-                    {allergenes.map((allergene) => (
-                      <span
-                        key={allergene.nom}
-                        className="text-[9px] uppercase tracking-wider text-content-tertiary"
-                      >
-                        {allergene.nom}
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <div className="flex-shrink-0">
-                <span className="text-[10px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
+                <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
                   {price.toFixed(2)} €
                 </span>
               </div>

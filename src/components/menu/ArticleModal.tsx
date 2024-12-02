@@ -75,20 +75,25 @@ export function ArticleModal({
             )}
 
             {allergenes.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {allergenes.map((allergene) => (
-                  <span
-                    key={allergene.nom}
-                    className="text-[10px] uppercase tracking-wider text-content-tertiary"
-                  >
-                    {allergene.nom}
-                  </span>
-                ))}
+              <div className="space-y-1">
+                <span className="text-[10px] uppercase tracking-wider text-content-tertiary">
+                  Allergènes
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {allergenes.map((allergene) => (
+                    <span
+                      key={allergene.nom}
+                      className="text-[10px] uppercase tracking-wider text-content-tertiary"
+                    >
+                      {allergene.nom}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
 
             <div className="pt-2">
-              <span className="text-[12px] uppercase tracking-wider font-medium text-content">
+              <span className="text-[11px] uppercase tracking-wider font-medium text-content">
                 {price.toFixed(2)} €
               </span>
             </div>
