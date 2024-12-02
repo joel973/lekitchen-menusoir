@@ -73,8 +73,11 @@ export function AdminSidebar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 z-50 w-full md:hidden">
-        <SidebarTrigger className="m-4" />
+      <div className="fixed top-0 left-0 z-50 w-full border-b bg-background md:hidden">
+        <div className="flex h-16 items-center px-4">
+          <SidebarTrigger />
+          <span className="ml-4 font-display text-lg font-bold">Administration</span>
+        </div>
       </div>
 
       <Sidebar variant={isMobile ? "floating" : "sidebar"}>
