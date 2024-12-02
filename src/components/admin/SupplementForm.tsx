@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { BasicSupplementFields } from "./forms/fields/BasicSupplementFields";
 import { useSupplementFormSubmit } from "./forms/useSupplementFormSubmit";
-import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, AlertCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -98,65 +97,61 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
   });
 
   return (
-    <Card className="max-w-3xl mx-auto glass-card animate-scale-in">
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <BasicSupplementFields />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <BasicSupplementFields />
 
-            {supplement && attachedArticles && attachedArticles.length > 0 && (
-              <Alert>
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Ce supplément est utilisé dans les articles suivants :
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {attachedArticles.map((article: any) => (
-                      <span 
-                        key={article.id}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground"
-                      >
-                        {article.nom}
-                      </span>
-                    ))}
-                  </div>
-                </AlertDescription>
-              </Alert>
-            )}
-
-            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={onCancel}
-                  disabled={isSubmitting}
-                  className="w-full sm:w-auto hover:bg-secondary/80"
-                >
-                  Annuler
-                </Button>
-                {supplement && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={handleDelete}
-                    className="w-full sm:w-auto"
+        {supplement && attachedArticles && attachedArticles.length > 0 && (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Ce supplément est utilisé dans les articles suivants :
+              <div className="mt-2 flex flex-wrap gap-1">
+                {attachedArticles.map((article: any) => (
+                  <span 
+                    key={article.id}
+                    className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground"
                   >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Supprimer
-                  </Button>
-                )}
+                    {article.nom}
+                  </span>
+                ))}
               </div>
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="w-full sm:w-auto hover:bg-secondary/80"
+            >
+              Annuler
+            </Button>
+            {supplement && (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDelete}
                 className="w-full sm:w-auto"
               >
-                {supplement ? "Modifier" : "Créer"}
+                <Trash2 className="h-4 w-4 mr-2" />
+                Supprimer
               </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+            )}
+          </div>
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full sm:w-auto"
+          >
+            {supplement ? "Modifier" : "Créer"}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
