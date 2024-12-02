@@ -48,13 +48,13 @@ export function RushFilters({
       </div>
       <Select
         value={selectedCategory}
-        onValueChange={(value) => onCategoryChange(value || undefined)}
+        onValueChange={(value) => onCategoryChange(value === "all" ? undefined : value)}
       >
         <SelectTrigger className="w-[200px]">
           <SelectValue placeholder="Toutes les catégories" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Toutes les catégories</SelectItem>
+          <SelectItem value="all">Toutes les catégories</SelectItem>
           {categories?.map((category) => (
             <SelectItem key={category.id} value={category.id}>
               {category.nom}
