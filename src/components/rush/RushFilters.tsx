@@ -36,7 +36,7 @@ export function RushFilters({
   });
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
@@ -50,7 +50,7 @@ export function RushFilters({
         value={selectedCategory}
         onValueChange={(value) => onCategoryChange(value === "all" ? undefined : value)}
       >
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-full sm:w-[200px]">
           <SelectValue placeholder="Toutes les catégories" />
         </SelectTrigger>
         <SelectContent>

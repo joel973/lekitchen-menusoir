@@ -86,61 +86,71 @@ export function RushArticleCard({
   ) || [];
 
   return (
-    <Card className="p-4 space-y-4">
-      <div className="flex justify-between items-start gap-4">
-        <div>
-          <h3 className="font-semibold">{article.nom}</h3>
-          <p className="text-sm text-muted-foreground">
-            {article.categories?.nom}
-          </p>
-        </div>
-        <Badge
-          variant={
-            article.statut === "actif"
-              ? "default"
+    <Card className="overflow-hidden">
+      <div className="border-b p-4">
+        <div className="flex justify-between items-start gap-4">
+          <div>
+            <h3 className="font-semibold">{article.nom}</h3>
+            <p className="text-sm text-muted-foreground">
+              {article.categories?.nom}
+            </p>
+          </div>
+          <Badge
+            variant={
+              article.statut === "actif"
+                ? "default"
+                : article.statut === "inactif"
+                ? "secondary"
+                : "destructive"
+            }
+          >
+            {article.statut === "actif"
+              ? "Affiché"
               : article.statut === "inactif"
-              ? "secondary"
-              : "destructive"
-          }
-        >
-          {article.statut === "actif"
-            ? "Affiché"
-            : article.statut === "inactif"
-            ? "Masqué"
-            : "Rupture"}
-        </Badge>
+              ? "Masqué"
+              : "Rupture"}
+          </Badge>
+        </div>
       </div>
 
-      <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => updateStatus("actif")}
-          disabled={isUpdating || article.statut === "actif"}
-        >
-          <Eye className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => updateStatus("inactif")}
-          disabled={isUpdating || article.statut === "inactif"}
-        >
-          <EyeOff className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => updateStatus("rupture")}
-          disabled={isUpdating || article.statut === "rupture"}
-        >
-          <XOctagon className="h-4 w-4" />
-        </Button>
+      <div className="border-b p-4">
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => updateStatus("actif")}
+            disabled={isUpdating || article.statut === "actif"}
+            className="flex-1"
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Afficher
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => updateStatus("inactif")}
+            disabled={isUpdating || article.statut === "inactif"}
+            className="flex-1"
+          >
+            <EyeOff className="h-4 w-4 mr-2" />
+            Masquer
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => updateStatus("rupture")}
+            disabled={isUpdating || article.statut === "rupture"}
+            className="flex-1"
+          >
+            <XOctagon className="h-4 w-4 mr-2" />
+            Rupture
+          </Button>
+        </div>
       </div>
 
-      <div className="space-y-2">
-        <p className="text-sm font-medium">Labels :</p>
-        <div className="grid grid-cols-2 gap-2">
+      <div className="p-4">
+        <p className="text-sm font-medium mb-3">Labels :</p>
+        <div className="grid grid-cols-2 gap-3">
           {labels.map((label) => (
             <div
               key={label.id}
