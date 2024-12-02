@@ -17,7 +17,7 @@ const demoCategories: Category[] = [
 
 export const CategoryNav = () => {
   return (
-    <ScrollArea className="w-full whitespace-nowrap border-b">
+    <ScrollArea className="w-full whitespace-nowrap border-b fade-in">
       <div className="flex w-max space-x-4 p-4">
         {demoCategories.map((category) => (
           <button

@@ -24,13 +24,13 @@ export const ArticleCard = ({
   className,
 }: ArticleCardProps) => {
   return (
-    <Card className={cn("card-hover overflow-hidden", className)}>
+    <Card className={cn("card-hover overflow-hidden fade-in", className)}>
       {image && (
         <div className="aspect-video w-full overflow-hidden">
           <img
             src={image}
             alt={title}
-            className="h-full w-full object-cover transition-transform hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
           />
         </div>
       )}
@@ -45,19 +45,29 @@ export const ArticleCard = ({
             )}
           </div>
           <div className="ml-2">
-            <Badge variant={status === "available" ? "default" : "secondary"}>
+            <Badge 
+              variant={status === "available" ? "default" : "secondary"}
+              className="menu-transition hover:scale-105"
+            >
               {price.toFixed(2)} €
             </Badge>
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {allergens.map((allergen, index) => (
-            <Badge key={index} variant="outline" className="text-xs">
+            <Badge 
+              key={index} 
+              variant="outline" 
+              className="text-xs menu-transition hover:bg-primary hover:text-primary-foreground"
+            >
               {allergen}
             </Badge>
           ))}
           {prepTime && (
-            <Badge variant="secondary" className="text-xs">
+            <Badge 
+              variant="secondary" 
+              className="text-xs menu-transition hover:bg-accent hover:text-accent-foreground"
+            >
               {prepTime}
             </Badge>
           )}
