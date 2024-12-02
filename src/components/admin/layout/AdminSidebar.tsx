@@ -24,32 +24,32 @@ const menuItems = [
   {
     title: "Articles",
     icon: UtensilsCrossed,
-    path: "/equipe?tab=articles",
+    tab: "articles",
   },
   {
     title: "Catégories",
     icon: Tag,
-    path: "/equipe?tab=categories",
+    tab: "categories",
   },
   {
     title: "Allergènes",
     icon: AlertTriangle,
-    path: "/equipe?tab=allergenes",
+    tab: "allergenes",
   },
   {
     title: "Établissement",
     icon: Store,
-    path: "/equipe?tab=etablissement",
+    tab: "etablissement",
   },
   {
     title: "Personnalisation",
     icon: Palette,
-    path: "/equipe?tab=customization",
+    tab: "customization",
   },
   {
     title: "Paramètres",
     icon: Settings,
-    path: "/equipe?tab=parametres",
+    tab: "parametres",
   },
 ];
 
@@ -58,9 +58,9 @@ export function AdminSidebar() {
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab");
 
-  const handleNavigation = (path: string) => {
-    console.log("Navigating to:", path);
-    navigate(path);
+  const handleNavigation = (tab: string) => {
+    console.log("Navigating to tab:", tab);
+    navigate(`/equipe?tab=${tab}`);
   };
 
   return (
@@ -76,8 +76,8 @@ export function AdminSidebar() {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
-                    onClick={() => handleNavigation(item.path)}
-                    isActive={currentTab === item.path.split("=")[1]}
+                    onClick={() => handleNavigation(item.tab)}
+                    isActive={currentTab === item.tab}
                     className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors"
                   >
                     <item.icon className="h-5 w-5 text-gray-500" />
