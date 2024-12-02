@@ -4,16 +4,24 @@ import { RushArticleCard } from "./RushArticleCard";
 
 interface RushArticleListProps {
   selectedCategory?: string;
+  selectedLabel?: string;
   searchQuery: string;
 }
 
 export function RushArticleList({
   selectedCategory,
+  selectedLabel,
   searchQuery,
 }: RushArticleListProps) {
   const { data: articles, refetch } = useQuery({
-    queryKey: ["rush-articles", selectedCategory, searchQuery],
+    queryKey: ["rush-articles", selectedCategory, selectedLabel, searchQuery],
     queryFn: async () => {
+      console.log("Fetching articles with filters:", {
+        category: selectedCategory,
+        label: selectedLabel,
+        search: searchQuery,
+      });
+
       let query = supabase
         .from("articles")
         .select("*, categories(nom), articles_labels(label_id)");
@@ -26,9 +34,17 @@ export function RushArticleList({
         query = query.ilike("nom", `%${searchQuery}%`);
       }
 
-      const { data, error } = await query;
+      const { data: articlesData, error } = await query;
       if (error) throw error;
-      return data;
+
+      // Si un label est sélectionné, filtrer les articles qui ont ce label
+      if (selectedLabel && articlesData) {
+        return articlesData.filter((article) =>
+          article.articles_labels?.some((al) => al.label_id === selectedLabel)
+        );
+      }
+
+      return articlesData;
     },
   });
 

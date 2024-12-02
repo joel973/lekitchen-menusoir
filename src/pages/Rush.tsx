@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function Rush() {
   const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedLabel, setSelectedLabel] = useState<string>();
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -22,6 +23,8 @@ export default function Rush() {
           <RushFilters
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
+            selectedLabel={selectedLabel}
+            onLabelChange={setSelectedLabel}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
           />
@@ -29,6 +32,7 @@ export default function Rush() {
         <div className="p-4">
           <RushArticleList
             selectedCategory={selectedCategory}
+            selectedLabel={selectedLabel}
             searchQuery={searchQuery}
           />
         </div>
