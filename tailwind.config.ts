@@ -12,7 +12,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
         "2xl": "1400px",
       },
@@ -20,15 +20,15 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#7D2027",
+          DEFAULT: "#1a1a1a",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#F5F5DC",
+          DEFAULT: "#f5f5f5",
           foreground: "#1a1a1a",
         },
         accent: {
-          DEFAULT: "#D4AF37",
+          DEFAULT: "#00B14F",
           foreground: "#ffffff",
         },
         border: "hsl(var(--border))",
@@ -54,8 +54,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        display: ["Playfair Display", "serif"],
+        sans: ["Space Grotesk", "system-ui", "sans-serif"],
+        display: ["Syne", "Georgia", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",

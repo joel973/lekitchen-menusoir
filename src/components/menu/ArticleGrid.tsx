@@ -3,47 +3,49 @@ import { ArticleCard } from "./ArticleCard";
 const demoArticles = [
   {
     id: "1",
-    title: "McFLURRY™ DAIM",
-    description: "Dessert glacé à base de lait saveur vanille avec nappage au miel",
-    price: 5.35,
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af",
-    allergens: ["Lactose"],
-    prepTime: "5 min",
+    title: "Double Cheese Supreme",
+    description: "Double steak haché, cheddar fondu, sauce signature, oignons caramélisés",
+    price: 12.90,
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+    allergens: ["Gluten", "Lactose"],
+    prepTime: "12-15 min",
   },
   {
     id: "2",
-    title: "BIG MAC™ CHICKEN",
-    description: "Pain spécial, spécialités panées au poulet, salade, oignon, cornichon",
-    price: 11.60,
-    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9",
+    title: "Crispy Chicken",
+    description: "Poulet croustillant, laitue, tomates, sauce ranch",
+    price: 9.90,
+    image: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec",
     allergens: ["Gluten"],
     prepTime: "10 min",
   },
   {
     id: "3",
-    title: "6 VEGGIE McNUGGETS®",
-    description: "Spécialité panée à base de blé et de maïs",
-    price: 11.60,
-    image: "https://images.unsplash.com/photo-1648146298465-4493d0f96362",
-    allergens: ["Gluten"],
-    prepTime: "8 min",
+    title: "Veggie Delight",
+    description: "Steak végétal, avocat, roquette, sauce vegan",
+    price: 11.90,
+    image: "https://images.unsplash.com/photo-1550547660-d9450f859349",
+    allergens: ["Soja"],
+    prepTime: "8-10 min",
   },
 ];
 
 export const ArticleGrid = () => {
   return (
-    <div className="flex flex-col divide-y">
-      {demoArticles.map((article) => (
-        <ArticleCard
-          key={article.id}
-          title={article.title}
-          description={article.description}
-          price={article.price}
-          image={article.image}
-          allergens={article.allergens}
-          prepTime={article.prepTime}
-        />
-      ))}
+    <div className="container py-6">
+      <div className="flex flex-col divide-y">
+        {demoArticles.map((article) => (
+          <ArticleCard
+            key={article.id}
+            title={article.title}
+            description={article.description}
+            price={article.price}
+            image={article.image}
+            allergens={article.allergens}
+            prepTime={article.prepTime}
+          />
+        ))}
+      </div>
     </div>
   );
 };
