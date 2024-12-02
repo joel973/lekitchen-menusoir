@@ -71,12 +71,14 @@ export function CategoriesManager() {
       try {
         const updates = newOrder.map((category, index) => ({
           id: category.id,
+          nom: category.nom,
+          mode_affichage: category.mode_affichage,
           ordre: index,
         }));
 
         const { error } = await supabase
           .from("categories")
-          .upsert(updates, { onConflict: "id" });
+          .upsert(updates);
 
         if (error) throw error;
 
@@ -133,20 +135,20 @@ export function CategoriesManager() {
           </Button>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nom</TableHead>
-                <TableHead>Mode d'affichage</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-              >
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Mode d'affichage</TableHead>
+                  <TableHead className="w-[100px]">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 <SortableContext
                   items={categories?.map((cat) => cat.id) || []}
                   strategy={verticalListSortingStrategy}
@@ -154,14 +156,14 @@ export function CategoriesManager() {
                   {categories?.map((category) => (
                     <SortableRow
                       key={category.id}
-                      category={category}
+                      item={category}
                       onEdit={() => setEditingCategory(category)}
                     />
                   ))}
                 </SortableContext>
-              </DndContext>
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          </DndContext>
         </CardContent>
       </Card>
     </div>

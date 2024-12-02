@@ -149,7 +149,7 @@ export function LabelsManager() {
                   {labels?.map((label) => (
                     <SortableRow
                       key={label.id}
-                      label={label}
+                      item={label}
                       onEdit={() => setEditingLabel(label)}
                     />
                   ))}
