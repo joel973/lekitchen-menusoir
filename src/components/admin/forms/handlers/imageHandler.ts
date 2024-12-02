@@ -19,7 +19,7 @@ export const handleImageUpload = async (
     toast.toast({
       variant: "destructive",
       title: "Erreur lors de l'upload de l'image",
-      description: uploadError.message,
+      content: uploadError.message,
     });
     return null;
   }

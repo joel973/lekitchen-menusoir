@@ -24,7 +24,7 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
 
       if (values.image_file && values.image_file.length > 0) {
         console.log("New image detected, starting upload...");
-        const uploadedUrl = await handleImageUpload(values.image_file[0], toast);
+        const uploadedUrl = await handleImageUpload(values.image_file[0], { toast });
         if (uploadedUrl) {
           imageUrl = uploadedUrl;
         }
@@ -41,10 +41,10 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
 
       console.log("Prepared article data:", articleData);
       
-      const articleId = await createOrUpdateArticle(article?.id, articleData, toast);
+      const articleId = await createOrUpdateArticle(article?.id, articleData, { toast });
       
       if (articleId) {
-        await updateArticleRelations(articleId, values, toast);
+        await updateArticleRelations(articleId, values, { toast });
       }
 
       await queryClient.invalidateQueries({ queryKey: ["admin-articles"] });
