@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AllergeneForm } from "./AllergeneForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 export function AllergenesManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -35,46 +37,62 @@ export function AllergenesManager() {
 
   if (isCreating || editingAllergene) {
     return (
-      <AllergeneForm
-        allergene={editingAllergene}
-        onCancel={() => {
-          setIsCreating(false);
-          setEditingAllergene(null);
-        }}
-      />
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            {editingAllergene ? "Modifier un allergène" : "Nouvel allergène"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AllergeneForm
+            allergene={editingAllergene}
+            onCancel={() => {
+              setIsCreating(false);
+              setEditingAllergene(null);
+            }}
+          />
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div>
-      <div className="mb-4">
-        <Button onClick={() => setIsCreating(true)}>Nouvel allergène</Button>
-      </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nom</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {allergenes?.map((allergene) => (
-            <TableRow key={allergene.id}>
-              <TableCell>{allergene.nom}</TableCell>
-              <TableCell>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setEditingAllergene(allergene)}
-                >
-                  Modifier
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="space-y-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardTitle>Allergènes</CardTitle>
+          <Button onClick={() => setIsCreating(true)} size="sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouvel allergène
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nom</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {allergenes?.map((allergene) => (
+                <TableRow key={allergene.id}>
+                  <TableCell>{allergene.nom}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setEditingAllergene(allergene)}
+                    >
+                      Modifier
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

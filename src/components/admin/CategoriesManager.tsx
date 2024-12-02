@@ -11,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 export function CategoriesManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -35,52 +37,66 @@ export function CategoriesManager() {
 
   if (isCreating || editingCategory) {
     return (
-      <CategoryForm
-        category={editingCategory}
-        onCancel={() => {
-          setIsCreating(false);
-          setEditingCategory(null);
-        }}
-      />
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            {editingCategory ? "Modifier une catégorie" : "Nouvelle catégorie"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CategoryForm
+            category={editingCategory}
+            onCancel={() => {
+              setIsCreating(false);
+              setEditingCategory(null);
+            }}
+          />
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div>
-      <div className="mb-4">
-        <Button onClick={() => setIsCreating(true)}>
-          Nouvelle catégorie
-        </Button>
-      </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nom</TableHead>
-            <TableHead>Mode d'affichage</TableHead>
-            <TableHead>Ordre</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {categories?.map((category) => (
-            <TableRow key={category.id}>
-              <TableCell>{category.nom}</TableCell>
-              <TableCell>{category.mode_affichage}</TableCell>
-              <TableCell>{category.ordre}</TableCell>
-              <TableCell>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setEditingCategory(category)}
-                >
-                  Modifier
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="space-y-4">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardTitle>Catégories</CardTitle>
+          <Button onClick={() => setIsCreating(true)} size="sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouvelle catégorie
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nom</TableHead>
+                <TableHead>Mode d'affichage</TableHead>
+                <TableHead>Ordre</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {categories?.map((category) => (
+                <TableRow key={category.id}>
+                  <TableCell>{category.nom}</TableCell>
+                  <TableCell>{category.mode_affichage}</TableCell>
+                  <TableCell>{category.ordre}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setEditingCategory(category)}
+                    >
+                      Modifier
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   );
 }

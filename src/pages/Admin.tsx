@@ -35,7 +35,7 @@ export default function Admin() {
 
   return (
     <AdminLayout>
-      <div className="container mx-auto p-4">
+      <div className="space-y-4">
         {renderContent()}
       </div>
     </AdminLayout>
