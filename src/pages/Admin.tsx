@@ -21,6 +21,12 @@ export default function Admin() {
       case "articles":
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
+            <div className="p-6 border-b">
+              <h1 className="text-2xl font-bold">Articles</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez votre catalogue d'articles
+              </p>
+            </div>
             <div className="p-6">
               <ArticlesManager />
             </div>
