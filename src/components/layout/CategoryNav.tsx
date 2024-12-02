@@ -17,17 +17,33 @@ export function CategoryNav({
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
 
-  const { data: categories } = useQuery({
+  const { data: categories, isError, error } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("ordre");
-      if (error) throw error;
-      return data;
+      console.log("Fetching categories...");
+      try {
+        const { data, error } = await supabase
+          .from("categories")
+          .select("*")
+          .order("ordre");
+
+        if (error) {
+          console.error("Supabase error:", error);
+          throw error;
+        }
+
+        console.log("Categories fetched successfully:", data);
+        return data;
+      } catch (err) {
+        console.error("Error in queryFn:", err);
+        throw err;
+      }
     },
   });
+
+  if (isError) {
+    console.error("Query error:", error);
+  }
 
   const checkScroll = () => {
     const container = scrollContainerRef.current;
