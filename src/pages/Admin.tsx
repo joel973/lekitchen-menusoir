@@ -22,12 +22,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Articles</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez votre catalogue d'articles
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Articles</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez votre catalogue d'articles
+              </p>
             </div>
             <div className="p-6">
               <ArticlesManager />
@@ -38,12 +36,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Catégories</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez vos catégories d'articles
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Catégories</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez vos catégories d'articles
+              </p>
             </div>
             <div className="p-6">
               <CategoriesManager />
@@ -54,12 +50,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Allergènes</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez la liste des allergènes
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Allergènes</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez la liste des allergènes
+              </p>
             </div>
             <div className="p-6">
               <AllergenesManager />
@@ -70,12 +64,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Labels</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez les labels de vos articles
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Labels</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez les labels de vos articles
+              </p>
             </div>
             <div className="p-6">
               <LabelsManager />
@@ -86,12 +78,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Personnalisation</h1>
-                <p className="text-muted-foreground mt-1">
-                  Personnalisez l'apparence de votre site
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Personnalisation</h1>
+              <p className="text-muted-foreground mt-1">
+                Personnalisez l'apparence de votre site
+              </p>
             </div>
             <div className="p-6">
               <CustomizationManager />
@@ -102,12 +92,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Paramètres</h1>
-                <p className="text-muted-foreground mt-1">
-                  Configurez les paramètres de votre application
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Paramètres</h1>
+              <p className="text-muted-foreground mt-1">
+                Configurez les paramètres de votre application
+              </p>
             </div>
             <div className="p-6">
               <ParametersManager />
@@ -118,12 +106,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Établissement</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez les informations de votre établissement
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Établissement</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez les informations de votre établissement
+              </p>
             </div>
             <div className="p-6">
               <EstablishmentManager />
@@ -134,12 +120,10 @@ export default function Admin() {
         return (
           <div className="space-y-6 bg-white rounded-lg shadow-md m-8">
             <div className="p-6 border-b">
-              <div>
-                <h1 className="text-2xl font-bold">Équipe</h1>
-                <p className="text-muted-foreground mt-1">
-                  Gérez les membres de votre équipe
-                </p>
-              </div>
+              <h1 className="text-2xl font-bold">Équipe</h1>
+              <p className="text-muted-foreground mt-1">
+                Gérez les membres de votre équipe
+              </p>
             </div>
             <div className="p-6">
               <TeamManager />
