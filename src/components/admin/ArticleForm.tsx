@@ -7,6 +7,8 @@ import { Form } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { ArticleFormFields } from "./forms/ArticleFormFields";
 import { articleSchema, type ArticleFormValues } from "./forms/types";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 interface ArticleFormProps {
   article?: any;
@@ -16,6 +18,7 @@ interface ArticleFormProps {
 export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [isUploading, setIsUploading] = useState(false);
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -44,13 +47,39 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
 
   const onSubmit = async (values: ArticleFormValues) => {
     try {
+      setIsUploading(true);
+      let imageUrl = values.url_image;
+
+      // Handle file upload if a new file is selected
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+      if (fileInput?.files?.length) {
+        const file = fileInput.files[0];
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${crypto.randomUUID()}.${fileExt}`;
+
+        const { error: uploadError, data } = await supabase.storage
+          .from('article-images')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          console.error('Error uploading file:', uploadError);
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('article-images')
+          .getPublicUrl(filePath);
+
+        imageUrl = publicUrl;
+      }
+
       const submitData = {
         nom: values.nom,
         description: values.description,
         prix: parseFloat(values.prix),
         categorie_id: values.categorie_id,
         statut: values.statut,
-        url_image: values.url_image,
+        url_image: imageUrl,
       };
 
       console.log('Submitting data:', submitData);
@@ -81,6 +110,8 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
         description: "Une erreur est survenue",
         variant: "destructive",
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -92,7 +123,8 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
           <Button type="button" variant="outline" onClick={onCancel}>
             Annuler
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={isUploading}>
+            {isUploading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {article ? "Modifier" : "Créer"}
           </Button>
         </div>

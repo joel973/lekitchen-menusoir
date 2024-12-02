@@ -105,12 +105,20 @@ export function ArticleFormFields({ form, categories }: ArticleFormFieldsProps) 
         )}
       />
 
+      <FormItem>
+        <FormLabel>Image</FormLabel>
+        <FormControl>
+          <Input type="file" accept="image/*" />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+
       <FormField
         control={form.control}
         name="url_image"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>URL de l'image</FormLabel>
+            <FormLabel>URL de l'image (optionnel)</FormLabel>
             <FormControl>
               <Input {...field} />
             </FormControl>
