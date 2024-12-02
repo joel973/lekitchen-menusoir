@@ -31,7 +31,7 @@ export const ArticleGrid = () => {
 
   if (isLoading) {
     return (
-      <div className="container py-8">
+      <div className="container py-8 mt-32">
         <div className="flex flex-col divide-y">
           {[1, 2, 3].map((i) => (
             <div
@@ -52,7 +52,7 @@ export const ArticleGrid = () => {
   }
 
   return (
-    <div className="container py-8">
+    <div className="container py-8 mt-32">
       <div className="flex flex-col divide-y">
         {articles?.map((article) => (
           <ArticleCard
