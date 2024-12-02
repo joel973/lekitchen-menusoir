@@ -33,6 +33,7 @@ export type AllergeneFormValues = z.infer<typeof allergeneSchema>;
 
 export const labelSchema = z.object({
   nom: z.string().min(1, "Le nom est requis"),
+  couleur: z.string().min(1, "La couleur est requise"),
 });
 
 export type LabelFormValues = z.infer<typeof labelSchema>;

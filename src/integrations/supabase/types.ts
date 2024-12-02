@@ -193,19 +193,25 @@ export type Database = {
       }
       labels: {
         Row: {
+          couleur: string | null
           created_at: string
           id: string
           nom: string
+          ordre: number | null
         }
         Insert: {
+          couleur?: string | null
           created_at?: string
           id?: string
           nom: string
+          ordre?: number | null
         }
         Update: {
+          couleur?: string | null
           created_at?: string
           id?: string
           nom?: string
+          ordre?: number | null
         }
         Relationships: []
       }

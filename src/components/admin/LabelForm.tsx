@@ -30,6 +30,7 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
     resolver: zodResolver(labelSchema),
     defaultValues: label || {
       nom: "",
+      couleur: "#E5DEFF",
     },
   });
 
@@ -40,14 +41,14 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
       if (label?.id) {
         const { error } = await supabase
           .from("labels")
-          .update({ nom: values.nom })
+          .update({ nom: values.nom, couleur: values.couleur })
           .eq("id", label.id);
 
         if (error) throw error;
       } else {
         const { error } = await supabase
           .from("labels")
-          .insert({ nom: values.nom });
+          .insert({ nom: values.nom, couleur: values.couleur });
         if (error) throw error;
       }
 
@@ -82,6 +83,31 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
               <FormLabel>Nom</FormLabel>
               <FormControl>
                 <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="couleur"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Couleur</FormLabel>
+              <FormControl>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="color"
+                    {...field}
+                    className="w-24 h-10 p-1 cursor-pointer"
+                  />
+                  <Input
+                    type="text"
+                    {...field}
+                    className="flex-1"
+                    placeholder="#E5DEFF"
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

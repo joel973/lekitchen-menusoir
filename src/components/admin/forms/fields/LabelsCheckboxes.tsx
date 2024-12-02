@@ -19,7 +19,7 @@ export function LabelsCheckboxes() {
       const { data, error } = await supabase
         .from("labels")
         .select("*")
-        .order("nom");
+        .order("ordre");
       if (error) throw error;
       return data;
     },
@@ -42,6 +42,7 @@ export function LabelsCheckboxes() {
                   <FormItem
                     key={label.id}
                     className="flex flex-row items-start space-x-3 space-y-0"
+                    style={{ backgroundColor: `${label.couleur}20` }}
                   >
                     <FormControl>
                       <Checkbox
