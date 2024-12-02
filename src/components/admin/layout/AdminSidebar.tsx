@@ -9,24 +9,17 @@ import {
   Users,
   ClipboardList,
   Plus,
+  LogOut,
 } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { UserProfileDisplay } from "../UserProfileDisplay";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   {
@@ -74,6 +67,11 @@ const menuItems = [
     icon: Settings,
     tab: "parametres",
   },
+  {
+    title: "Logs",
+    icon: ClipboardList,
+    tab: "logs",
+  },
 ];
 
 export function AdminSidebar() {
@@ -102,67 +100,79 @@ export function AdminSidebar() {
     navigate(`/equipe?tab=${tab}`, { replace: true });
   };
 
-  return (
-    <>
-      <div className="fixed top-0 left-0 z-50 w-full border-b bg-white md:hidden">
-        <div className="flex h-16 items-center px-6">
-          <SidebarTrigger />
-          <span className="ml-4 font-display text-lg text-content">
-            Administration
-          </span>
-        </div>
-      </div>
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
+  };
 
-      <Sidebar 
-        variant={isMobile ? "floating" : "sidebar"} 
-        className="bg-white border-r"
-      >
-        <SidebarHeader className="p-8">
-          <span className="font-display text-lg text-content">
-            Administration
-          </span>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel className="px-4 text-xs font-medium uppercase tracking-wider text-content-tertiary/70">
-              Menu
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {menuItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      onClick={() => handleNavigation(item.tab)}
-                      isActive={currentTab === item.tab}
-                      tooltip={item.title}
-                      className="transition-all duration-200 hover:bg-hover/50"
-                    >
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-                {profile?.role === "admin" && (
-                  <SidebarMenuItem>
-                    <SidebarMenuButton
-                      onClick={() => navigate("/logs")}
-                      isActive={false}
-                      tooltip="Logs"
-                      className="transition-all duration-200 hover:bg-hover/50"
-                    >
-                      <ClipboardList className="h-4 w-4" />
-                      <span>Logs</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                )}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        <div className="mx-6 mb-6 rounded-xl">
-          <UserProfileDisplay />
-        </div>
-      </Sidebar>
-    </>
+  const sidebarContent = (
+    <div className="flex h-full flex-col gap-2">
+      <div className="flex h-[60px] items-center border-b px-6">
+        <h2 className="font-semibold">Administration</h2>
+      </div>
+      <div className="flex-1 px-4">
+        <nav className="grid items-start gap-2">
+          {menuItems.map((item) => (
+            <Button
+              key={item.tab}
+              variant="ghost"
+              onClick={() => handleNavigation(item.tab)}
+              className={cn(
+                "w-full justify-start gap-2",
+                currentTab === item.tab && "bg-secondary"
+              )}
+            >
+              <item.icon className="h-4 w-4" />
+              {item.title}
+            </Button>
+          ))}
+        </nav>
+      </div>
+      <div className="mt-auto p-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="font-medium">
+                  {profile?.first_name} {profile?.last_name}
+                </div>
+                <span className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">
+                  {profile?.role === "admin" ? "Admin" : "Membre"}
+                </span>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              className="mt-4 w-full justify-start gap-2"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4" />
+              Se déconnecter
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="fixed top-4 left-4">
+            <Store className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[280px] p-0">
+          {sidebarContent}
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
+  return (
+    <div className="hidden border-r bg-card lg:block">
+      {sidebarContent}
+    </div>
   );
 }

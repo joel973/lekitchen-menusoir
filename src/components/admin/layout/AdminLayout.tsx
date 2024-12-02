@@ -9,11 +9,13 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthGuard>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full bg-surface">
+        <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
           <AdminSidebar />
-          <main className={`flex-1 overflow-auto ${isMobile ? "pt-16" : ""}`}>
-            {children}
-          </main>
+          <div className="flex flex-col">
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
         </div>
       </SidebarProvider>
     </AuthGuard>

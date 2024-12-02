@@ -13,7 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ArticlesManager() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,13 +83,11 @@ export function ArticlesManager() {
 
   if (selectedArticle) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold font-display">
-              {selectedArticle.id ? "Modifier un article" : "Nouvel article"}
-            </h1>
-          </div>
+          <h1 className="text-2xl font-bold">
+            {selectedArticle.id ? "Modifier un article" : "Nouvel article"}
+          </h1>
         </div>
         <ArticleForm
           article={selectedArticle}
@@ -103,9 +102,9 @@ export function ArticlesManager() {
 
   if (showArchived) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 p-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold font-display">Articles archivés</h1>
+          <h1 className="text-2xl font-bold">Articles archivés</h1>
           <Button onClick={() => setShowArchived(false)} variant="outline">
             Retour aux articles
           </Button>
@@ -116,9 +115,9 @@ export function ArticlesManager() {
   }
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle className="text-lg font-semibold">Liste des articles</CardTitle>
+    <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Liste des articles</h1>
         <div className="flex gap-2">
           <Button onClick={() => setShowArchived(true)} variant="outline" size="sm">
             <Archive className="h-4 w-4 mr-2" />
@@ -129,46 +128,46 @@ export function ArticlesManager() {
             Nouvel article
           </Button>
         </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Rechercher un article..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          <Select
-            value={selectedCategory}
-            onValueChange={(value) => setSelectedCategory(value === "all" ? undefined : value)}
-          >
-            <SelectTrigger className="w-full sm:w-[200px]">
-              <SelectValue placeholder="Toutes les catégories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Toutes les catégories</SelectItem>
-              {categories?.map((category) => (
-                <SelectItem key={category.id} value={category.id}>
-                  {category.nom}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      </div>
 
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Rechercher un article..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
+        <Select
+          value={selectedCategory}
+          onValueChange={(value) => setSelectedCategory(value === "all" ? undefined : value)}
+        >
+          <SelectTrigger className="w-full sm:w-[200px]">
+            <SelectValue placeholder="Toutes les catégories" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Toutes les catégories</SelectItem>
+            {categories?.map((category) => (
+              <SelectItem key={category.id} value={category.id}>
+                {category.nom}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
           {articles?.map((article) => (
-            <div 
-              key={article.id} 
-              className="p-4 rounded-lg border bg-card text-card-foreground hover:bg-secondary/50 transition-colors duration-300"
-            >
-              <div className="flex justify-between items-start">
+            <Card key={article.id}>
+              <CardContent className="flex items-center p-4">
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold">{article.nom}</h3>
-                  <p className="text-muted-foreground">{article.description}</p>
+                  <h3 className="font-semibold">{article.nom}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {article.description}
+                  </p>
                   <div className="mt-2 flex flex-wrap gap-2 text-sm text-muted-foreground">
                     <span>Prix: {article.prix} €</span>
                     <span>•</span>
@@ -181,15 +180,14 @@ export function ArticlesManager() {
                   variant="ghost"
                   size="icon"
                   onClick={() => setSelectedArticle(article)}
-                  className="ml-4"
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </ScrollArea>
+    </div>
   );
 }
