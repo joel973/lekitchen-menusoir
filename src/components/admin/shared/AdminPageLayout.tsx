@@ -2,6 +2,7 @@ import { AdminMainLayout } from "../layout/AdminMainLayout";
 import { AdminPageHeader } from "../layout/AdminPageHeader";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminPageLayoutProps {
   title: string;
@@ -16,18 +17,28 @@ export function AdminPageLayout({
   children,
   actions,
 }: AdminPageLayoutProps) {
+  const isMobile = useIsMobile();
+
   return (
     <AdminMainLayout>
       <AdminPageHeader 
         title={title}
         description={description}
         actions={actions}
-        className="glass-card"
+        className="glass-card rounded-lg mb-4"
       />
-      <div className="container py-6">
+      <div className={cn("container", isMobile ? "p-0" : "py-6")}>
         <Card className="relative overflow-hidden glass-card animate-scale-in">
-          <ScrollArea className="h-[calc(100vh-12rem)]">
-            <div className="p-6">{children}</div>
+          <ScrollArea className={cn(
+            "h-[calc(100vh-16rem)]",
+            isMobile && "h-[calc(100vh-12rem)]"
+          )}>
+            <div className={cn(
+              "p-6",
+              isMobile && "p-4"
+            )}>
+              {children}
+            </div>
           </ScrollArea>
         </Card>
       </div>

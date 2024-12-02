@@ -8,11 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface Column {
   key: string;
   title: string;
   render?: (value: any) => React.ReactNode;
+  hideOnMobile?: boolean;
 }
 
 interface DataListProps {
@@ -22,35 +24,71 @@ interface DataListProps {
 }
 
 export function DataList({ columns, data, actions }: DataListProps) {
+  const isMobile = useIsMobile();
+  const visibleColumns = isMobile 
+    ? columns.filter(col => !col.hideOnMobile)
+    : columns;
+
   return (
-    <Card>
+    <Card className="border-0 shadow-none">
       <ScrollArea className="h-[calc(100vh-220px)]">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {columns.map((column) => (
-                <TableHead key={column.key}>{column.title}</TableHead>
-              ))}
-              {actions && <TableHead className="w-[100px]">Actions</TableHead>}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item, index) => (
-              <TableRow key={index}>
-                {columns.map((column) => (
-                  <TableCell key={column.key}>
-                    {column.render
-                      ? column.render(item[column.key])
-                      : item[column.key]}
-                  </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {visibleColumns.map((column) => (
+                  <TableHead 
+                    key={column.key}
+                    className={cn(
+                      isMobile && "px-2 py-3 text-xs"
+                    )}
+                  >
+                    {column.title}
+                  </TableHead>
                 ))}
                 {actions && (
-                  <TableCell>{actions(item)}</TableCell>
+                  <TableHead className={cn(
+                    "w-[100px]",
+                    isMobile && "px-2 py-3"
+                  )}>
+                    Actions
+                  </TableHead>
                 )}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {data.map((item, index) => (
+                <TableRow 
+                  key={index}
+                  className={cn(
+                    "hover:bg-secondary/50 transition-colors",
+                    isMobile && "text-sm"
+                  )}
+                >
+                  {visibleColumns.map((column) => (
+                    <TableCell 
+                      key={column.key}
+                      className={cn(
+                        isMobile && "px-2 py-3"
+                      )}
+                    >
+                      {column.render
+                        ? column.render(item[column.key])
+                        : item[column.key]}
+                    </TableCell>
+                  ))}
+                  {actions && (
+                    <TableCell className={cn(
+                      isMobile && "px-2 py-3"
+                    )}>
+                      {actions(item)}
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </ScrollArea>
     </Card>
   );

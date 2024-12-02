@@ -22,9 +22,9 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="fixed top-4 left-4 z-50"
+              className="fixed top-4 left-4 z-50 bg-background/80 backdrop-blur-sm border shadow-sm"
             >
-              <Store className="h-6 w-6" />
+              <Store className="h-5 w-5" />
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[280px] p-0">
@@ -32,8 +32,8 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
           </SheetContent>
         </Sheet>
         <div className="flex flex-col animate-fade-in pt-16">
-          <ScrollArea className="flex-1 h-screen">
-            <main className={cn("flex-1 p-4 md:p-6", className)}>
+          <ScrollArea className="flex-1 h-[calc(100vh-4rem)]">
+            <main className={cn("flex-1 p-4", className)}>
               {children}
             </main>
           </ScrollArea>
