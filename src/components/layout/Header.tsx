@@ -1,7 +1,22 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Header = () => {
+  const { data: parametres } = useQuery({
+    queryKey: ["parametres"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("parametres")
+        .select("*")
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-20 items-center justify-between">
@@ -10,19 +25,43 @@ export const Header = () => {
             <Menu className="h-5 w-5" />
             <span className="sr-only">Menu</span>
           </Button>
-          <a href="/" className="flex items-center space-x-2">
-            <span className="font-display text-2xl font-bold tracking-tight">
+          <a href="/" className="flex items-center gap-3">
+            {parametres?.logo_url && (
+              <img
+                src={parametres.logo_url}
+                alt="Logo"
+                className="h-10 w-auto object-contain"
+              />
+            )}
+            <span 
+              className="font-display text-2xl font-bold tracking-tight"
+              style={{ color: parametres?.couleur_primaire }}
+            >
               Le Kitchen
             </span>
           </a>
         </div>
-        <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <a href="#menu" className="text-muted-foreground hover:text-foreground transition-colors">
-            Menu
-          </a>
-          <a href="#contact" className="text-muted-foreground hover:text-foreground transition-colors">
-            Contact
-          </a>
+        <div className="hidden md:flex items-center gap-6">
+          <nav className="flex items-center gap-6 text-sm font-medium">
+            <a 
+              href="#menu" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              style={{ 
+                '--hover-color': parametres?.couleur_primaire 
+              } as React.CSSProperties}
+            >
+              Menu
+            </a>
+            <a 
+              href="#contact" 
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              style={{ 
+                '--hover-color': parametres?.couleur_primaire 
+              } as React.CSSProperties}
+            >
+              Contact
+            </a>
+          </nav>
         </div>
       </div>
     </header>
