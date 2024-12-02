@@ -13,21 +13,19 @@ export default function Rush() {
       title="Rush - Gestion rapide"
       description="Gérez rapidement vos articles et leur visibilité"
     >
-      <div className="space-y-6 p-6 md:p-8">
-        <RushFilters
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
-          selectedLabel={selectedLabel}
-          onLabelChange={setSelectedLabel}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-        />
-        <RushArticleList
-          selectedCategory={selectedCategory}
-          selectedLabel={selectedLabel}
-          searchQuery={searchQuery}
-        />
-      </div>
+      <RushFilters
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        selectedLabel={selectedLabel}
+        onLabelChange={setSelectedLabel}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
+      <RushArticleList
+        selectedCategory={selectedCategory}
+        selectedLabel={selectedLabel}
+        searchQuery={searchQuery}
+      />
     </AdminPageLayout>
   );
 }
