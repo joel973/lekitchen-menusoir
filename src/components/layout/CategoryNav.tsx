@@ -6,13 +6,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CategoryNavProps {
   selectedCategory?: string;
-  onSelectCategory: (categoryId: string | undefined) => void;
 }
 
-export const CategoryNav = ({
-  selectedCategory,
-  onSelectCategory,
-}: CategoryNavProps) => {
+export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -24,6 +20,13 @@ export const CategoryNav = ({
       return data;
     },
   });
+
+  const scrollToCategory = (categoryId: string) => {
+    const element = document.getElementById(`category-${categoryId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav className="sticky top-20 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,7 +43,7 @@ export const CategoryNav = ({
                   key={category.id}
                   variant="ghost"
                   size="sm"
-                  onClick={() => onSelectCategory(category.id)}
+                  onClick={() => scrollToCategory(category.id)}
                   className={cn(
                     "rounded-[4px] font-medium transition-colors hover:bg-secondary whitespace-nowrap",
                     selectedCategory === category.id && "bg-secondary text-content"

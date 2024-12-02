@@ -9,12 +9,22 @@ interface ArticleGridProps {
 type ArticleStatus = "actif" | "inactif" | "rupture";
 
 export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
-  const { data: articles } = useQuery({
-    queryKey: ["articles", selectedCategory],
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
     queryFn: async () => {
-      console.log("Fetching articles with category:", selectedCategory);
-      
-      let query = supabase
+      const { data, error } = await supabase
+        .from("categories")
+        .select("*")
+        .order("ordre");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: articles } = useQuery({
+    queryKey: ["articles"],
+    queryFn: async () => {
+      const { data, error } = await supabase
         .from("articles")
         .select(`
           *,
@@ -39,17 +49,7 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
         `)
         .in('statut', ['actif', 'rupture']);
 
-      if (selectedCategory) {
-        query = query.eq("categorie_id", selectedCategory);
-      }
-
-      const { data, error } = await query;
-      
-      console.log("Articles fetched:", data);
-      if (error) {
-        console.error("Error fetching articles:", error);
-        throw error;
-      }
+      if (error) throw error;
 
       return data.map(article => ({
         ...article,
@@ -59,22 +59,41 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
     },
   });
 
-  console.log("Rendered articles:", articles);
-
   return (
-    <div className="container max-w-3xl mx-auto px-3 sm:px-6 divide-y divide-border">
-      {articles?.map((article) => (
-        <ArticleCard
-          key={article.id}
-          title={article.nom}
-          description={article.description}
-          price={article.prix}
-          image={article.url_image}
-          allergenes={article.allergenes}
-          labels={article.labels}
-          status={article.statut as ArticleStatus}
-        />
-      ))}
+    <div className="container max-w-3xl mx-auto px-3 sm:px-6 space-y-12">
+      {categories?.map((category) => {
+        const categoryArticles = articles?.filter(
+          (article) => article.categorie_id === category.id
+        );
+
+        if (!categoryArticles?.length) return null;
+
+        return (
+          <section 
+            key={category.id} 
+            id={`category-${category.id}`}
+            className="scroll-mt-36"
+          >
+            <h2 className="text-xl font-display font-medium mb-6">
+              {category.nom}
+            </h2>
+            <div className="divide-y divide-border">
+              {categoryArticles.map((article) => (
+                <ArticleCard
+                  key={article.id}
+                  title={article.nom}
+                  description={article.description}
+                  price={article.prix}
+                  image={article.url_image}
+                  allergenes={article.allergenes}
+                  labels={article.labels}
+                  status={article.statut as ArticleStatus}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }
