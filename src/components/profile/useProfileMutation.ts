@@ -10,6 +10,7 @@ export const useProfileMutation = (setValue: UseFormSetValue<ProfileFormValues>)
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.user?.id) throw new Error("User not found");
 
+      // Update profile data first
       const updates = {
         id: session.user.id,
         first_name: values.first_name,
@@ -25,20 +26,41 @@ export const useProfileMutation = (setValue: UseFormSetValue<ProfileFormValues>)
 
       if (profileError) throw profileError;
 
+      // Handle password update if provided
       if (values.password && values.password.length > 0) {
-        const { error: passwordError } = await supabase.auth.updateUser({
-          password: values.password,
-        });
+        try {
+          const { error: passwordError } = await supabase.auth.updateUser({
+            password: values.password,
+          });
 
-        if (passwordError) {
-          console.error("Password update error:", passwordError);
-          if (passwordError.message.includes("same_password")) {
-            throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
+          if (passwordError) {
+            // Check if it's a same password error
+            const errorBody = JSON.parse(passwordError.message);
+            if (errorBody?.code === "same_password") {
+              throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
+            }
+            throw passwordError;
           }
-          throw passwordError;
+        } catch (error: any) {
+          console.error("Password update error:", error);
+          // If the error is already formatted (our custom message), throw it directly
+          if (error.message === "Le nouveau mot de passe doit être différent de l'ancien") {
+            throw error;
+          }
+          // Otherwise, try to parse the error message
+          try {
+            const errorBody = JSON.parse(error.message);
+            if (errorBody?.code === "same_password") {
+              throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
+            }
+          } catch {
+            // If parsing fails, throw the original error
+            throw error;
+          }
         }
       }
 
+      // Handle email update if changed
       if (values.email !== session.user.email) {
         const { error: emailError } = await supabase.auth.updateUser({
           email: values.email,
@@ -49,9 +71,9 @@ export const useProfileMutation = (setValue: UseFormSetValue<ProfileFormValues>)
     },
     onSuccess: () => {
       toast.success("Profil mis à jour avec succès");
-      setValue("password", "");
+      setValue("password", ""); // Reset password field after successful update
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Error updating profile:", error);
       toast.error(error instanceof Error ? error.message : "Erreur lors de la mise à jour du profil");
     },
