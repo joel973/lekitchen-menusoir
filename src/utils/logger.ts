@@ -9,6 +9,11 @@ type LogAction = {
 
 export async function logAction({ action, entityType, entityId, details }: LogAction) {
   try {
+    if (!entityId) {
+      console.error("Entity ID is required for logging");
+      return;
+    }
+
     const { error } = await supabase.from("logs").insert({
       action,
       entity_type: entityType,

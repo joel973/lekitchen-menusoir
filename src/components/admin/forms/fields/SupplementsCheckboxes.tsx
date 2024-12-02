@@ -45,12 +45,13 @@ export function SupplementsCheckboxes() {
                     >
                       <FormControl>
                         <Checkbox
-                          checked={field.value?.includes(supplement.id)}
+                          checked={Array.isArray(field.value) && field.value?.includes(supplement.id)}
                           onCheckedChange={(checked) => {
+                            const currentValue = Array.isArray(field.value) ? field.value : [];
                             return checked
-                              ? field.onChange([...field.value, supplement.id])
+                              ? field.onChange([...currentValue, supplement.id])
                               : field.onChange(
-                                  field.value?.filter((value) => value !== supplement.id)
+                                  currentValue?.filter((value) => value !== supplement.id)
                                 );
                           }}
                         />
