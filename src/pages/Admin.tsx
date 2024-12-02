@@ -1,24 +1,21 @@
 import { useSearchParams } from "react-router-dom";
+import { AdminLayout } from "@/components/admin/layout/AdminLayout";
+import { AllergenesManager } from "@/components/admin/AllergenesManager";
 import { ArticlesManager } from "@/components/admin/ArticlesManager";
 import { CategoriesManager } from "@/components/admin/CategoriesManager";
-import { AllergenesManager } from "@/components/admin/AllergenesManager";
-import { LabelsManager } from "@/components/admin/LabelsManager";
 import { CustomizationManager } from "@/components/admin/CustomizationManager";
-import { ParametersManager } from "@/components/admin/ParametersManager";
 import { EstablishmentManager } from "@/components/admin/EstablishmentManager";
-import { TeamManager } from "@/components/admin/team/TeamManager";
+import { LabelsManager } from "@/components/admin/LabelsManager";
+import { ParametersManager } from "@/components/admin/ParametersManager";
 import { SupplementsManager } from "@/components/admin/SupplementsManager";
-import { AdminLayout } from "@/components/admin/layout/AdminLayout";
-import Rush from "./Rush";
+import { TeamManager } from "@/components/admin/team/TeamManager";
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
-  const currentTab = searchParams.get("tab") || "rush";
+  const tab = searchParams.get("tab") || "rush";
 
   const renderContent = () => {
-    switch (currentTab) {
-      case "rush":
-        return <Rush />;
+    switch (tab) {
       case "articles":
         return <ArticlesManager />;
       case "categories":
@@ -27,24 +24,20 @@ export default function Admin() {
         return <AllergenesManager />;
       case "labels":
         return <LabelsManager />;
-      case "customization":
-        return <CustomizationManager />;
-      case "parametres":
-        return <ParametersManager />;
+      case "supplements":
+        return <SupplementsManager />;
       case "etablissement":
         return <EstablishmentManager />;
       case "team":
         return <TeamManager />;
-      case "supplements":
-        return <SupplementsManager />;
+      case "parametres":
+        return <ParametersManager />;
+      case "customization":
+        return <CustomizationManager />;
       default:
-        return <Rush />;
+        return <ArticlesManager />;
     }
   };
 
-  return (
-    <AdminLayout>
-      {renderContent()}
-    </AdminLayout>
-  );
+  return <AdminLayout>{renderContent()}</AdminLayout>;
 }
