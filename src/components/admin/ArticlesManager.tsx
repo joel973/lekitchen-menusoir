@@ -63,7 +63,7 @@ export function ArticlesManager() {
             )
           )
         `)
-        .neq('statut', 'archive')
+        .eq('statut', 'actif')
         .order("created_at", { ascending: false });
 
       if (searchQuery) {
