@@ -12,6 +12,8 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
   const { data: articles } = useQuery({
     queryKey: ["articles", selectedCategory],
     queryFn: async () => {
+      console.log("Fetching articles with category:", selectedCategory);
+      
       let query = supabase
         .from("articles")
         .select(`
@@ -36,24 +38,29 @@ export function ArticleGrid({ selectedCategory }: ArticleGridProps) {
           )
         `)
         .eq("statut", "actif")
-        .or("statut.eq.rupture")
-        .order("created_at", { ascending: false });
+        .or("statut.eq.rupture");
 
       if (selectedCategory) {
         query = query.eq("categorie_id", selectedCategory);
       }
 
       const { data, error } = await query;
-      if (error) throw error;
+      
+      console.log("Articles fetched:", data);
+      if (error) {
+        console.error("Error fetching articles:", error);
+        throw error;
+      }
 
       return data.map(article => ({
         ...article,
         allergenes: article.articles_allergenes?.map(aa => aa.allergenes) || [],
-        labels: (article.articles_labels?.map(al => al.labels) || [])
-          .sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
+        labels: article.articles_labels?.map(al => al.labels) || []
       }));
     },
   });
+
+  console.log("Rendered articles:", articles);
 
   return (
     <div className="container max-w-3xl mx-auto px-3 sm:px-6 divide-y divide-border">
