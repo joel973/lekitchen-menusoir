@@ -38,17 +38,28 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   const handleSubmit = async (values: ArticleFormValues) => {
     console.log("Form submitted with values:", values);
     try {
+      console.log("Starting form submission...");
       await onSubmit(values);
+      console.log("Form submission completed");
     } catch (error) {
       console.error("Error in form submission:", error);
     }
   };
 
+  console.log("Form state:", form.formState);
+  console.log("Form values:", form.getValues());
+
   return (
     <Card className="max-w-3xl mx-auto">
       <CardContent className="p-6">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
+          <form 
+            onSubmit={(e) => {
+              console.log("Form submit event triggered");
+              form.handleSubmit(handleSubmit)(e);
+            }} 
+            className="space-y-8"
+          >
             <ArticleFormFields />
             <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
               <Button
