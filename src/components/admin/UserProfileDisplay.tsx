@@ -35,36 +35,36 @@ export function UserProfileDisplay() {
   if (!session?.user) return null;
 
   return (
-    <div className="flex flex-col gap-4 p-4 border-t">
-      <div className="flex items-center gap-3">
-        <Avatar>
-          <AvatarFallback>
+    <div className="flex flex-col gap-3 p-3">
+      <div className="flex items-center gap-2">
+        <Avatar className="h-8 w-8">
+          <AvatarFallback className="text-sm">
             {session.user.email?.charAt(0).toUpperCase() || "U"}
           </AvatarFallback>
         </Avatar>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium leading-none truncate">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-medium leading-none">
             {session.user.email}
           </p>
         </div>
       </div>
-      <div className="flex gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <Button
           variant="outline"
           size="sm"
-          className="flex-1"
+          className="h-8 w-full"
           onClick={handleProfileClick}
         >
-          <User className="w-4 h-4 mr-2" />
+          <User className="mr-2 h-3.5 w-3.5" />
           Profil
         </Button>
         <Button
           variant="outline"
           size="sm"
-          className="flex-1"
+          className="h-8 w-full"
           onClick={handleLogout}
         >
-          <LogOut className="w-4 h-4 mr-2" />
+          <LogOut className="mr-2 h-3.5 w-3.5" />
           Déconnexion
         </Button>
       </div>
