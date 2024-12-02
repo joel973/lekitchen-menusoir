@@ -21,7 +21,7 @@ export function AdminPageLayout({
 
   return (
     <AdminMainLayout>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 bg-transparent">
         <AdminPageHeader 
           title={title}
           description={description}
