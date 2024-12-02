@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { TeamMembersList } from "./TeamMembersList";
 import { InviteTeamMember } from "./InviteTeamMember";
+import { AdminPageLayout } from "../shared/AdminPageLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function TeamManager() {
@@ -31,26 +32,28 @@ export function TeamManager() {
   const isAdmin = currentUserProfile?.role === "admin";
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Membres de l'équipe</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <TeamMembersList isAdmin={isAdmin} currentUserId={session?.user?.id} />
-        </CardContent>
-      </Card>
-
-      {isAdmin && (
+    <AdminPageLayout title="Gestion de l'équipe">
+      <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Inviter un nouveau membre</CardTitle>
+            <CardTitle>Membres de l'équipe</CardTitle>
           </CardHeader>
           <CardContent>
-            <InviteTeamMember />
+            <TeamMembersList isAdmin={isAdmin} currentUserId={session?.user?.id} />
           </CardContent>
         </Card>
-      )}
-    </div>
+
+        {isAdmin && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Inviter un nouveau membre</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <InviteTeamMember />
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </AdminPageLayout>
   );
 }

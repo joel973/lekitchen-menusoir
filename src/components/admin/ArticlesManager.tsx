@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, Pencil, Archive } from "lucide-react";
 import { ArticleForm } from "./ArticleForm";
 import { ArchivedArticles } from "./ArchivedArticles";
+import { AdminPageLayout } from "./shared/AdminPageLayout";
 import {
   Select,
   SelectContent,
@@ -14,7 +15,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function ArticlesManager() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -83,12 +83,9 @@ export function ArticlesManager() {
 
   if (selectedArticle) {
     return (
-      <div className="space-y-6 p-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">
-            {selectedArticle.id ? "Modifier un article" : "Nouvel article"}
-          </h1>
-        </div>
+      <AdminPageLayout
+        title={selectedArticle.id ? "Modifier un article" : "Nouvel article"}
+      >
         <ArticleForm
           article={selectedArticle}
           onCancel={() => {
@@ -96,28 +93,29 @@ export function ArticlesManager() {
             refetch();
           }}
         />
-      </div>
+      </AdminPageLayout>
     );
   }
 
   if (showArchived) {
     return (
-      <div className="space-y-6 p-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Articles archivés</h1>
+      <AdminPageLayout
+        title="Articles archivés"
+        actions={
           <Button onClick={() => setShowArchived(false)} variant="outline">
             Retour aux articles
           </Button>
-        </div>
+        }
+      >
         <ArchivedArticles />
-      </div>
+      </AdminPageLayout>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Liste des articles</h1>
+    <AdminPageLayout
+      title="Liste des articles"
+      actions={
         <div className="flex gap-2">
           <Button onClick={() => setShowArchived(true)} variant="outline" size="sm">
             <Archive className="h-4 w-4 mr-2" />
@@ -128,37 +126,37 @@ export function ArticlesManager() {
             Nouvel article
           </Button>
         </div>
-      </div>
-
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Rechercher un article..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
+      }
+    >
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Rechercher un article..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+          <Select
+            value={selectedCategory}
+            onValueChange={(value) => setSelectedCategory(value === "all" ? undefined : value)}
+          >
+            <SelectTrigger className="w-full sm:w-[200px]">
+              <SelectValue placeholder="Toutes les catégories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les catégories</SelectItem>
+              {categories?.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.nom}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <Select
-          value={selectedCategory}
-          onValueChange={(value) => setSelectedCategory(value === "all" ? undefined : value)}
-        >
-          <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="Toutes les catégories" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Toutes les catégories</SelectItem>
-            {categories?.map((category) => (
-              <SelectItem key={category.id} value={category.id}>
-                {category.nom}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
 
-      <ScrollArea className="h-[calc(100vh-220px)]">
         <div className="space-y-4">
           {articles?.map((article) => (
             <Card key={article.id}>
@@ -187,7 +185,7 @@ export function ArticlesManager() {
             </Card>
           ))}
         </div>
-      </ScrollArea>
-    </div>
+      </div>
+    </AdminPageLayout>
   );
 }
