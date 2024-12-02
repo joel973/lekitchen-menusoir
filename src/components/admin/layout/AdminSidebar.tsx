@@ -121,15 +121,16 @@ export function AdminSidebar() {
       <div className="mt-auto p-4">
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <div className="font-medium">
-                  {profile?.first_name} {profile?.last_name}
-                </div>
-                <span className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">
-                  {profile?.role === "admin" ? "Admin" : "Membre"}
-                </span>
+            <div 
+              className="flex items-center gap-4 cursor-pointer"
+              onClick={() => navigate("/profile")}
+            >
+              <div className="font-medium">
+                {profile?.first_name} {profile?.last_name}
               </div>
+              <span className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">
+                {profile?.role === "admin" ? "Admin" : "Membre"}
+              </span>
             </div>
             <Button
               variant="ghost"
