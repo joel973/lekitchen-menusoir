@@ -13,5 +13,5 @@ export interface Log {
   entity_id: string;
   details: Json | null;
   created_at: string;
-  user: LogUser | null;
+  profiles: LogUser | null;
 }
