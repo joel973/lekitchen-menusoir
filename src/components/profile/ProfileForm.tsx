@@ -99,7 +99,12 @@ export function ProfileForm() {
           password: values.password,
         });
 
-        if (passwordError) throw passwordError;
+        if (passwordError) {
+          if (passwordError.message.includes("same_password")) {
+            throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
+          }
+          throw passwordError;
+        }
       }
 
       if (values.email !== session.user.email) {
@@ -112,10 +117,12 @@ export function ProfileForm() {
     },
     onSuccess: () => {
       toast.success("Profil mis à jour avec succès");
+      // Reset password field after successful update
+      form.setValue("password", "");
     },
     onError: (error) => {
       console.error("Error updating profile:", error);
-      toast.error("Erreur lors de la mise à jour du profil");
+      toast.error(error instanceof Error ? error.message : "Erreur lors de la mise à jour du profil");
     },
   });
 
