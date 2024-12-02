@@ -18,21 +18,24 @@ export function AdminPageLayout({
   actions,
 }: AdminPageLayoutProps) {
   const isMobile = useIsMobile();
+  console.log("AdminPageLayout rendering");
 
   return (
     <AdminMainLayout>
-      <AdminPageHeader 
-        title={title}
-        description={description}
-        actions={actions}
-        className={cn(
-          "glass-card rounded-lg",
-          isMobile ? "rounded-none" : ""
-        )}
-      />
-      <Card className="mt-4 relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
-        {children}
-      </Card>
+      <div className="flex flex-col flex-1">
+        <AdminPageHeader 
+          title={title}
+          description={description}
+          actions={actions}
+          className={cn(
+            "glass-card",
+            isMobile ? "rounded-none" : "rounded-lg"
+          )}
+        />
+        <Card className="m-4 glass-card border-0 shadow-none">
+          {children}
+        </Card>
+      </div>
     </AdminMainLayout>
   );
 }
