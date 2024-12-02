@@ -32,7 +32,10 @@ export function TeamManager() {
   const isAdmin = currentUserProfile?.role === "admin";
 
   return (
-    <AdminPageLayout title="Gestion de l'équipe">
+    <AdminPageLayout 
+      title="Gestion de l'équipe"
+      description="Gérez les membres de votre équipe et leurs permissions"
+    >
       <div className="space-y-6">
         <Card>
           <CardHeader>
