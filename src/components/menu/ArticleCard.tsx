@@ -45,8 +45,8 @@ export const ArticleCard = ({
             )}
           </div>
           <div className="ml-2">
-            <span className="font-display text-2xl font-bold">
-              {price.toFixed(2)} €
+            <span className="font-display text-lg font-semibold text-primary">
+              {price.toFixed(2)}€
             </span>
           </div>
         </div>
