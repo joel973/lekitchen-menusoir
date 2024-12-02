@@ -25,11 +25,50 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
       ? {
           ...article,
           prix: article.prix.toString(),
+          allergenes: [],
+          labels: [],
         }
       : {
           statut: "actif",
+          allergenes: [],
+          labels: [],
         },
   });
+
+  // Charger les allergènes et labels existants
+  const loadExistingRelations = async () => {
+    if (article?.id) {
+      const [allergenesResult, labelsResult] = await Promise.all([
+        supabase
+          .from("articles_allergenes")
+          .select("allergene_id")
+          .eq("article_id", article.id),
+        supabase
+          .from("articles_labels")
+          .select("label_id")
+          .eq("article_id", article.id),
+      ]);
+
+      if (!allergenesResult.error && allergenesResult.data) {
+        form.setValue(
+          "allergenes",
+          allergenesResult.data.map((item) => item.allergene_id)
+        );
+      }
+
+      if (!labelsResult.error && labelsResult.data) {
+        form.setValue(
+          "labels",
+          labelsResult.data.map((item) => item.label_id)
+        );
+      }
+    }
+  };
+
+  // Charger les relations existantes au montage du composant
+  React.useEffect(() => {
+    loadExistingRelations();
+  }, [article?.id]);
 
   const handleImageUpload = async (file: File): Promise<string | null> => {
     console.log("Uploading image:", file.name);
@@ -65,7 +104,6 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
     try {
       let imageUrl = values.url_image;
 
-      // Handle image upload if a new file is selected
       if (values.image_file && values.image_file.length > 0) {
         const uploadedUrl = await handleImageUpload(values.image_file[0]);
         if (uploadedUrl) {
@@ -82,7 +120,7 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
         url_image: imageUrl,
       };
 
-      console.log("Submitting article data:", articleData);
+      let articleId = article?.id;
 
       if (article?.id) {
         const { error } = await supabase
@@ -92,8 +130,57 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("articles").insert([articleData]);
+        const { data, error } = await supabase
+          .from("articles")
+          .insert([articleData])
+          .select()
+          .single();
+
         if (error) throw error;
+        articleId = data.id;
+      }
+
+      // Mettre à jour les relations avec les allergènes
+      if (articleId) {
+        // Supprimer les anciennes relations
+        await supabase
+          .from("articles_allergenes")
+          .delete()
+          .eq("article_id", articleId);
+
+        // Ajouter les nouvelles relations
+        if (values.allergenes.length > 0) {
+          const allergeneRelations = values.allergenes.map((allergeneId) => ({
+            article_id: articleId,
+            allergene_id: allergeneId,
+          }));
+
+          const { error: allergenesError } = await supabase
+            .from("articles_allergenes")
+            .insert(allergeneRelations);
+
+          if (allergenesError) throw allergenesError;
+        }
+
+        // Supprimer les anciennes relations avec les labels
+        await supabase
+          .from("articles_labels")
+          .delete()
+          .eq("article_id", articleId);
+
+        // Ajouter les nouvelles relations avec les labels
+        if (values.labels.length > 0) {
+          const labelRelations = values.labels.map((labelId) => ({
+            article_id: articleId,
+            label_id: labelId,
+          }));
+
+          const { error: labelsError } = await supabase
+            .from("articles_labels")
+            .insert(labelRelations);
+
+          if (labelsError) throw labelsError;
+        }
       }
 
       await queryClient.invalidateQueries({ queryKey: ["admin-articles"] });

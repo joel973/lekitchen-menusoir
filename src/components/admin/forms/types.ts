@@ -11,6 +11,8 @@ export const articleSchema = z.object({
     .instanceof(FileList)
     .optional()
     .transform((file) => (file?.length ? file : undefined)),
+  allergenes: z.array(z.string()).default([]),
+  labels: z.array(z.string()).default([]),
 });
 
 export type ArticleFormValues = z.infer<typeof articleSchema>;
