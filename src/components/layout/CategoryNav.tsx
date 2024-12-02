@@ -57,15 +57,11 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
                   size="sm"
                   onClick={() => scrollToCategory(category.id)}
                   className={cn(
-                    "rounded-[4px] font-medium transition-colors whitespace-nowrap",
+                    "rounded-[4px] font-medium transition-colors whitespace-nowrap hover:brightness-95",
                     selectedCategory === category.id && "text-content"
                   )}
                   style={{
-                    backgroundColor: parametres?.category_button_color,
-                    "&:hover": {
-                      backgroundColor: parametres?.category_button_color,
-                      filter: "brightness(95%)",
-                    },
+                    backgroundColor: parametres?.category_button_color
                   }}
                 >
                   {category.nom}
