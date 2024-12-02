@@ -20,15 +20,23 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#1a1a1a",
+          DEFAULT: "#0066FF",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#f5f5f5",
+          DEFAULT: "#f8f9fa",
           foreground: "#1a1a1a",
         },
-        accent: {
-          DEFAULT: "#00B14F",
+        success: {
+          DEFAULT: "#22c55e",
+          foreground: "#ffffff",
+        },
+        warning: {
+          DEFAULT: "#f97316",
+          foreground: "#ffffff",
+        },
+        error: {
+          DEFAULT: "#ef4444",
           foreground: "#ffffff",
         },
         border: "hsl(var(--border))",
@@ -54,13 +62,19 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Space Grotesk", "system-ui", "sans-serif"],
-        display: ["Syne", "Georgia", "serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
+        display: ["Inter", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "0.75rem",
+        md: "0.5rem",
+        sm: "0.25rem",
+      },
+      boxShadow: {
+        'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)',
+        'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)',
       },
       keyframes: {
         "accordion-down": {
