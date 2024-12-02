@@ -7,6 +7,7 @@ import { CustomizationManager } from "@/components/admin/CustomizationManager";
 import { ParametersManager } from "@/components/admin/ParametersManager";
 import { EstablishmentManager } from "@/components/admin/EstablishmentManager";
 import { TeamManager } from "@/components/admin/team/TeamManager";
+import { SupplementsManager } from "@/components/admin/SupplementsManager";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import Rush from "./Rush";
 
@@ -65,6 +66,12 @@ export default function Admin() {
         return (
           <div className="p-6">
             <TeamManager />
+          </div>
+        );
+      case "supplements":
+        return (
+          <div className="p-6">
+            <SupplementsManager />
           </div>
         );
       default:

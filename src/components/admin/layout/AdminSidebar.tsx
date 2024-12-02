@@ -8,6 +8,7 @@ import {
   Filter,
   Users,
   ClipboardList,
+  Plus,
 } from "lucide-react";
 import {
   Sidebar,
@@ -52,6 +53,11 @@ const menuItems = [
     title: "Labels",
     icon: ListCheck,
     tab: "labels",
+  },
+  {
+    title: "Suppléments",
+    icon: Plus,
+    tab: "supplements",
   },
   {
     title: "Établissement",
