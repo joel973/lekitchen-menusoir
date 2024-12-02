@@ -15,7 +15,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface LabelFormProps {
   label?: any;
@@ -75,12 +75,7 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
 
   return (
     <Card className="max-w-2xl mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-display">
-          {label ? "Modifier le label" : "Nouveau label"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

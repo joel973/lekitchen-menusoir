@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { useArticleFormSubmit } from "./forms/useArticleFormSubmit";
 import { useLoadExistingRelations } from "./forms/useLoadExistingRelations";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ArticleFormProps {
   article?: any;
@@ -35,12 +35,7 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
 
   return (
     <Card className="max-w-3xl mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-display">
-          {article ? "Modifier l'article" : "Nouvel article"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <ArticleFormFields />

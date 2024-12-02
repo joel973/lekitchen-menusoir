@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { categorySchema, type CategoryFormValues } from "./forms/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface CategoryFormProps {
   category?: any;
@@ -72,12 +72,7 @@ export function CategoryForm({ category, onCancel }: CategoryFormProps) {
 
   return (
     <Card className="max-w-2xl mx-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-display">
-          {category ? "Modifier la catégorie" : "Nouvelle catégorie"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField

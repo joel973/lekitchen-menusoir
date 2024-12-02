@@ -105,30 +105,39 @@ export function CategoriesManager() {
 
   if (isCreating || editingCategory) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {editingCategory ? "Modifier une catégorie" : "Nouvelle catégorie"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CategoryForm
-            category={editingCategory}
-            onCancel={() => {
-              setIsCreating(false);
-              setEditingCategory(null);
-            }}
-          />
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold font-display">
+              {editingCategory ? "Modifier une catégorie" : "Nouvelle catégorie"}
+            </h1>
+          </div>
+        </div>
+        <CategoryForm
+          category={editingCategory}
+          onCancel={() => {
+            setIsCreating(false);
+            setEditingCategory(null);
+          }}
+        />
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold font-display">Catégories</h1>
+          <p className="text-muted-foreground mt-1">
+            Gérez les catégories de votre carte
+          </p>
+        </div>
+      </div>
+
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle>Catégories</CardTitle>
+          <CardTitle className="text-lg font-semibold">Liste des catégories</CardTitle>
           <Button onClick={() => setIsCreating(true)} size="sm">
             <Plus className="h-4 w-4 mr-2" />
             Nouvelle catégorie

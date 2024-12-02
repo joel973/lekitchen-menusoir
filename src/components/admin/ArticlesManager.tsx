@@ -62,75 +62,95 @@ export function ArticlesManager() {
 
   if (isCreating || editingArticle) {
     return (
-      <ArticleForm
-        article={editingArticle}
-        onCancel={() => {
-          setIsCreating(false);
-          setEditingArticle(null);
-        }}
-      />
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold font-display">
+              {editingArticle ? "Modifier un article" : "Nouvel article"}
+            </h1>
+          </div>
+        </div>
+        <ArticleForm
+          article={editingArticle}
+          onCancel={() => {
+            setIsCreating(false);
+            setEditingArticle(null);
+          }}
+        />
+      </div>
     );
   }
 
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-        <CardTitle>Articles</CardTitle>
-        <Button onClick={() => setIsCreating(true)} size="sm">
-          <Plus className="h-4 w-4 mr-2" />
-          Nouvel article
-        </Button>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-6">
-          <Select
-            value={selectedCategory}
-            onValueChange={setSelectedCategory}
-          >
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Filtrer par catégorie" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Toutes les catégories</SelectItem>
-              {categories?.map((category) => (
-                <SelectItem key={category.id} value={category.id}>
-                  {category.nom}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold font-display">Articles</h1>
+          <p className="text-muted-foreground mt-1">
+            Gérez les articles de votre carte
+          </p>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom</TableHead>
-              <TableHead>Catégorie</TableHead>
-              <TableHead>Prix</TableHead>
-              <TableHead>Statut</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {articles?.map((article) => (
-              <TableRow key={article.id}>
-                <TableCell>{article.nom}</TableCell>
-                <TableCell>{article.categories?.nom}</TableCell>
-                <TableCell>{article.prix}€</TableCell>
-                <TableCell>{article.statut}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setEditingArticle(article)}
-                  >
-                    Modifier
-                  </Button>
-                </TableCell>
+      </div>
+
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+          <CardTitle className="text-lg font-semibold">Liste des articles</CardTitle>
+          <Button onClick={() => setIsCreating(true)} size="sm">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouvel article
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-6">
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Filtrer par catégorie" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Toutes les catégories</SelectItem>
+                {categories?.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.nom}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nom</TableHead>
+                <TableHead>Catégorie</TableHead>
+                <TableHead>Prix</TableHead>
+                <TableHead>Statut</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
+            </TableHeader>
+            <TableBody>
+              {articles?.map((article) => (
+                <TableRow key={article.id}>
+                  <TableCell>{article.nom}</TableCell>
+                  <TableCell>{article.categories?.nom}</TableCell>
+                  <TableCell>{article.prix}€</TableCell>
+                  <TableCell>{article.statut}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setEditingArticle(article)}
+                    >
+                      Modifier
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
