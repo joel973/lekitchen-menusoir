@@ -9,6 +9,7 @@ import { LabelsManager } from "@/components/admin/LabelsManager";
 import { ParametersManager } from "@/components/admin/ParametersManager";
 import { SupplementsManager } from "@/components/admin/SupplementsManager";
 import { TeamManager } from "@/components/admin/team/TeamManager";
+import Rush from "@/pages/Rush";
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
@@ -16,6 +17,8 @@ export default function Admin() {
 
   const renderContent = () => {
     switch (tab) {
+      case "rush":
+        return <Rush />;
       case "articles":
         return <ArticlesManager />;
       case "categories":
@@ -35,7 +38,7 @@ export default function Admin() {
       case "customization":
         return <CustomizationManager />;
       default:
-        return <ArticlesManager />;
+        return <Rush />;
     }
   };
 
