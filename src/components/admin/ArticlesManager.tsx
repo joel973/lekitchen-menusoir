@@ -97,7 +97,7 @@ export function ArticlesManager() {
           <DialogTrigger asChild>
             <Button>Ajouter un article</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl">
+          <DialogContent className="max-w-3xl mx-auto">
             <ArticleForm article={selectedArticle} onCancel={handleDialogClose} />
           </DialogContent>
         </Dialog>
@@ -135,24 +135,28 @@ export function ArticlesManager() {
         {articles?.map((article) => (
           <div 
             key={article.id} 
-            className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm relative group"
+            className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm relative"
           >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-4 top-4 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={() => handleEditArticle(article)}
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-            <h2 className="text-lg font-semibold">{article.nom}</h2>
-            <p className="text-muted-foreground">{article.description}</p>
-            <div className="mt-2 flex flex-wrap gap-2 text-sm text-muted-foreground">
-              <span>Prix: {article.prix} €</span>
-              <span>•</span>
-              <span>Catégorie: {article.categories?.nom}</span>
-              <span>•</span>
-              <span>Statut: {article.statut}</span>
+            <div className="flex justify-between items-start">
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold">{article.nom}</h2>
+                <p className="text-muted-foreground">{article.description}</p>
+                <div className="mt-2 flex flex-wrap gap-2 text-sm text-muted-foreground">
+                  <span>Prix: {article.prix} €</span>
+                  <span>•</span>
+                  <span>Catégorie: {article.categories?.nom}</span>
+                  <span>•</span>
+                  <span>Statut: {article.statut}</span>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleEditArticle(article)}
+                className="ml-4"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         ))}
