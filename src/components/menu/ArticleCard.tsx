@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
 
 interface ArticleCardProps {
   title: string;
@@ -51,9 +50,6 @@ export const ArticleCard = ({
               />
             </div>
           )}
-          <button className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-lg hover:bg-accent/90 transition-all duration-200 hover:scale-105">
-            <Plus className="h-5 w-5" />
-          </button>
         </div>
       </div>
     </Card>
