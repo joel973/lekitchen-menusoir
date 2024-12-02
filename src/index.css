@@ -56,24 +56,24 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
   h1 {
-    @apply text-3xl font-semibold tracking-tight text-content;
+    @apply text-3xl font-medium tracking-tight text-content;
   }
   h2 {
-    @apply text-2xl font-semibold tracking-tight text-content;
+    @apply text-2xl font-medium tracking-tight text-content;
   }
   h3 {
-    @apply text-xl font-semibold tracking-tight text-content;
+    @apply text-xl font-medium tracking-tight text-content;
   }
   h4 {
-    @apply text-lg font-semibold text-content;
+    @apply text-lg font-medium text-content;
   }
   p {
     @apply leading-relaxed text-content-secondary;
   }
   .glass-card {
-    @apply bg-white/70 backdrop-blur-glass shadow-glass border border-white/20;
+    @apply bg-white/70 backdrop-blur-glass shadow-glass border border-white/20 transition-all duration-200;
   }
   .glass-sidebar {
-    @apply bg-white/80 backdrop-blur-glass shadow-glass border-r border-divider;
+    @apply bg-white/80 backdrop-blur-glass shadow-glass border-r border-divider transition-all duration-200;
   }
 }

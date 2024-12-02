@@ -82,7 +82,7 @@ export function AdminSidebar() {
       <div className="fixed top-0 left-0 z-50 w-full border-b bg-white/80 backdrop-blur-glass md:hidden">
         <div className="flex h-16 items-center px-4">
           <SidebarTrigger />
-          <span className="ml-4 font-display text-lg font-semibold text-content">
+          <span className="ml-4 font-display text-lg font-medium text-content">
             Administration
           </span>
         </div>
@@ -90,13 +90,13 @@ export function AdminSidebar() {
 
       <Sidebar variant={isMobile ? "floating" : "sidebar"} className="glass-sidebar">
         <SidebarHeader className="p-6">
-          <span className="font-display text-lg font-semibold text-content">
+          <span className="font-display text-lg font-medium text-content">
             Administration
           </span>
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel className="text-content-tertiary">
+            <SidebarGroupLabel className="text-xs font-medium text-content-tertiary">
               Menu
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -107,7 +107,7 @@ export function AdminSidebar() {
                       onClick={() => handleNavigation(item.tab)}
                       isActive={currentTab === item.tab}
                       tooltip={item.title}
-                      className="hover:bg-hover"
+                      className="hover:bg-hover transition-colors duration-200"
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
