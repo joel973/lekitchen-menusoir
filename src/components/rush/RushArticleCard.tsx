@@ -39,10 +39,8 @@ export function RushArticleCard({
   const isVisible = article.statut === "actif";
   const isDisabled = isUpdatingLabels || isUpdatingStatus;
 
-  // Get the names of selected labels
-  const selectedLabelsNames = labels
-    .filter((label) => articleLabels.includes(label.id))
-    .map((label) => label.nom);
+  // Get the selected labels with their full data
+  const selectedLabels = labels.filter((label) => articleLabels.includes(label.id));
 
   return (
     <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200 w-full">
@@ -106,6 +104,7 @@ export function RushArticleCard({
                       toggleLabel(label.id, articleLabels.includes(label.id))
                     }
                     className="flex items-center justify-between cursor-pointer"
+                    style={{ backgroundColor: articleLabels.includes(label.id) ? `${label.couleur}20` : undefined }}
                   >
                     <span>{label.nom}</span>
                     {articleLabels.includes(label.id) && (
@@ -118,11 +117,19 @@ export function RushArticleCard({
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          {selectedLabelsNames.length > 0 && (
+          {selectedLabels.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {selectedLabelsNames.map((labelName) => (
-                <Badge key={labelName} variant="secondary">
-                  {labelName}
+              {selectedLabels.map((label) => (
+                <Badge 
+                  key={label.id} 
+                  variant="secondary"
+                  style={{ 
+                    backgroundColor: `${label.couleur}20`,
+                    color: label.couleur,
+                    borderColor: label.couleur
+                  }}
+                >
+                  {label.nom}
                 </Badge>
               ))}
             </div>
