@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Table,
@@ -33,6 +33,7 @@ export function LabelsManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingLabel, setEditingLabel] = useState<any>(null);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
