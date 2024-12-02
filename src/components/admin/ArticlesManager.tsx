@@ -1,53 +1,47 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 import { ArticleForm } from "./ArticleForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 export function ArticlesManager() {
-  const [isCreating, setIsCreating] = useState(false);
-  const [editingArticle, setEditingArticle] = useState<any>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { data: categories } = useQuery({
-    queryKey: ["admin-categories"],
+  const { data: articles, refetch } = useQuery({
+    queryKey: ["admin-articles", searchQuery],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*")
-        .order("ordre");
-      if (error) throw error;
-      return data;
-    },
-  });
-
-  const { data: articles, isLoading } = useQuery({
-    queryKey: ["admin-articles", selectedCategory],
-    queryFn: async () => {
+      console.log("Fetching articles with search:", searchQuery);
       let query = supabase
         .from("articles")
-        .select("*, categories(nom)")
+        .select(`
+          *,
+          categories (
+            id,
+            nom
+          ),
+          articles_allergenes (
+            allergene_id,
+            allergenes (
+              id,
+              nom
+            )
+          ),
+          articles_labels (
+            label_id,
+            labels (
+              id,
+              nom
+            )
+          )
+        `)
         .order("created_at", { ascending: false });
 
-      if (selectedCategory !== "all") {
-        query = query.eq("categorie_id", selectedCategory);
+      if (searchQuery) {
+        query = query.ilike("nom", `%${searchQuery}%`);
       }
 
       const { data, error } = await query;
@@ -56,101 +50,46 @@ export function ArticlesManager() {
     },
   });
 
-  if (isLoading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (isCreating || editingArticle) {
-    return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold font-display">
-              {editingArticle ? "Modifier un article" : "Nouvel article"}
-            </h1>
-          </div>
-        </div>
-        <ArticleForm
-          article={editingArticle}
-          onCancel={() => {
-            setIsCreating(false);
-            setEditingArticle(null);
-          }}
-        />
-      </div>
-    );
-  }
+  const handleArticleSubmit = async () => {
+    setIsDialogOpen(false);
+    await refetch();
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold font-display">Articles</h1>
-          <p className="text-muted-foreground mt-1">
-            Gérez les articles de votre carte
-          </p>
-        </div>
+        <h1>Articles</h1>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>Ajouter un article</Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-3xl">
+            <ArticleForm onSubmit={handleArticleSubmit} />
+          </DialogContent>
+        </Dialog>
       </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-lg font-semibold">Liste des articles</CardTitle>
-          <Button onClick={() => setIsCreating(true)} size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvel article
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <div className="mb-6">
-            <Select
-              value={selectedCategory}
-              onValueChange={setSelectedCategory}
-            >
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Filtrer par catégorie" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Toutes les catégories</SelectItem>
-                {categories?.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.nom}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <div className="relative w-full max-w-xl">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Rechercher un article..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-9 w-full"
+        />
+      </div>
+
+      <div className="space-y-4">
+        {articles?.map((article) => (
+          <div key={article.id} className="border-b border-muted-foreground py-4">
+            <h2 className="text-lg font-semibold">{article.nom}</h2>
+            <p>{article.description}</p>
+            <p className="text-sm text-muted-foreground">Prix: {article.prix} €</p>
+            <p className="text-sm text-muted-foreground">Catégorie: {article.categories.nom}</p>
+            {/* Add more fields as needed */}
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nom</TableHead>
-                <TableHead>Catégorie</TableHead>
-                <TableHead>Prix</TableHead>
-                <TableHead>Statut</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {articles?.map((article) => (
-                <TableRow key={article.id}>
-                  <TableCell>{article.nom}</TableCell>
-                  <TableCell>{article.categories?.nom}</TableCell>
-                  <TableCell>{article.prix}€</TableCell>
-                  <TableCell>{article.statut}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingArticle(article)}
-                    >
-                      Modifier
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
     </div>
   );
 }
