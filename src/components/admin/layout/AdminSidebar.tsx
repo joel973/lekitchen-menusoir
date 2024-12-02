@@ -18,41 +18,44 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { UserProfileDisplay } from "../UserProfileDisplay";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   {
     title: "Articles",
     icon: UtensilsCrossed,
-    href: "#articles",
+    path: "/admin/articles",
   },
   {
     title: "Catégories",
     icon: Tag,
-    href: "#categories",
+    path: "/admin/categories",
   },
   {
     title: "Allergènes",
     icon: AlertTriangle,
-    href: "#allergenes",
+    path: "/admin/allergenes",
   },
   {
     title: "Établissement",
     icon: Store,
-    href: "#etablissement",
+    path: "/admin/etablissement",
   },
   {
     title: "Personnalisation",
     icon: Palette,
-    href: "#personnalisation",
+    path: "/admin/personnalisation",
   },
   {
     title: "Paramètres",
     icon: Settings,
-    href: "#parametres",
+    path: "/admin/parametres",
   },
 ];
 
 export function AdminSidebar() {
+  const navigate = useNavigate();
+
   return (
     <Sidebar className="border-r bg-white">
       <SidebarHeader className="border-b px-6 py-3">
@@ -65,14 +68,12 @@ export function AdminSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a 
-                      href={item.href} 
-                      className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors"
-                    >
-                      <item.icon className="h-5 w-5 text-gray-500" />
-                      <span className="text-sm font-medium">{item.title}</span>
-                    </a>
+                  <SidebarMenuButton
+                    onClick={() => navigate(item.path)}
+                    className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors"
+                  >
+                    <item.icon className="h-5 w-5 text-gray-500" />
+                    <span className="text-sm font-medium">{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
