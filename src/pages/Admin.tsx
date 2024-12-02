@@ -11,7 +11,7 @@ import Rush from "./Rush";
 
 export default function Admin() {
   const [searchParams] = useSearchParams();
-  const currentTab = searchParams.get("tab") || "articles";
+  const currentTab = searchParams.get("tab") || "rush";
 
   const renderContent = () => {
     switch (currentTab) {
@@ -32,7 +32,7 @@ export default function Admin() {
       case "etablissement":
         return <EstablishmentManager />;
       default:
-        return <ArticlesManager />;
+        return <Rush />;
     }
   };
 
