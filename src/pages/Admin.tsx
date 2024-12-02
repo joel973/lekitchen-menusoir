@@ -5,21 +5,19 @@ import { AllergenesManager } from "@/components/admin/AllergenesManager";
 import { LabelsManager } from "@/components/admin/LabelsManager";
 import { CustomizationManager } from "@/components/admin/CustomizationManager";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
+import Rush from "./Rush";
 
 export default function Admin() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab") || "articles";
 
   console.log("Admin component - Current tab:", currentTab);
 
-  const handleTabChange = (tab: string) => {
-    console.log("Tab change requested:", tab);
-    setSearchParams({ tab }, { replace: true });
-  };
-
   const renderContent = () => {
     console.log("Rendering content for tab:", currentTab);
     switch (currentTab) {
+      case "rush":
+        return <Rush />;
       case "articles":
         return <ArticlesManager />;
       case "categories":

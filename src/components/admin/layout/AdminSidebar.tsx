@@ -6,6 +6,7 @@ import {
   Palette,
   Settings,
   ListCheck,
+  Filter,
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,6 +23,11 @@ import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const menuItems = [
+  {
+    title: "Rush",
+    icon: Filter,
+    tab: "rush",
+  },
   {
     title: "Articles",
     icon: UtensilsCrossed,
