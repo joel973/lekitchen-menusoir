@@ -100,92 +100,94 @@ export function RushArticleCard({
   ) || [];
 
   return (
-    <Card className="overflow-hidden">
-      <div className="border-b p-4">
+    <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200">
+      <div className="p-6 space-y-6">
+        {/* Header Section */}
         <div className="flex justify-between items-start gap-4">
-          <div>
-            <h3 className="font-semibold">{article.nom}</h3>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-3">
+              <h3 className="text-lg font-semibold text-gray-900">{article.nom}</h3>
+              <Badge
+                variant={
+                  article.statut === "actif"
+                    ? "default"
+                    : article.statut === "inactif"
+                    ? "secondary"
+                    : "destructive"
+                }
+                className="capitalize"
+              >
+                {article.statut === "actif"
+                  ? "Affiché"
+                  : article.statut === "inactif"
+                  ? "Masqué"
+                  : "Rupture"}
+              </Badge>
+            </div>
             <p className="text-sm text-muted-foreground">
               {article.categories?.nom}
             </p>
           </div>
-          <Badge
-            variant={
-              article.statut === "actif"
-                ? "default"
-                : article.statut === "inactif"
-                ? "secondary"
-                : "destructive"
-            }
-          >
-            {article.statut === "actif"
-              ? "Affiché"
-              : article.statut === "inactif"
-              ? "Masqué"
-              : "Rupture"}
-          </Badge>
-        </div>
-      </div>
-
-      <div className="border-b p-4">
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateStatus("actif")}
-            disabled={isUpdating || article.statut === "actif"}
-            className="flex-1"
-          >
-            <Eye className="h-4 w-4 mr-2" />
-            Afficher
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateStatus("inactif")}
-            disabled={isUpdating || article.statut === "inactif"}
-            className="flex-1"
-          >
-            <EyeOff className="h-4 w-4 mr-2" />
-            Masquer
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateStatus("rupture")}
-            disabled={isUpdating || article.statut === "rupture"}
-            className="flex-1"
-          >
-            <XOctagon className="h-4 w-4 mr-2" />
-            Rupture
-          </Button>
-        </div>
-      </div>
-
-      <div className="p-4">
-        <p className="text-sm font-medium mb-3">Labels :</p>
-        <div className="grid grid-cols-2 gap-3">
-          {labels.map((label) => (
-            <div
-              key={label.id}
-              className="flex items-center space-x-2"
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => updateStatus("actif")}
+              disabled={isUpdating || article.statut === "actif"}
+              className="w-24"
             >
-              <Checkbox
-                id={`label-${article.id}-${label.id}`}
-                checked={articleLabels.includes(label.id)}
-                onCheckedChange={(checked) =>
-                  toggleLabel(label.id, checked as boolean)
-                }
-                disabled={isUpdating}
-              />
-              <label
-                htmlFor={`label-${article.id}-${label.id}`}
-                className="text-sm"
+              <Eye className="h-4 w-4 mr-2" />
+              Afficher
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => updateStatus("inactif")}
+              disabled={isUpdating || article.statut === "inactif"}
+              className="w-24"
+            >
+              <EyeOff className="h-4 w-4 mr-2" />
+              Masquer
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => updateStatus("rupture")}
+              disabled={isUpdating || article.statut === "rupture"}
+              className="w-24"
+            >
+              <XOctagon className="h-4 w-4 mr-2" />
+              Rupture
+            </Button>
+          </div>
+        </div>
+
+        {/* Labels Section */}
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-900">Labels :</h4>
+          <div className="grid grid-cols-2 gap-4">
+            {labels.map((label) => (
+              <div
+                key={label.id}
+                className="flex items-center space-x-2 bg-gray-50 p-3 rounded-lg"
               >
-                {label.nom}
-              </label>
-            </div>
-          ))}
+                <Checkbox
+                  id={`label-${article.id}-${label.id}`}
+                  checked={articleLabels.includes(label.id)}
+                  onCheckedChange={(checked) =>
+                    toggleLabel(label.id, checked as boolean)
+                  }
+                  disabled={isUpdating}
+                />
+                <label
+                  htmlFor={`label-${article.id}-${label.id}`}
+                  className="text-sm font-medium text-gray-700 cursor-pointer select-none"
+                >
+                  {label.nom}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Card>
