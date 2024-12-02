@@ -9,9 +9,9 @@ interface AdminMainLayoutProps {
 
 export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
   return (
-    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr] bg-surface">
       <AdminSidebar />
-      <div className="flex flex-col">
+      <div className="flex flex-col animate-fade-in">
         <ScrollArea className="flex-1 h-screen">
           <main className={cn("flex-1 p-4 md:p-6", className)}>{children}</main>
         </ScrollArea>

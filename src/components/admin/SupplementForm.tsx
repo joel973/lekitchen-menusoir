@@ -37,7 +37,6 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
 
   const handleDelete = async () => {
     try {
-      // First, check if the supplement is attached to any articles
       const { data: attachedArticles, error: checkError } = await supabase
         .from("articles_supplements")
         .select("articles (*)")
@@ -77,7 +76,6 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
     }
   };
 
-  // Afficher les articles associés
   const { data: attachedArticles } = useQuery({
     queryKey: ["supplement-articles", supplement?.id],
     queryFn: async () => {
@@ -100,7 +98,7 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
   });
 
   return (
-    <Card className="max-w-3xl mx-auto">
+    <Card className="max-w-3xl mx-auto glass-card animate-scale-in">
       <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -111,11 +109,16 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
                   Ce supplément est utilisé dans les articles suivants :
-                  <ul className="mt-2 list-disc list-inside">
+                  <div className="mt-2 flex flex-wrap gap-1">
                     {attachedArticles.map((article: any) => (
-                      <li key={article.id}>{article.nom}</li>
+                      <span 
+                        key={article.id}
+                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground"
+                      >
+                        {article.nom}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </AlertDescription>
               </Alert>
             )}
@@ -127,7 +130,7 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
                   variant="outline"
                   onClick={onCancel}
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto"
+                  className="w-full sm:w-auto hover:bg-secondary/80"
                 >
                   Annuler
                 </Button>

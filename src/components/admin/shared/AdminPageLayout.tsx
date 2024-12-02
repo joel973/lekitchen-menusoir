@@ -22,9 +22,10 @@ export function AdminPageLayout({
         title={title}
         description={description}
         actions={actions}
+        className="glass-card"
       />
       <div className="container py-6">
-        <Card className="relative overflow-hidden">
+        <Card className="relative overflow-hidden glass-card animate-scale-in">
           <ScrollArea className="h-[calc(100vh-12rem)]">
             <div className="p-6">{children}</div>
           </ScrollArea>
