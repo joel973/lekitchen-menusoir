@@ -1,21 +1,30 @@
 import { useNavigate } from "react-router-dom";
-import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import { toast } from "sonner";
 
 export function UserProfileDisplay() {
-  const supabase = useSupabaseClient();
-  const user = useUser();
   const navigate = useNavigate();
 
+  const { data: session } = useQuery({
+    queryKey: ["session"],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      return session;
+    },
+  });
+
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast.error("Erreur lors de la déconnexion");
-    } else {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Déconnexion réussie");
       navigate("/login");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+      toast.error("Erreur lors de la déconnexion");
     }
   };
 
@@ -23,19 +32,19 @@ export function UserProfileDisplay() {
     navigate("/profile");
   };
 
-  if (!user) return null;
+  if (!session?.user) return null;
 
   return (
     <div className="flex flex-col gap-4 p-4 border-t">
       <div className="flex items-center gap-3">
         <Avatar>
           <AvatarFallback>
-            {user.email?.charAt(0).toUpperCase() || "U"}
+            {session.user.email?.charAt(0).toUpperCase() || "U"}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium leading-none truncate">
-            {user.email}
+            {session.user.email}
           </p>
         </div>
       </div>
