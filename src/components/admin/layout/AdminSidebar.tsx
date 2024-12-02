@@ -7,6 +7,7 @@ import {
   Settings,
   ListCheck,
   Filter,
+  Menu,
 } from "lucide-react";
 import {
   Sidebar,
@@ -18,9 +19,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const menuItems = [
   {
@@ -71,41 +74,43 @@ export function AdminSidebar() {
   const currentTab = searchParams.get("tab");
 
   const handleNavigation = (tab: string) => {
-    console.log("Avant navigation - URL actuelle:", window.location.href);
-    console.log("Tab demandé:", tab);
-    
     navigate(`/equipe?tab=${tab}`, { replace: true });
-    
-    console.log("Après navigation - Nouvelle URL:", window.location.href);
   };
 
   return (
-    <Sidebar className="border-r bg-white">
-      <SidebarHeader className="border-b px-6 py-3">
-        <h2 className="font-display text-lg font-bold">Administration</h2>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    onClick={() => handleNavigation(item.tab)}
-                    isActive={currentTab === item.tab}
-                    className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    <item.icon className="h-5 w-5 text-gray-500" />
-                    <span className="text-sm font-medium">{item.title}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <UserProfileDisplay />
-    </Sidebar>
+    <>
+      <div className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-6 lg:hidden">
+        <SidebarTrigger />
+        <span className="font-display text-lg font-bold">Administration</span>
+      </div>
+
+      <Sidebar>
+        <SidebarHeader className="border-b p-6">
+          <span className="font-display text-lg font-bold">Administration</span>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Menu</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {menuItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      onClick={() => handleNavigation(item.tab)}
+                      isActive={currentTab === item.tab}
+                      tooltip={item.title}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+        <UserProfileDisplay />
+      </Sidebar>
+    </>
   );
 }

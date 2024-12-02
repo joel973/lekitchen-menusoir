@@ -6,10 +6,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthGuard>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex min-h-screen w-full bg-gray-50/50">
           <AdminSidebar />
-          <main className="flex-1 overflow-auto bg-gray-50">
-            <div className="mx-auto max-w-7xl p-6">
+          <main className="flex-1 overflow-auto">
+            <div className="container max-w-7xl py-6 space-y-6">
               {children}
             </div>
           </main>

@@ -11,10 +11,7 @@ export default function Admin() {
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab") || "articles";
 
-  console.log("Admin component - Current tab:", currentTab);
-
   const renderContent = () => {
-    console.log("Rendering content for tab:", currentTab);
     switch (currentTab) {
       case "rush":
         return <Rush />;
@@ -35,9 +32,7 @@ export default function Admin() {
 
   return (
     <AdminLayout>
-      <div className="space-y-4">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </AdminLayout>
   );
 }
