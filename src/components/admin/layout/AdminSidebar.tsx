@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [

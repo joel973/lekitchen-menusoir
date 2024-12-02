@@ -21,56 +21,100 @@ export default function Admin() {
         return <Rush />;
       case "articles":
         return (
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Articles</h1>
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Articles</h1>
+              </div>
+            </div>
             <ArticlesManager />
           </div>
         );
       case "categories":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Catégories</h1>
+              </div>
+            </div>
             <CategoriesManager />
           </div>
         );
       case "allergenes":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Allergènes</h1>
+              </div>
+            </div>
             <AllergenesManager />
           </div>
         );
       case "labels":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Labels</h1>
+              </div>
+            </div>
             <LabelsManager />
           </div>
         );
       case "customization":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Personnalisation</h1>
+              </div>
+            </div>
             <CustomizationManager />
           </div>
         );
       case "parametres":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Paramètres</h1>
+              </div>
+            </div>
             <ParametersManager />
           </div>
         );
       case "etablissement":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Établissement</h1>
+              </div>
+            </div>
             <EstablishmentManager />
           </div>
         );
       case "team":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Équipe</h1>
+              </div>
+            </div>
             <TeamManager />
           </div>
         );
       case "supplements":
         return (
-          <div className="p-6">
+          <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <h1 className="text-2xl font-bold">Suppléments</h1>
+              </div>
+            </div>
             <SupplementsManager />
           </div>
         );

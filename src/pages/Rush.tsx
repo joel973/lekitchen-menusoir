@@ -22,8 +22,12 @@ export default function Rush() {
   });
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Rush - Gestion rapide</h1>
+    <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex items-center gap-4">
+        <div className="flex-1">
+          <h1 className="text-2xl font-bold">Rush - Gestion rapide</h1>
+        </div>
+      </div>
       <div 
         className="space-y-6 rounded-lg border p-6"
         style={{ 
