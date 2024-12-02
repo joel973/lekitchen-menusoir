@@ -40,12 +40,14 @@ export function AllergeneForm({ allergene, onCancel }: AllergeneFormProps) {
       if (allergene?.id) {
         const { error } = await supabase
           .from("allergenes")
-          .update(values)
+          .update({ nom: values.nom })
           .eq("id", allergene.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("allergenes").insert([values]);
+        const { error } = await supabase
+          .from("allergenes")
+          .insert({ nom: values.nom });
         if (error) throw error;
       }
 

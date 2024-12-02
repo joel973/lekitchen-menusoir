@@ -40,12 +40,14 @@ export function LabelForm({ label, onCancel }: LabelFormProps) {
       if (label?.id) {
         const { error } = await supabase
           .from("labels")
-          .update(values)
+          .update({ nom: values.nom })
           .eq("id", label.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("labels").insert([values]);
+        const { error } = await supabase
+          .from("labels")
+          .insert({ nom: values.nom });
         if (error) throw error;
       }
 
