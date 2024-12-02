@@ -38,7 +38,9 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
   };
 
   const onSubmit = async (values: ArticleFormValues) => {
-    console.log("Form values:", values);
+    console.log("Starting form submission with values:", values);
+    console.log("Article being edited:", article);
+    
     setIsSubmitting(true);
     try {
       let imageUrl = values.url_image;
@@ -59,28 +61,42 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
         url_image: imageUrl,
       };
 
+      console.log("Prepared article data:", articleData);
       let articleId = article?.id;
 
       if (article?.id) {
+        console.log("Updating existing article with ID:", article.id);
         const { error } = await supabase
           .from("articles")
           .update(articleData)
           .eq("id", article.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error("Error updating article:", error);
+          throw error;
+        }
+        console.log("Article updated successfully");
       } else {
+        console.log("Creating new article");
         const { data, error } = await supabase
           .from("articles")
           .insert([articleData])
           .select()
           .single();
 
-        if (error) throw error;
+        if (error) {
+          console.error("Error creating article:", error);
+          throw error;
+        }
         articleId = data.id;
+        console.log("New article created with ID:", articleId);
       }
 
       // Mettre à jour les relations avec les allergènes
       if (articleId) {
+        console.log("Updating allergenes relations for article:", articleId);
+        console.log("Selected allergenes:", values.allergenes);
+        
         await supabase
           .from("articles_allergenes")
           .delete()
@@ -96,9 +112,16 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
             .from("articles_allergenes")
             .insert(allergeneRelations);
 
-          if (allergenesError) throw allergenesError;
+          if (allergenesError) {
+            console.error("Error updating allergenes:", allergenesError);
+            throw allergenesError;
+          }
+          console.log("Allergenes relations updated successfully");
         }
 
+        console.log("Updating labels relations for article:", articleId);
+        console.log("Selected labels:", values.labels);
+        
         await supabase
           .from("articles_labels")
           .delete()
@@ -114,7 +137,11 @@ export const useArticleFormSubmit = (article: any | undefined, onCancel: () => v
             .from("articles_labels")
             .insert(labelRelations);
 
-          if (labelsError) throw labelsError;
+          if (labelsError) {
+            console.error("Error updating labels:", labelsError);
+            throw labelsError;
+          }
+          console.log("Labels relations updated successfully");
         }
       }
 
