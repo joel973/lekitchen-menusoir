@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -14,14 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-
-const categorySchema = z.object({
-  nom: z.string().min(1, "Le nom est requis"),
-  mode_affichage: z.enum(["photos", "liste"]),
-  ordre: z.string().transform((val) => parseInt(val, 10)),
-});
-
-type CategoryFormValues = z.infer<typeof categorySchema>;
+import { categorySchema, type CategoryFormValues } from "./forms/types";
 
 interface CategoryFormProps {
   category?: any;
@@ -45,12 +37,18 @@ export function CategoryForm({ category, onCancel }: CategoryFormProps) {
 
   const onSubmit = async (values: CategoryFormValues) => {
     try {
+      const submitData = {
+        nom: values.nom,
+        mode_affichage: values.mode_affichage,
+        ordre: values.ordre,
+      };
+
       const { error } = category
         ? await supabase
             .from("categories")
-            .update(values)
+            .update(submitData)
             .eq("id", category.id)
-        : await supabase.from("categories").insert(values);
+        : await supabase.from("categories").insert(submitData);
 
       if (error) throw error;
 
