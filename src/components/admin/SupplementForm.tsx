@@ -6,10 +6,11 @@ import { Form } from "@/components/ui/form";
 import { BasicSupplementFields } from "./forms/fields/BasicSupplementFields";
 import { useSupplementFormSubmit } from "./forms/useSupplementFormSubmit";
 import { Card, CardContent } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
+import { Trash2, AlertCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface SupplementFormProps {
   supplement?: any;
@@ -39,7 +40,7 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
       // First, check if the supplement is attached to any articles
       const { data: attachedArticles, error: checkError } = await supabase
         .from("articles_supplements")
-        .select("article_id")
+        .select("articles (*)")
         .eq("supplement_id", supplement.id);
 
       if (checkError) throw checkError;
@@ -48,7 +49,7 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
         toast({
           variant: "destructive",
           title: "Impossible de supprimer",
-          description: "Ce supplément est attaché à un ou plusieurs articles",
+          description: "Ce supplément est attaché à un ou plusieurs articles. Veuillez d'abord le détacher des articles.",
         });
         return;
       }
@@ -76,12 +77,49 @@ export function SupplementForm({ supplement, onCancel }: SupplementFormProps) {
     }
   };
 
+  // Afficher les articles associés
+  const { data: attachedArticles } = useQuery({
+    queryKey: ["supplement-articles", supplement?.id],
+    queryFn: async () => {
+      if (!supplement?.id) return [];
+      
+      const { data, error } = await supabase
+        .from("articles_supplements")
+        .select(`
+          articles (
+            id,
+            nom
+          )
+        `)
+        .eq("supplement_id", supplement.id);
+      
+      if (error) throw error;
+      return data?.map(item => item.articles) || [];
+    },
+    enabled: !!supplement?.id,
+  });
+
   return (
     <Card className="max-w-3xl mx-auto">
       <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <BasicSupplementFields />
+
+            {supplement && attachedArticles && attachedArticles.length > 0 && (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Ce supplément est utilisé dans les articles suivants :
+                  <ul className="mt-2 list-disc list-inside">
+                    {attachedArticles.map((article: any) => (
+                      <li key={article.id}>{article.nom}</li>
+                    ))}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
+
             <div className="flex flex-col-reverse sm:flex-row justify-between gap-4 pt-6 border-t">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
