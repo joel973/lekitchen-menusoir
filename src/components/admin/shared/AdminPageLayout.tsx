@@ -3,6 +3,7 @@ import { AdminPageHeader } from "../layout/AdminPageHeader";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 interface AdminPageLayoutProps {
   title: string;
