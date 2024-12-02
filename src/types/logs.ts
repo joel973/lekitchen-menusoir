@@ -1,7 +1,6 @@
 import { Json } from "@/integrations/supabase/types";
 
 export interface LogUser {
-  id: string;
   first_name: string | null;
   last_name: string | null;
 }
@@ -14,5 +13,5 @@ export interface Log {
   entity_id: string;
   details: Json | null;
   created_at: string;
-  profile: LogUser | null;
+  user: LogUser | null;
 }
