@@ -6,6 +6,7 @@ import { LabelsManager } from "@/components/admin/LabelsManager";
 import { CustomizationManager } from "@/components/admin/CustomizationManager";
 import { ParametersManager } from "@/components/admin/ParametersManager";
 import { EstablishmentManager } from "@/components/admin/EstablishmentManager";
+import { TeamManager } from "@/components/admin/team/TeamManager";
 import { AdminLayout } from "@/components/admin/layout/AdminLayout";
 import Rush from "./Rush";
 
@@ -31,6 +32,8 @@ export default function Admin() {
         return <ParametersManager />;
       case "etablissement":
         return <EstablishmentManager />;
+      case "team":
+        return <TeamManager />;
       default:
         return <Rush />;
     }

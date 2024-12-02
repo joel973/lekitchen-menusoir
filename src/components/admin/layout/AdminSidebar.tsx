@@ -6,6 +6,7 @@ import {
   Settings,
   ListCheck,
   Filter,
+  Users,
 } from "lucide-react";
 import {
   Sidebar,
@@ -53,6 +54,11 @@ const menuItems = [
     title: "Établissement",
     icon: Store,
     tab: "etablissement",
+  },
+  {
+    title: "Équipe",
+    icon: Users,
+    tab: "team",
   },
   {
     title: "Paramètres",
