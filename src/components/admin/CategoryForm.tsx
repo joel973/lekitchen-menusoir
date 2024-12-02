@@ -14,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { categorySchema, type CategoryFormValues } from "./forms/types";
-import { Card, CardContent } from "@/components/ui/card";
 
 interface CategoryFormProps {
   category?: any;
@@ -71,74 +70,70 @@ export function CategoryForm({ category, onCancel }: CategoryFormProps) {
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <CardContent className="p-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="nom"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold">Nom</FormLabel>
-                  <FormControl>
-                    <Input {...field} className="h-12" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="nom"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold">Nom</FormLabel>
+              <FormControl>
+                <Input {...field} className="h-12" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <FormField
-              control={form.control}
-              name="mode_affichage"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold">Mode d'affichage</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      <option value="photos">Photos</option>
-                      <option value="liste">Liste</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <FormField
+          control={form.control}
+          name="mode_affichage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold">Mode d'affichage</FormLabel>
+              <FormControl>
+                <select
+                  {...field}
+                  className="flex h-12 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="photos">Photos</option>
+                  <option value="liste">Liste</option>
+                </select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <FormField
-              control={form.control}
-              name="ordre"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base font-semibold">Ordre</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" className="h-12" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <FormField
+          control={form.control}
+          name="ordre"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold">Ordre</FormLabel>
+              <FormControl>
+                <Input {...field} type="number" className="h-12" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onCancel}
-                className="w-full sm:w-auto"
-              >
-                Annuler
-              </Button>
-              <Button type="submit" className="w-full sm:w-auto">
-                {category ? "Modifier" : "Créer"}
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+        <div className="flex flex-col-reverse sm:flex-row justify-end gap-4 pt-6 border-t">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            className="w-full sm:w-auto"
+          >
+            Annuler
+          </Button>
+          <Button type="submit" className="w-full sm:w-auto">
+            {category ? "Modifier" : "Créer"}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
