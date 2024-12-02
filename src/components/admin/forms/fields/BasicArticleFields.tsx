@@ -13,15 +13,15 @@ export function BasicArticleFields() {
   const form = useFormContext();
 
   return (
-    <>
+    <div className="space-y-6">
       <FormField
         control={form.control}
         name="nom"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Nom</FormLabel>
+            <FormLabel className="text-base font-semibold">Nom</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} className="h-12" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -33,9 +33,9 @@ export function BasicArticleFields() {
         name="description"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Description</FormLabel>
+            <FormLabel className="text-base font-semibold">Description</FormLabel>
             <FormControl>
-              <Textarea {...field} />
+              <Textarea {...field} className="min-h-[100px]" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -47,14 +47,14 @@ export function BasicArticleFields() {
         name="prix"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Prix</FormLabel>
+            <FormLabel className="text-base font-semibold">Prix</FormLabel>
             <FormControl>
-              <Input {...field} type="number" step="0.01" />
+              <Input {...field} type="number" step="0.01" className="h-12" />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-    </>
+    </div>
   );
 }
