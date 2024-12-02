@@ -19,7 +19,10 @@ const profileFormSchema = z.object({
   email: z.string().email("Email invalide"),
   first_name: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
   last_name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  password: z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères").optional(),
+  password: z.union([
+    z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
+    z.string().length(0)
+  ]),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
@@ -91,7 +94,7 @@ export function ProfileForm() {
 
       if (profileError) throw profileError;
 
-      if (values.password) {
+      if (values.password && values.password.length > 0) {
         const { error: passwordError } = await supabase.auth.updateUser({
           password: values.password,
         });
