@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { RoleSelector } from "./RoleSelector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { User, Edit } from "lucide-react";
+import { User, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { UpdateTeamMember } from "./UpdateTeamMember";
@@ -62,6 +62,26 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
     },
   });
 
+  const deleteMemberMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      console.log("Deleting member:", userId);
+      const { error } = await supabase
+        .from("profiles")
+        .delete()
+        .eq("id", userId);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["team-members"] });
+      toast.success("Membre supprimé avec succès");
+    },
+    onError: (error: any) => {
+      console.error("Error deleting member:", error);
+      toast.error("Erreur lors de la suppression du membre");
+    },
+  });
+
   if (isLoading) {
     return <div>Chargement...</div>;
   }
@@ -77,6 +97,12 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
         userId: member.id, 
         active: newStatus 
       });
+    }
+  };
+
+  const handleDelete = (member: Profile) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer définitivement ce membre ? Cette action est irréversible.")) {
+      deleteMemberMutation.mutate(member.id);
     }
   };
 
@@ -152,6 +178,14 @@ export function TeamMembersList({ isAdmin, currentUserId }: TeamMembersListProps
                     onClick={() => handleToggleActivation(member)}
                   >
                     {member.active ? "Désactiver" : "Réactiver"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:text-destructive"
+                    onClick={() => handleDelete(member)}
+                  >
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               )}
