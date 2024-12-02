@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { ArticleCard } from "./ArticleCard";
-import { SearchBar } from "./SearchBar";
 
 const demoArticles = [
   {
@@ -33,29 +31,19 @@ const demoArticles = [
 ];
 
 export const ArticleGrid = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const filteredArticles = demoArticles.filter((article) =>
-    article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    article.description?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div className="space-y-6">
-      <SearchBar onSearch={setSearchQuery} />
-      <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredArticles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            title={article.title}
-            description={article.description}
-            price={article.price}
-            image={article.image}
-            allergens={article.allergens}
-            prepTime={article.prepTime}
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
+      {demoArticles.map((article) => (
+        <ArticleCard
+          key={article.id}
+          title={article.title}
+          description={article.description}
+          price={article.price}
+          image={article.image}
+          allergens={article.allergens}
+          prepTime={article.prepTime}
+        />
+      ))}
     </div>
   );
 };
