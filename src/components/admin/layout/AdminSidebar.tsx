@@ -7,6 +7,7 @@ import {
   ListCheck,
   Filter,
   Users,
+  ClipboardList,
 } from "lucide-react";
 import {
   Sidebar,
@@ -23,6 +24,8 @@ import {
 import { UserProfileDisplay } from "../UserProfileDisplay";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const menuItems = [
   {
@@ -73,6 +76,22 @@ export function AdminSidebar() {
   const currentTab = searchParams.get("tab");
   const isMobile = useIsMobile();
 
+  const { data: profile } = useQuery({
+    queryKey: ["profile"],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user?.id) return null;
+      
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session.user.id)
+        .single();
+      
+      return data;
+    },
+  });
+
   const handleNavigation = (tab: string) => {
     navigate(`/equipe?tab=${tab}`, { replace: true });
   };
@@ -117,6 +136,19 @@ export function AdminSidebar() {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+                {profile?.role === "admin" && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      onClick={() => navigate("/logs")}
+                      isActive={false}
+                      tooltip="Logs"
+                      className="transition-all duration-200 hover:bg-hover/50"
+                    >
+                      <ClipboardList className="h-4 w-4" />
+                      <span>Logs</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

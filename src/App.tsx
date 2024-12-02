@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
+import Logs from "./pages/Logs";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/equipe" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/logs" element={<Logs />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
