@@ -84,7 +84,7 @@ export function AdminSidebar() {
         <SidebarHeader className="border-b p-6">
           <span className="font-display text-lg font-bold">Administration</span>
         </SidebarHeader>
-        <SidebarContent>
+        <SidebarContent className="bg-background">
           <SidebarGroup>
             <SidebarGroupLabel>Menu</SidebarGroupLabel>
             <SidebarGroupContent>
