@@ -13,6 +13,7 @@ export const articleSchema = z.object({
     .transform((file) => (file?.length ? file : undefined)),
   allergenes: z.array(z.string()).default([]),
   labels: z.array(z.string()).default([]),
+  supplements: z.array(z.string()).default([]),
 });
 
 export type ArticleFormValues = z.infer<typeof articleSchema>;
@@ -37,3 +38,11 @@ export const labelSchema = z.object({
 });
 
 export type LabelFormValues = z.infer<typeof labelSchema>;
+
+export const supplementSchema = z.object({
+  nom: z.string().min(1, "Le nom est requis"),
+  description: z.string().optional(),
+  prix: z.string().min(1, "Le prix est requis"),
+});
+
+export type SupplementFormValues = z.infer<typeof supplementSchema>;

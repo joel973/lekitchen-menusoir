@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import Profile from "./pages/Profile";
 import Logs from "./pages/Logs";
+import Supplements from "./pages/Supplements";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/equipe" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/logs" element={<Logs />} />
+          <Route path="/supplements" element={<Supplements />} />
         </Routes>
         <Toaster />
         <Sonner />

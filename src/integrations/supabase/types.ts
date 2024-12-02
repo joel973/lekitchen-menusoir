@@ -134,6 +134,39 @@ export type Database = {
           },
         ]
       }
+      articles_supplements: {
+        Row: {
+          article_id: string
+          created_at: string
+          supplement_id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          supplement_id: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          supplement_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_supplements_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_supplements_supplement_id_fkey"
+            columns: ["supplement_id"]
+            isOneToOne: false
+            referencedRelation: "supplements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -325,6 +358,30 @@ export type Database = {
           last_name?: string | null
           role?: Database["public"]["Enums"]["user_role"] | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      supplements: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          nom: string
+          prix: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          nom: string
+          prix: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          nom?: string
+          prix?: number
         }
         Relationships: []
       }
