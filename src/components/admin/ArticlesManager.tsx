@@ -97,7 +97,7 @@ export function ArticlesManager() {
           <DialogTrigger asChild>
             <Button>Ajouter un article</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto top-[5vh]">
+          <DialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-background p-6 shadow-lg rounded-lg">
             <ArticleForm article={selectedArticle} onCancel={handleDialogClose} />
           </DialogContent>
         </Dialog>
