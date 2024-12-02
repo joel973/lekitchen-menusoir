@@ -32,7 +32,7 @@ export function AdminPageLayout({
           )}
         />
         <Card className="mt-4 relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
-          <div className="space-y-6 p-4 md:p-6">
+          <div className="space-y-6 p-4 md:p-6 [&_input]:h-10 [&_select]:h-10 [&_textarea]:min-h-[100px]">
             {children}
           </div>
         </Card>

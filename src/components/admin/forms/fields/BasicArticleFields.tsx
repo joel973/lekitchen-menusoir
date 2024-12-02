@@ -21,7 +21,7 @@ export function BasicArticleFields() {
           <FormItem>
             <FormLabel className="text-base font-semibold">Nom</FormLabel>
             <FormControl>
-              <Input {...field} className="h-12" />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -35,7 +35,7 @@ export function BasicArticleFields() {
           <FormItem>
             <FormLabel className="text-base font-semibold">Description</FormLabel>
             <FormControl>
-              <Textarea {...field} className="min-h-[120px] resize-none" />
+              <Textarea {...field} className="resize-none" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -49,7 +49,7 @@ export function BasicArticleFields() {
           <FormItem>
             <FormLabel className="text-base font-semibold">Prix</FormLabel>
             <FormControl>
-              <Input {...field} type="number" step="0.01" className="h-12" />
+              <Input {...field} type="number" step="0.01" />
             </FormControl>
             <FormMessage />
           </FormItem>
