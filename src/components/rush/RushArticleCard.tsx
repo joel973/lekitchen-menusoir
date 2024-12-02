@@ -54,9 +54,11 @@ export function RushArticleCard({
   };
 
   const toggleLabel = async (labelId: string, currentlySelected: boolean) => {
+    console.log("Toggling label:", { labelId, currentlySelected });
     setIsUpdating(true);
     try {
       if (currentlySelected) {
+        console.log("Removing label");
         const { error } = await supabase
           .from("articles_labels")
           .delete()
@@ -64,13 +66,25 @@ export function RushArticleCard({
           .eq("label_id", labelId);
         if (error) throw error;
       } else {
-        const { error } = await supabase
+        console.log("Adding label");
+        // First check if the relation already exists
+        const { data: existingLabel } = await supabase
           .from("articles_labels")
-          .insert({ article_id: article.id, label_id: labelId });
-        if (error) throw error;
+          .select("*")
+          .eq("article_id", article.id)
+          .eq("label_id", labelId)
+          .single();
+
+        if (!existingLabel) {
+          const { error } = await supabase
+            .from("articles_labels")
+            .insert({ article_id: article.id, label_id: labelId });
+          if (error) throw error;
+        }
       }
       onUpdate();
     } catch (error: any) {
+      console.error("Error toggling label:", error);
       toast({
         variant: "destructive",
         title: "Erreur",
