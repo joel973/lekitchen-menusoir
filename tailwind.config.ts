@@ -46,7 +46,7 @@ export default {
         // Composants de base
         primary: {
           DEFAULT: "#1f1f1f",
-          foreground: "#ffffff",
+          foreground: "#ffffff", // Texte blanc sur fond foncé
         },
         secondary: {
           DEFAULT: "#F0EFEA",
