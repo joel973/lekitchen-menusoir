@@ -29,7 +29,7 @@ export const ArticleCard = ({
       "group overflow-hidden border-0 shadow-none hover:bg-secondary/30 transition-colors duration-300",
       className
     )}>
-      <div className="flex items-center gap-6 p-6">
+      <div className="flex gap-4 p-4 sm:p-6">
         {image && (
           <div className="relative flex-shrink-0">
             <div className="h-16 w-16 overflow-hidden rounded-sm">
@@ -42,15 +42,15 @@ export const ArticleCard = ({
           </div>
         )}
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1.5 flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <h3 className="font-display text-lg tracking-tight truncate">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
+            <div className="space-y-1.5 min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-display text-base sm:text-lg tracking-tight">
                   {title}
                 </h3>
                 {sortedLabels.length > 0 && (
-                  <div className="flex gap-1">
+                  <div className="flex flex-wrap gap-1">
                     {sortedLabels.map((label) => (
                       <Badge
                         key={label.nom}
@@ -89,7 +89,7 @@ export const ArticleCard = ({
             </div>
 
             <div className="flex-shrink-0">
-              <span className="font-mono text-lg font-medium tracking-tight whitespace-nowrap">
+              <span className="font-mono text-base sm:text-lg font-medium tracking-tight whitespace-nowrap">
                 {price.toFixed(2)} €
               </span>
             </div>
