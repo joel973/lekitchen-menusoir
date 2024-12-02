@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { ArticleModal } from "./ArticleModal";
-import { ChevronRight } from "lucide-react";
+import { ArticleLabels } from "./article/ArticleLabels";
+import { ArticlePrice } from "./article/ArticlePrice";
+import { MoreInfoButton } from "./article/MoreInfoButton";
 
 interface ArticleCardProps {
   title: string;
@@ -27,8 +28,6 @@ export const ArticleCard = ({
   className,
 }: ArticleCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const sortedLabels = [...labels].sort((a, b) => (a.ordre || 0) - (b.ordre || 0));
-
   const isOutOfStock = status === "rupture";
 
   return (
@@ -61,55 +60,20 @@ export const ArticleCard = ({
                   {title}
                 </h3>
                 
-                {sortedLabels.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {sortedLabels.map((label) => (
-                      <Badge
-                        key={label.nom}
-                        variant="outline"
-                        className="bg-white uppercase text-[8px] tracking-wider px-1.5 py-0 rounded-[2px]"
-                        style={{ 
-                          borderColor: label.couleur,
-                          color: label.couleur
-                        }}
-                      >
-                        {label.nom}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
+                <ArticleLabels labels={labels} />
 
                 {/* Prix en version desktop */}
                 <div className="hidden sm:block">
-                  {isOutOfStock ? (
-                    <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
-                      Rupture
-                    </Badge>
-                  ) : (
-                    <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
-                      {price.toFixed(2)} €
-                    </span>
-                  )}
+                  <ArticlePrice price={price} isOutOfStock={isOutOfStock} />
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 {/* Prix en version mobile */}
                 <div className="sm:hidden">
-                  {isOutOfStock ? (
-                    <Badge variant="destructive" className="uppercase text-[10px] tracking-wider">
-                      Rupture
-                    </Badge>
-                  ) : (
-                    <span className="text-[11px] uppercase tracking-wider font-medium text-content whitespace-nowrap">
-                      {price.toFixed(2)} €
-                    </span>
-                  )}
+                  <ArticlePrice price={price} isOutOfStock={isOutOfStock} />
                 </div>
-                <button className="text-[10px] text-content-tertiary uppercase tracking-wider flex items-center gap-0.5 group-hover:text-content transition-colors">
-                  Plus d'infos
-                  <ChevronRight className="w-3 h-3" />
-                </button>
+                <MoreInfoButton />
               </div>
             </div>
           </div>
