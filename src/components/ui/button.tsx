@@ -10,7 +10,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:opacity-90",
+        default: "text-white hover:opacity-90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
@@ -63,13 +63,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return undefined;
     };
 
+    const backgroundColor = getBackgroundColor();
+    console.log('Button color:', backgroundColor); // Pour le débogage
+
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         style={{
           ...style,
-          backgroundColor: getBackgroundColor(),
+          backgroundColor,
         }}
         {...props}
       />
