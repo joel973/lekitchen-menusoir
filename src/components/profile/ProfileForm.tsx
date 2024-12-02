@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,19 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-
-const profileFormSchema = z.object({
-  email: z.string().email("Email invalide"),
-  first_name: z.string().min(2, "Le prénom doit contenir au moins 2 caractères"),
-  last_name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  password: z.union([
-    z.string().min(6, "Le mot de passe doit contenir au moins 6 caractères"),
-    z.string().length(0)
-  ]),
-});
-
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+import { profileFormSchema, type ProfileFormValues } from "./profileFormSchema";
+import { useProfileMutation } from "./useProfileMutation";
+import { useProfileQuery } from "./useProfileQuery";
 
 export function ProfileForm() {
   const { data: session } = useQuery({
@@ -36,27 +25,7 @@ export function ProfileForm() {
     },
   });
 
-  const { data: profile, isLoading } = useQuery({
-    queryKey: ["profile", session?.user?.id],
-    enabled: !!session?.user?.id,
-    queryFn: async () => {
-      console.log("Fetching profile for user:", session?.user?.id);
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", session?.user?.id)
-        .maybeSingle();
-
-      console.log("Profile data:", data, "Error:", error);
-      
-      if (error) {
-        console.error("Error fetching profile:", error);
-        throw error;
-      }
-      
-      return data || { first_name: "", last_name: "" };
-    },
-  });
+  const { data: profile, isLoading } = useProfileQuery(session?.user?.id);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -74,57 +43,7 @@ export function ProfileForm() {
     },
   });
 
-  const updateProfile = useMutation({
-    mutationFn: async (values: ProfileFormValues) => {
-      if (!session?.user?.id) throw new Error("User not found");
-
-      const updates = {
-        id: session.user.id,
-        first_name: values.first_name,
-        last_name: values.last_name,
-        updated_at: new Date().toISOString(),
-      };
-
-      console.log("Updating profile with:", updates);
-
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert(updates)
-        .eq("id", session.user.id);
-
-      if (profileError) throw profileError;
-
-      if (values.password && values.password.length > 0) {
-        const { error: passwordError } = await supabase.auth.updateUser({
-          password: values.password,
-        });
-
-        if (passwordError) {
-          if (passwordError.message.includes("same_password")) {
-            throw new Error("Le nouveau mot de passe doit être différent de l'ancien");
-          }
-          throw passwordError;
-        }
-      }
-
-      if (values.email !== session.user.email) {
-        const { error: emailError } = await supabase.auth.updateUser({
-          email: values.email,
-        });
-
-        if (emailError) throw emailError;
-      }
-    },
-    onSuccess: () => {
-      toast.success("Profil mis à jour avec succès");
-      // Reset password field after successful update
-      form.setValue("password", "");
-    },
-    onError: (error) => {
-      console.error("Error updating profile:", error);
-      toast.error(error instanceof Error ? error.message : "Erreur lors de la mise à jour du profil");
-    },
-  });
+  const updateProfile = useProfileMutation(form.setValue);
 
   function onSubmit(values: ProfileFormValues) {
     updateProfile.mutate(values);
