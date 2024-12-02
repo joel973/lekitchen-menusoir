@@ -8,8 +8,8 @@ export default function Rush() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 bg-white rounded-lg shadow-md">
+      <div className="p-6 border-b">
         <div>
           <h1 className="text-2xl font-bold">Rush - Gestion rapide</h1>
           <p className="text-muted-foreground mt-1">
@@ -18,24 +18,23 @@ export default function Rush() {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
-        <div className="border-b p-4">
-          <RushFilters
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            selectedLabel={selectedLabel}
-            onLabelChange={setSelectedLabel}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
-        </div>
-        <div className="p-4">
-          <RushArticleList
-            selectedCategory={selectedCategory}
-            selectedLabel={selectedLabel}
-            searchQuery={searchQuery}
-          />
-        </div>
+      <div className="p-6">
+        <RushFilters
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          selectedLabel={selectedLabel}
+          onLabelChange={setSelectedLabel}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
+      </div>
+
+      <div className="p-6 pt-0">
+        <RushArticleList
+          selectedCategory={selectedCategory}
+          selectedLabel={selectedLabel}
+          searchQuery={searchQuery}
+        />
       </div>
     </div>
   );
