@@ -45,9 +45,15 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
   const onSubmit = async (values: ArticleFormValues) => {
     try {
       const submitData = {
-        ...values,
+        nom: values.nom,
+        description: values.description,
         prix: parseFloat(values.prix),
+        categorie_id: values.categorie_id,
+        statut: values.statut,
+        url_image: values.url_image,
       };
+
+      console.log('Submitting data:', submitData);
 
       const { error } = article
         ? await supabase
@@ -56,7 +62,10 @@ export function ArticleForm({ article, onCancel }: ArticleFormProps) {
             .eq("id", article.id)
         : await supabase.from("articles").insert(submitData);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
 
       toast({
         title: article ? "Article modifié" : "Article créé",
