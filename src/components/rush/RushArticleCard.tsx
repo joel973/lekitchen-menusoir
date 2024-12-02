@@ -46,20 +46,20 @@ export function RushArticleCard({
 
   return (
     <Card className="overflow-hidden bg-white hover:shadow-md transition-shadow duration-200 w-full">
-      <div className="p-6 space-y-6">
-        <div className="flex justify-between items-start gap-4">
+      <div className="p-4 space-y-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <ArticleHeader
             nom={article.nom}
             statut={article.statut}
             categorie={article.categories?.nom}
           />
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
             <Button
               variant="outline"
               size="sm"
               onClick={() => updateStatus(isVisible ? "inactif" : "actif")}
               disabled={isDisabled || article.statut === "rupture"}
-              className="w-32"
+              className="w-full sm:w-32"
             >
               {isVisible ? (
                 <>
@@ -80,7 +80,7 @@ export function RushArticleCard({
                 updateStatus(article.statut === "rupture" ? "actif" : "rupture")
               }
               disabled={isDisabled}
-              className="w-32"
+              className="w-full sm:w-32"
             >
               <AlertOctagon className="h-4 w-4 mr-2" />
               {article.statut === "rupture" ? "Disponible" : "Rupture"}
@@ -88,7 +88,7 @@ export function RushArticleCard({
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
             <h4 className="font-medium text-sm text-gray-900">Labels :</h4>
             <DropdownMenu>

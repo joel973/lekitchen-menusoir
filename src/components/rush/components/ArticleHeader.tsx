@@ -8,7 +8,7 @@ interface ArticleHeaderProps {
 
 export function ArticleHeader({ nom, statut, categorie }: ArticleHeaderProps) {
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1 flex-1">
       <div className="flex items-center gap-3">
         <h3 className="text-lg font-semibold text-gray-900">{nom}</h3>
         <Badge
