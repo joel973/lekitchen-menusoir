@@ -21,9 +21,10 @@ export function InviteTeamMember() {
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("Adding member with data:", { email, firstName, lastName, role }); // Debug log
 
     try {
-      // Create the user in auth
+      // Create the user in auth with metadata
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
@@ -31,22 +32,14 @@ export function InviteTeamMember() {
           data: {
             first_name: firstName,
             last_name: lastName,
-            role: role, // Include role in metadata
+            role: role,
           },
         },
       });
 
+      console.log("Auth response:", authData); // Debug log
+
       if (signUpError) throw signUpError;
-
-      // Update the profile with the role directly
-      if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({ role: role })
-          .eq('id', authData.user.id);
-
-        if (profileError) throw profileError;
-      }
 
       toast.success("Membre ajouté avec succès");
       
