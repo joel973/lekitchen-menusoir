@@ -3,36 +3,36 @@ import { ArticleCard } from "./ArticleCard";
 const demoArticles = [
   {
     id: "1",
-    title: "Salade César",
-    description: "Laitue romaine, croûtons, parmesan, sauce césar maison",
-    price: 12.90,
-    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9",
-    allergens: ["Gluten", "Lactose"],
-    prepTime: "15 min",
+    title: "McFLURRY™ DAIM",
+    description: "Dessert glacé à base de lait saveur vanille avec nappage au miel",
+    price: 5.35,
+    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af",
+    allergens: ["Lactose"],
+    prepTime: "5 min",
   },
   {
     id: "2",
-    title: "Burrata",
-    description: "Burrata crémeuse, tomates cerises, basilic frais",
-    price: 14.90,
-    image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af",
-    allergens: ["Lactose"],
+    title: "BIG MAC™ CHICKEN",
+    description: "Pain spécial, spécialités panées au poulet, salade, oignon, cornichon",
+    price: 11.60,
+    image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9",
+    allergens: ["Gluten"],
     prepTime: "10 min",
   },
   {
     id: "3",
-    title: "Carpaccio de Bœuf",
-    description: "Fines tranches de bœuf, copeaux de parmesan, roquette",
-    price: 16.90,
+    title: "6 VEGGIE McNUGGETS®",
+    description: "Spécialité panée à base de blé et de maïs",
+    price: 11.60,
     image: "https://images.unsplash.com/photo-1648146298465-4493d0f96362",
-    allergens: ["Lactose"],
-    prepTime: "12 min",
+    allergens: ["Gluten"],
+    prepTime: "8 min",
   },
 ];
 
 export const ArticleGrid = () => {
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="flex flex-col divide-y">
       {demoArticles.map((article) => (
         <ArticleCard
           key={article.id}

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 
 interface ArticleCardProps {
   title: string;
@@ -24,52 +25,36 @@ export const ArticleCard = ({
   className,
 }: ArticleCardProps) => {
   return (
-    <Card className={cn("card-hover overflow-hidden fade-in", className)}>
-      {image && (
-        <div className="aspect-video w-full overflow-hidden">
-          <img
-            src={image}
-            alt={title}
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          />
-        </div>
-      )}
-      <CardHeader className="space-y-2 p-4">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <h3 className="font-display text-lg font-medium leading-none">
-              {title}
-            </h3>
-            {description && (
-              <p className="text-sm text-muted-foreground">{description}</p>
-            )}
-          </div>
-          <div className="ml-2">
-            <span className="font-display text-lg font-semibold text-primary">
-              {price.toFixed(2)}€
+    <Card className={cn("overflow-hidden border-0 shadow-none fade-in", className)}>
+      <div className="flex items-start justify-between p-4">
+        <div className="flex-1 space-y-2">
+          <h3 className="font-display text-xl font-bold leading-none">
+            {title}
+          </h3>
+          {description && (
+            <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
+          )}
+          <div className="pt-1">
+            <span className="font-display text-2xl font-bold">
+              {price.toFixed(2)} €
             </span>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {allergens.map((allergen, index) => (
-            <Badge 
-              key={index} 
-              variant="outline" 
-              className="text-xs menu-transition hover:bg-primary hover:text-primary-foreground"
-            >
-              {allergen}
-            </Badge>
-          ))}
-          {prepTime && (
-            <Badge 
-              variant="secondary" 
-              className="text-xs menu-transition hover:bg-accent hover:text-accent-foreground"
-            >
-              {prepTime}
-            </Badge>
+        <div className="relative ml-4 flex-shrink-0">
+          {image && (
+            <div className="h-24 w-24 overflow-hidden rounded-lg">
+              <img
+                src={image}
+                alt={title}
+                className="h-full w-full object-cover"
+              />
+            </div>
           )}
+          <button className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90">
+            <Plus className="h-5 w-5" />
+          </button>
         </div>
-      </CardHeader>
+      </div>
     </Card>
   );
 };

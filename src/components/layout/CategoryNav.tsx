@@ -8,25 +8,25 @@ interface Category {
 }
 
 const demoCategories: Category[] = [
-  { id: "1", name: "Entrées", active: true },
-  { id: "2", name: "Plats" },
-  { id: "3", name: "Desserts" },
-  { id: "4", name: "Boissons" },
-  { id: "5", name: "Vins" },
+  { id: "1", name: "LES PLUS POPULAIRES", active: true },
+  { id: "2", name: "PRODUITS SEULS" },
+  { id: "3", name: "MENUS" },
+  { id: "4", name: "À PARTAGER" },
+  { id: "5", name: "BOISSONS" },
 ];
 
 export const CategoryNav = () => {
   return (
-    <ScrollArea className="w-full whitespace-nowrap border-b fade-in">
-      <div className="flex w-max space-x-4 p-4">
+    <ScrollArea className="w-full whitespace-nowrap bg-background sticky top-16 z-40 border-b fade-in">
+      <div className="flex w-max space-x-2 p-4">
         {demoCategories.map((category) => (
           <button
             key={category.id}
             className={cn(
-              "menu-transition inline-flex items-center rounded-lg px-3 py-1 text-sm font-medium",
+              "menu-transition inline-flex items-center rounded-full px-6 py-2.5 text-sm font-bold",
               category.active
-                ? "bg-primary text-primary-foreground"
-                : "bg-background hover:bg-muted"
+                ? "bg-[#00B14F] text-white"
+                : "bg-gray-100 hover:bg-gray-200"
             )}
           >
             {category.name}
