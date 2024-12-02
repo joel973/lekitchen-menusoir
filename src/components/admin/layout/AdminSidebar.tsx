@@ -24,32 +24,32 @@ const menuItems = [
   {
     title: "Articles",
     icon: UtensilsCrossed,
-    path: "/admin/articles",
+    path: "/articles",
   },
   {
     title: "Catégories",
     icon: Tag,
-    path: "/admin/categories",
+    path: "/categories",
   },
   {
     title: "Allergènes",
     icon: AlertTriangle,
-    path: "/admin/allergenes",
+    path: "/allergenes",
   },
   {
     title: "Établissement",
     icon: Store,
-    path: "/admin/etablissement",
+    path: "/etablissement",
   },
   {
     title: "Personnalisation",
     icon: Palette,
-    path: "/admin/personnalisation",
+    path: "/personnalisation",
   },
   {
     title: "Paramètres",
     icon: Settings,
-    path: "/admin/parametres",
+    path: "/parametres",
   },
 ];
 
