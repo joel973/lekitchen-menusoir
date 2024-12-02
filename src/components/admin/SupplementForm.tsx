@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, AlertCircle } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface SupplementFormProps {
