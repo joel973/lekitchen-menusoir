@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import {
   DndContext,
@@ -28,6 +28,7 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableRow } from "./SortableRow";
 import { useToast } from "@/hooks/use-toast";
+import { AdminPageLayout } from "./shared/AdminPageLayout";
 
 export function CategoriesManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -105,14 +106,9 @@ export function CategoriesManager() {
 
   if (isCreating || editingCategory) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold font-display">
-              {editingCategory ? "Modifier une catégorie" : "Nouvelle catégorie"}
-            </h1>
-          </div>
-        </div>
+      <AdminPageLayout
+        title={editingCategory ? "Modifier une catégorie" : "Nouvelle catégorie"}
+      >
         <CategoryForm
           category={editingCategory}
           onCancel={() => {
@@ -120,30 +116,23 @@ export function CategoriesManager() {
             setEditingCategory(null);
           }}
         />
-      </div>
+      </AdminPageLayout>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold font-display">Catégories</h1>
-          <p className="text-muted-foreground mt-1">
-            Gérez les catégories de votre carte
-          </p>
-        </div>
-      </div>
-
+    <AdminPageLayout
+      title="Catégories"
+      description="Gérez les catégories de votre carte"
+      actions={
+        <Button onClick={() => setIsCreating(true)} size="sm">
+          <Plus className="h-4 w-4 mr-2" />
+          Nouvelle catégorie
+        </Button>
+      }
+    >
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle className="text-lg font-semibold">Liste des catégories</CardTitle>
-          <Button onClick={() => setIsCreating(true)} size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvelle catégorie
-          </Button>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -175,6 +164,6 @@ export function CategoriesManager() {
           </DndContext>
         </CardContent>
       </Card>
-    </div>
+    </AdminPageLayout>
   );
 }

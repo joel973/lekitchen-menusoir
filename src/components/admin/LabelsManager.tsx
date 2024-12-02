@@ -3,7 +3,6 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -28,8 +27,9 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableRow } from "./SortableRow";
 import { useToast } from "@/components/ui/use-toast";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import { AdminPageLayout } from "./shared/AdminPageLayout";
 
 export function LabelsManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -59,20 +59,19 @@ export function LabelsManager() {
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    
+
     if (!over || active.id === over.id || !labels) return;
 
     const oldIndex = labels.findIndex((label) => label.id === active.id);
     const newIndex = labels.findIndex((label) => label.id === over.id);
-    
+
     const newOrder = arrayMove([...labels], oldIndex, newIndex);
-    
+
     try {
       const updates = newOrder.map((label, index) => ({
         id: label.id,
         nom: label.nom,
         ordre: index,
-        couleur: label.couleur,
       }));
 
       const { error } = await supabase
@@ -81,13 +80,16 @@ export function LabelsManager() {
 
       if (error) throw error;
 
-      await queryClient.invalidateQueries({ queryKey: ["labels"] });
+      toast({
+        title: "Ordre mis à jour",
+        description: "L'ordre des labels a été mis à jour avec succès",
+      });
     } catch (error: any) {
       console.error("Error updating order:", error);
       toast({
-        variant: "destructive",
         title: "Erreur",
         description: "Impossible de mettre à jour l'ordre des labels",
+        variant: "destructive",
       });
     }
   };
@@ -98,36 +100,33 @@ export function LabelsManager() {
 
   if (isCreating || editingLabel) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            {editingLabel ? "Modifier un label" : "Nouveau label"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <LabelForm
-            label={editingLabel}
-            onCancel={() => {
-              setIsCreating(false);
-              setEditingLabel(null);
-            }}
-          />
-        </CardContent>
-      </Card>
+      <AdminPageLayout
+        title={editingLabel ? "Modifier un label" : "Nouveau label"}
+      >
+        <LabelForm
+          label={editingLabel}
+          onCancel={() => {
+            setIsCreating(false);
+            setEditingLabel(null);
+          }}
+        />
+      </AdminPageLayout>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <AdminPageLayout
+      title="Labels"
+      description="Gérez les labels de vos articles"
+      actions={
+        <Button onClick={() => setIsCreating(true)} size="sm">
+          <Plus className="h-4 w-4 mr-2" />
+          Nouveau label
+        </Button>
+      }
+    >
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-          <CardTitle>Labels</CardTitle>
-          <Button onClick={() => setIsCreating(true)} size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouveau label
-          </Button>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -159,6 +158,6 @@ export function LabelsManager() {
           </DndContext>
         </CardContent>
       </Card>
-    </div>
+    </AdminPageLayout>
   );
 }
