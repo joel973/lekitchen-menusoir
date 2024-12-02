@@ -6,7 +6,7 @@ export const articleSchema = z.object({
   prix: z.string().min(1, "Le prix est requis"),
   categorie_id: z.string().min(1, "La catégorie est requise"),
   statut: z.enum(["actif", "inactif", "rupture"]),
-  url_image: z.string().optional(),
+  url_image: z.string().nullable().optional(),
   image_file: z
     .instanceof(FileList)
     .optional()
