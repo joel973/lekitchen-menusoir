@@ -88,7 +88,10 @@ export function AdminSidebar() {
         </div>
       </div>
 
-      <Sidebar variant={isMobile ? "floating" : "sidebar"} className="bg-white">
+      <Sidebar 
+        variant={isMobile ? "floating" : "sidebar"} 
+        className="bg-white border-r"
+      >
         <SidebarHeader className="p-8">
           <span className="font-display text-lg text-content">
             Administration

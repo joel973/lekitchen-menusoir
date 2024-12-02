@@ -45,7 +45,7 @@ export function UserProfileDisplay() {
   return (
     <div className="space-y-2">
       <div 
-        className="flex items-center gap-3 px-3 py-2 rounded-md bg-muted/50 cursor-pointer hover:bg-muted hover:shadow-md transition-all duration-200"
+        className="flex items-center gap-3 px-3 py-2 rounded-md bg-muted/50 cursor-pointer"
         onClick={() => navigate("/profile")}
       >
         <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
@@ -62,7 +62,7 @@ export function UserProfileDisplay() {
       </div>
       <Button 
         variant="outline" 
-        className="w-full justify-start hover:shadow-md transition-all duration-200" 
+        className="w-full justify-start" 
         onClick={handleLogout}
       >
         <LogOut className="w-4 h-4 mr-2" />

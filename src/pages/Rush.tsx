@@ -10,7 +10,7 @@ export default function Rush() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Rush - Gestion rapide</h1>
-      <div className="space-y-6">
+      <div className="space-y-6 bg-white rounded-lg border p-6">
         <RushFilters
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
