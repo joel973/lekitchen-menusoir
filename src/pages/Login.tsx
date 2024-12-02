@@ -72,7 +72,7 @@ export default function Login() {
           theme="light"
           providers={[]}
           view="sign_in"
-          showLinks={false}
+          showLinks={true}
         />
       </div>
     </div>
