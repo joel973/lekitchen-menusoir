@@ -43,11 +43,36 @@ export default function Login() {
               container: 'space-y-4',
               button: 'w-full',
               input: 'rounded-md border-input bg-white',
+              label: 'hidden',
             }
+          }}
+          localization={{
+            variables: {
+              sign_in: {
+                email_label: '',
+                password_label: '',
+                email_input_placeholder: 'Email',
+                password_input_placeholder: 'Mot de passe',
+                button_label: 'Se connecter',
+                loading_button_label: 'Connexion en cours...',
+                social_provider_text: 'Se connecter avec {{provider}}',
+                link_text: 'Vous avez déjà un compte ? Connectez-vous',
+              },
+              forgotten_password: {
+                link_text: 'Mot de passe oublié ?',
+                email_label: '',
+                password_label: '',
+                email_input_placeholder: 'Email',
+                button_label: 'Envoyer les instructions',
+                loading_button_label: 'Envoi des instructions...',
+                confirmation_text: 'Vérifiez vos emails pour réinitialiser votre mot de passe',
+              },
+            },
           }}
           theme="light"
           providers={[]}
           view="sign_in"
+          showLinks={false}
         />
       </div>
     </div>
