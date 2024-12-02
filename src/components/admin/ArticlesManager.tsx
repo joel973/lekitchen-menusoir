@@ -13,19 +13,44 @@ import { useState } from "react";
 import { ArticleForm } from "./ArticleForm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function ArticlesManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingArticle, setEditingArticle] = useState<any>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  const { data: articles, isLoading } = useQuery({
-    queryKey: ["admin-articles"],
+  const { data: categories } = useQuery({
+    queryKey: ["admin-categories"],
     queryFn: async () => {
       const { data, error } = await supabase
+        .from("categories")
+        .select("*")
+        .order("ordre");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: articles, isLoading } = useQuery({
+    queryKey: ["admin-articles", selectedCategory],
+    queryFn: async () => {
+      let query = supabase
         .from("articles")
         .select("*, categories(nom)")
         .order("created_at", { ascending: false });
 
+      if (selectedCategory !== "all") {
+        query = query.eq("categorie_id", selectedCategory);
+      }
+
+      const { data, error } = await query;
       if (error) throw error;
       return data;
     },
@@ -66,6 +91,24 @@ export function ArticlesManager() {
         </Button>
       </CardHeader>
       <CardContent>
+        <div className="mb-6">
+          <Select
+            value={selectedCategory}
+            onValueChange={setSelectedCategory}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filtrer par catégorie" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes les catégories</SelectItem>
+              {categories?.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.nom}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
