@@ -1,14 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LogOut, User } from "lucide-react";
-import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { User } from "lucide-react";
 
 export function UserProfileDisplay() {
-  const navigate = useNavigate();
-
   const { data: session } = useQuery({
     queryKey: ["session"],
     queryFn: async () => {
@@ -17,56 +12,34 @@ export function UserProfileDisplay() {
     },
   });
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast.success("Déconnexion réussie");
-      navigate("/login");
-    } catch (error) {
-      console.error("Erreur lors de la déconnexion:", error);
-      toast.error("Erreur lors de la déconnexion");
-    }
-  };
+  const { data: profile } = useQuery({
+    queryKey: ["profile", session?.user?.id],
+    queryFn: async () => {
+      if (!session?.user?.id) return null;
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session.user.id)
+        .single();
+      return data;
+    },
+    enabled: !!session?.user?.id,
+  });
 
-  const handleProfileClick = () => {
-    navigate("/profile");
-  };
-
-  if (!session?.user) return null;
+  if (!profile) return null;
 
   return (
-    <div className="flex flex-col gap-3 p-3">
-      <div className="flex items-center gap-2">
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="text-sm">
-            {session.user.email?.charAt(0).toUpperCase() || "U"}
-          </AvatarFallback>
-        </Avatar>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-medium leading-none">
-            {session.user.email}
-          </p>
-        </div>
+    <div className="flex items-center gap-3 px-3 py-2 rounded-md bg-muted/50">
+      <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+        <User className="w-4 h-4" />
       </div>
-      <div className="grid grid-cols-2 gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 w-full"
-          onClick={handleProfileClick}
-        >
-          <User className="mr-2 h-3.5 w-3.5" />
-          Profil
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-8 w-full"
-          onClick={handleLogout}
-        >
-          <LogOut className="mr-2 h-3.5 w-3.5" />
-          Déconnexion
-        </Button>
+      <div className="min-w-0">
+        <div className="font-medium truncate">
+          {profile.first_name} {profile.last_name}
+        </div>
+        <Badge variant={profile.role === "admin" ? "default" : "secondary"} className="mt-1">
+          {profile.role === "admin" ? "Admin" : "Membre"}
+        </Badge>
       </div>
     </div>
   );
