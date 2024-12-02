@@ -9,6 +9,24 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      allergenes: {
+        Row: {
+          created_at: string
+          id: string
+          nom: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nom: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nom?: string
+        }
+        Relationships: []
+      }
       articles: {
         Row: {
           categorie_id: string | null
@@ -50,6 +68,72 @@ export type Database = {
           },
         ]
       }
+      articles_allergenes: {
+        Row: {
+          allergene_id: string
+          article_id: string
+          created_at: string
+        }
+        Insert: {
+          allergene_id: string
+          article_id: string
+          created_at?: string
+        }
+        Update: {
+          allergene_id?: string
+          article_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_allergenes_allergene_id_fkey"
+            columns: ["allergene_id"]
+            isOneToOne: false
+            referencedRelation: "allergenes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_allergenes_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      articles_labels: {
+        Row: {
+          article_id: string
+          created_at: string
+          label_id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          label_id: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          label_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "articles_labels_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "articles_labels_label_id_fkey"
+            columns: ["label_id"]
+            isOneToOne: false
+            referencedRelation: "labels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string
@@ -71,6 +155,24 @@ export type Database = {
           mode_affichage?: string
           nom?: string
           ordre?: number
+        }
+        Relationships: []
+      }
+      labels: {
+        Row: {
+          created_at: string
+          id: string
+          nom: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nom: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nom?: string
         }
         Relationships: []
       }

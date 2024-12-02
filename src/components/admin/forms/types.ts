@@ -22,3 +22,15 @@ export const categorySchema = z.object({
 });
 
 export type CategoryFormValues = z.infer<typeof categorySchema>;
+
+export const allergeneSchema = z.object({
+  nom: z.string().min(1, "Le nom est requis"),
+});
+
+export type AllergeneFormValues = z.infer<typeof allergeneSchema>;
+
+export const labelSchema = z.object({
+  nom: z.string().min(1, "Le nom est requis"),
+});
+
+export type LabelFormValues = z.infer<typeof labelSchema>;
