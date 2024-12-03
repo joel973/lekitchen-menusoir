@@ -138,16 +138,26 @@ export function ArticlesManager() {
             setSelectedCategory={setSelectedCategory}
           />
           
-          {/* Bouton Archives en version mobile */}
-          <Button 
-            onClick={() => setShowArchived(true)} 
-            variant="outline" 
-            size="sm" 
-            className="sm:hidden w-full justify-center"
-          >
-            <Archive className="h-4 w-4 mr-2" />
-            Articles archivés
-          </Button>
+          {/* Boutons en version mobile */}
+          <div className="flex gap-2 sm:hidden">
+            <Button 
+              onClick={() => setShowArchived(true)} 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+            >
+              <Archive className="h-4 w-4 mr-2" />
+              Articles archivés
+            </Button>
+            <Button 
+              onClick={() => setSelectedArticle({})} 
+              size="sm" 
+              className="flex-1"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Nouvel article
+            </Button>
+          </div>
         </div>
 
         <div className="space-y-4">
