@@ -28,7 +28,6 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
                 <AdminSidebar />
               </SheetContent>
             </Sheet>
-            <h2 className="font-semibold">Administration</h2>
           </div>
         </div>
         <main className={cn("flex-1", className)}>
