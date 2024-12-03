@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Profile } from "@/integrations/supabase/types";
+import { Database } from "@/integrations/supabase/types";
+
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 interface SidebarProfileProps {
   profile: Profile | null;
