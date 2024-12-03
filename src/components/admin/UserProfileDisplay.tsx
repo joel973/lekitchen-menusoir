@@ -32,16 +32,11 @@ export function UserProfileDisplay() {
   });
 
   const handleLogout = async () => {
-    try {
-      console.log("Starting logout process");
-      await supabase.auth.signOut();
-      console.log("Redirecting to login page");
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Une erreur est survenue lors de la déconnexion");
-      // Still redirect to login page
-      navigate("/login", { replace: true });
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Erreur lors de la déconnexion");
+    } else {
+      navigate("/login");
     }
   };
 

@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { toast } from "sonner";
 
 export function UserNav() {
   const navigate = useNavigate();
@@ -34,17 +33,8 @@ export function UserNav() {
   });
 
   const handleLogout = async () => {
-    try {
-      console.log("Starting logout process from UserNav");
-      await supabase.auth.signOut();
-      console.log("Redirecting to login page from UserNav");
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Une erreur est survenue lors de la déconnexion");
-      // Still redirect to login page
-      navigate("/login", { replace: true });
-    }
+    await supabase.auth.signOut();
+    navigate("/login");
   };
 
   if (!profile) return null;

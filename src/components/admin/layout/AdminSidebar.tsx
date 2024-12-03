@@ -16,7 +16,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 const menuItems = [
   {
@@ -92,17 +91,8 @@ export function AdminSidebar() {
   };
 
   const handleLogout = async () => {
-    try {
-      console.log("Starting logout process from AdminSidebar");
-      await supabase.auth.signOut();
-      console.log("Redirecting to login page from AdminSidebar");
-      navigate("/login", { replace: true });
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Une erreur est survenue lors de la déconnexion");
-      // Still redirect to login page
-      navigate("/login", { replace: true });
-    }
+    await supabase.auth.signOut();
+    navigate("/login");
   };
 
   return (
