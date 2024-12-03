@@ -19,6 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   {
@@ -73,6 +74,7 @@ export function AdminSidebar() {
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab");
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isMobile = useIsMobile();
 
   const { data: profile } = useQuery({
     queryKey: ["profile"],
@@ -106,17 +108,19 @@ export function AdminSidebar() {
         isCollapsed ? "justify-center px-2" : "justify-between"
       )}>
         {!isCollapsed && <h2 className="font-semibold">Administration</h2>}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="h-8 w-8"
-        >
-          <ChevronLeft className={cn(
-            "h-4 w-4 transition-transform duration-200",
-            isCollapsed && "rotate-180"
-          )} />
-        </Button>
+        {!isMobile && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="h-8 w-8"
+          >
+            <ChevronLeft className={cn(
+              "h-4 w-4 transition-transform duration-200",
+              isCollapsed && "rotate-180"
+            )} />
+          </Button>
+        )}
       </div>
       <div className="flex-1 px-4">
         <TooltipProvider delayDuration={0}>
@@ -130,14 +134,14 @@ export function AdminSidebar() {
                     className={cn(
                       "w-full justify-start gap-2",
                       currentTab === item.tab && "bg-secondary",
-                      isCollapsed && "justify-center px-2"
+                      isCollapsed && !isMobile && "justify-center px-2"
                     )}
                   >
                     <item.icon className="h-4 w-4" />
-                    {!isCollapsed && item.title}
+                    {(!isCollapsed || isMobile) && item.title}
                   </Button>
                 </TooltipTrigger>
-                {isCollapsed && (
+                {isCollapsed && !isMobile && (
                   <TooltipContent side="right">
                     {item.title}
                   </TooltipContent>
@@ -151,9 +155,9 @@ export function AdminSidebar() {
         <Card>
           <CardContent className={cn(
             "p-4",
-            isCollapsed && "p-2"
+            isCollapsed && !isMobile && "p-2"
           )}>
-            {!isCollapsed ? (
+            {(!isCollapsed || isMobile) ? (
               <>
                 <div 
                   className="flex items-center gap-4 cursor-pointer"
