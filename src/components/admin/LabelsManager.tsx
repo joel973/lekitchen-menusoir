@@ -3,9 +3,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { LabelForm } from "./LabelForm";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { AdminPageLayout } from "./shared/AdminPageLayout";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export function LabelsManager() {
   const [isCreating, setIsCreating] = useState(false);
@@ -55,35 +63,41 @@ export function LabelsManager() {
         </Button>
       }
     >
-      <Card>
-        <CardContent className="p-0">
-          <table>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Couleur</th>
-                <th className="w-[100px]">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {labels?.map((label) => (
-                <tr key={label.id}>
-                  <td>{label.nom}</td>
-                  <td style={{ backgroundColor: label.couleur }}>{label.couleur}</td>
-                  <td>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingLabel(label)}
-                    >
-                      Modifier
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </CardContent>
+      <Card className="p-6">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Nom</TableHead>
+              <TableHead>Couleur</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {labels?.map((label) => (
+              <TableRow key={label.id}>
+                <TableCell>{label.nom}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="w-6 h-6 rounded" 
+                      style={{ backgroundColor: label.couleur }}
+                    />
+                    <span>{label.couleur}</span>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setEditingLabel(label)}
+                  >
+                    Modifier
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </Card>
     </AdminPageLayout>
   );
