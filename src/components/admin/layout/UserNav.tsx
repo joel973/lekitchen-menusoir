@@ -34,9 +34,6 @@ export function UserNav() {
 
   const handleLogout = async () => {
     try {
-      // First clear any existing session
-      await supabase.auth.clearSession();
-      // Then sign out
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Logout error:", error);
