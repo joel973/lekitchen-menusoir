@@ -11,13 +11,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { AllergeneForm } from "./AllergeneForm";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import { AdminPageLayout } from "./shared/AdminPageLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 export function AllergenesManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingAllergene, setEditingAllergene] = useState<any>(null);
+  const isMobile = useIsMobile();
 
   const { data: allergenes, isLoading } = useQuery({
     queryKey: ["allergenes"],
@@ -63,33 +66,49 @@ export function AllergenesManager() {
         </Button>
       }
     >
-      <Card>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nom</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {allergenes?.map((allergene) => (
-                <TableRow key={allergene.id}>
-                  <TableCell>{allergene.nom}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setEditingAllergene(allergene)}
+      <Card className="relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
+        <div className="p-4 md:p-6">
+          <div className="space-y-6">
+            <div className="overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className={cn(isMobile && "px-2 py-3 text-xs")}>
+                      Nom
+                    </TableHead>
+                    <TableHead className={cn("w-[100px]", isMobile && "px-2 py-3 text-xs")}>
+                      Actions
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {allergenes?.map((allergene) => (
+                    <TableRow 
+                      key={allergene.id}
+                      className={cn(
+                        "hover:bg-secondary/50 transition-colors",
+                        isMobile && "text-sm"
+                      )}
                     >
-                      Modifier
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
+                      <TableCell className={cn(isMobile && "px-2 py-3")}>
+                        {allergene.nom}
+                      </TableCell>
+                      <TableCell className={cn(isMobile && "px-2 py-3")}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingAllergene(allergene)}
+                        >
+                          Modifier
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </div>
       </Card>
     </AdminPageLayout>
   );
