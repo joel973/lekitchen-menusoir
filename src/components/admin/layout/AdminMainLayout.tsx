@@ -38,8 +38,8 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
   }
 
   return (
-    <div className="grid min-h-screen lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-card lg:block">
+    <div className="grid min-h-screen transition-all duration-300" style={{ gridTemplateColumns: "auto 1fr" }}>
+      <div className="hidden border-r bg-card lg:block transition-all duration-300">
         <AdminSidebar />
       </div>
       <main className={cn("flex-1", className)}>
