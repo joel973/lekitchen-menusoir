@@ -35,7 +35,6 @@ export function LabelsCheckboxes() {
 
   const selectedLabels = form.watch("labels") || [];
 
-  // Get the selected labels with their full data
   const selectedLabelsData = labels?.filter((label) =>
     selectedLabels.includes(label.id)
   );
@@ -77,11 +76,10 @@ export function LabelsCheckboxes() {
                         selectedLabels.includes(label.id)
                       )
                     }
-                    className="flex items-center justify-between cursor-pointer data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
                   >
                     <span>{label.nom}</span>
                     {selectedLabels.includes(label.id) && (
-                      <Badge variant="secondary" className="ml-2">
+                      <Badge variant="secondary" className="ml-auto">
                         Activé
                       </Badge>
                     )}

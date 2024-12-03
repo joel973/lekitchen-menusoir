@@ -35,7 +35,6 @@ export function AllergenesCheckboxes() {
 
   const selectedAllergenes = form.watch("allergenes") || [];
 
-  // Get the selected allergenes with their full data
   const selectedAllergenesData = allergenes?.filter((allergene) =>
     selectedAllergenes.includes(allergene.id)
   );
@@ -77,11 +76,10 @@ export function AllergenesCheckboxes() {
                         selectedAllergenes.includes(allergene.id)
                       )
                     }
-                    className="flex items-center justify-between cursor-pointer data-[highlighted]:bg-primary data-[highlighted]:text-primary-foreground"
                   >
                     <span>{allergene.nom}</span>
                     {selectedAllergenes.includes(allergene.id) && (
-                      <Badge variant="secondary" className="ml-2">
+                      <Badge variant="secondary" className="ml-auto">
                         Activé
                       </Badge>
                     )}
