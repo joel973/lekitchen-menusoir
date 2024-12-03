@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const menuItems = [
   {
@@ -92,15 +93,22 @@ export function AdminSidebar() {
 
   const handleLogout = async () => {
     try {
+      console.log("Starting logout process from AdminSidebar");
       const { error } = await supabase.auth.signOut();
+      
       if (error) {
         console.error("Logout error:", error);
+        toast.error("Une erreur est survenue, mais vous avez été déconnecté");
       }
-      navigate("/login");
+      
+      // Always navigate to login page
+      console.log("Redirecting to login page from AdminSidebar");
+      navigate("/login", { replace: true });
+      
     } catch (error) {
-      console.error("Logout error:", error);
-      // Even if there's an error, try to redirect to login
-      navigate("/login");
+      console.error("Unexpected logout error:", error);
+      // Still redirect to login page
+      navigate("/login", { replace: true });
     }
   };
 

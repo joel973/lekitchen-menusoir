@@ -33,18 +33,23 @@ export function UserProfileDisplay() {
 
   const handleLogout = async () => {
     try {
+      console.log("Starting logout process");
       const { error } = await supabase.auth.signOut();
+      
       if (error) {
         console.error("Logout error:", error);
-        toast.error("Erreur lors de la déconnexion");
-      } else {
-        navigate("/login");
+        // Even if there's an error, we'll clear local state and redirect
+        toast.error("Une erreur est survenue, mais vous avez été déconnecté");
       }
+      
+      // Always navigate to login page
+      console.log("Redirecting to login page");
+      navigate("/login", { replace: true });
+      
     } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Erreur lors de la déconnexion");
-      // Even if there's an error, try to redirect to login
-      navigate("/login");
+      console.error("Unexpected logout error:", error);
+      // Still redirect to login page
+      navigate("/login", { replace: true });
     }
   };
 
