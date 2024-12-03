@@ -1,25 +1,12 @@
-import {
-  Store,
-  Tag,
-  UtensilsCrossed,
-  AlertTriangle,
-  Settings,
-  ListCheck,
-  Filter,
-  Users,
-  Plus,
-  LogOut,
-  ChevronLeft,
-} from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Store, Tag, UtensilsCrossed, AlertTriangle, Settings, ListCheck, Filter, Users, Plus } from "lucide-react";
+import { SidebarHeader } from "./sidebar/SidebarHeader";
+import { SidebarMenu } from "./sidebar/SidebarMenu";
+import { SidebarProfile } from "./sidebar/SidebarProfile";
 
 const menuItems = [
   {
@@ -103,104 +90,25 @@ export function AdminSidebar() {
 
   return (
     <div className="flex h-full flex-col gap-2">
-      <div className={cn(
-        "flex h-[60px] items-center border-b px-6",
-        isCollapsed ? "justify-center px-2" : "justify-between"
-      )}>
-        {!isCollapsed && <h2 className="font-semibold">Administration</h2>}
-        {!isMobile && (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="h-8 w-8"
-          >
-            <ChevronLeft className={cn(
-              "h-4 w-4 transition-transform duration-200",
-              isCollapsed && "rotate-180"
-            )} />
-          </Button>
-        )}
-      </div>
-      <div className="flex-1 px-4">
-        <TooltipProvider delayDuration={0}>
-          <nav className="grid items-start gap-2">
-            {menuItems.map((item) => (
-              <Tooltip key={item.tab}>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    onClick={() => handleNavigation(item.tab)}
-                    className={cn(
-                      "w-full justify-start gap-2",
-                      currentTab === item.tab && "bg-secondary",
-                      isCollapsed && !isMobile && "justify-center px-2"
-                    )}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {(!isCollapsed || isMobile) && item.title}
-                  </Button>
-                </TooltipTrigger>
-                {isCollapsed && !isMobile && (
-                  <TooltipContent side="right">
-                    {item.title}
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            ))}
-          </nav>
-        </TooltipProvider>
-      </div>
-      <div className="mt-auto p-4">
-        <Card>
-          <CardContent className={cn(
-            "p-4",
-            isCollapsed && !isMobile && "p-2"
-          )}>
-            {(!isCollapsed || isMobile) ? (
-              <>
-                <div 
-                  className="flex items-center gap-4 cursor-pointer"
-                  onClick={() => navigate("/profile")}
-                >
-                  <div className="font-medium">
-                    {profile?.first_name} {profile?.last_name}
-                  </div>
-                  <span className="rounded-full bg-primary/10 px-2 py-1 text-xs text-primary">
-                    {profile?.role === "admin" ? "Admin" : "Membre"}
-                  </span>
-                </div>
-                <Button
-                  variant="ghost"
-                  className="mt-4 w-full justify-start gap-2"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="h-4 w-4" />
-                  Se déconnecter
-                </Button>
-              </>
-            ) : (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="w-full"
-                      onClick={handleLogout}
-                    >
-                      <LogOut className="h-4 w-4" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">
-                    Se déconnecter
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      <SidebarHeader 
+        isCollapsed={isCollapsed}
+        isMobile={isMobile}
+        onToggle={() => setIsCollapsed(!isCollapsed)}
+      />
+      <SidebarMenu 
+        items={menuItems}
+        currentTab={currentTab}
+        isCollapsed={isCollapsed}
+        isMobile={isMobile}
+        onNavigate={handleNavigation}
+      />
+      <SidebarProfile 
+        profile={profile}
+        isCollapsed={isCollapsed}
+        isMobile={isMobile}
+        onLogout={handleLogout}
+        onProfileClick={() => navigate("/profile")}
+      />
     </div>
   );
 }
