@@ -64,8 +64,9 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
       <div className="container h-14 flex items-center justify-center">
         <div className="relative w-full max-w-2xl mx-auto">
           {showLeftArrow && (
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-background/80 via-background/60 to-transparent w-8 h-full flex items-center justify-start sm:hidden">
-              <ChevronLeft className="h-4 w-4 text-content-secondary" />
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-full flex items-center justify-start sm:hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/60 to-transparent" />
+              <ChevronLeft className="h-4 w-4 text-content-secondary relative z-10" />
             </div>
           )}
           
