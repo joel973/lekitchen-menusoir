@@ -67,18 +67,17 @@ export function RushFilters({
           value={selectedCategory}
           onValueChange={(value) => onCategoryChange(value === "all" ? undefined : value)}
         >
-          <SelectTrigger className="w-full bg-white">
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Toutes les catégories" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all" className="hover:bg-primary hover:text-primary-foreground">
+            <SelectItem value="all">
               Toutes les catégories
             </SelectItem>
             {categories?.map((category) => (
               <SelectItem 
                 key={category.id} 
                 value={category.id}
-                className="hover:bg-primary hover:text-primary-foreground"
               >
                 {category.nom}
               </SelectItem>
@@ -90,18 +89,17 @@ export function RushFilters({
           value={selectedLabel}
           onValueChange={(value) => onLabelChange(value === "all" ? undefined : value)}
         >
-          <SelectTrigger className="w-full bg-white">
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Tous les labels" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all" className="hover:bg-primary hover:text-primary-foreground">
+            <SelectItem value="all">
               Tous les labels
             </SelectItem>
             {labels?.map((label) => (
               <SelectItem 
                 key={label.id} 
                 value={label.id}
-                className="hover:bg-primary hover:text-primary-foreground"
               >
                 {label.nom}
               </SelectItem>
