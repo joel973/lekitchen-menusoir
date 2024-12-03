@@ -91,8 +91,20 @@ export function AdminSidebar() {
   };
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
+    try {
+      // First clear any existing session
+      await supabase.auth.clearSession();
+      // Then sign out
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Logout error:", error);
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Even if there's an error, try to redirect to login
+      navigate("/login");
+    }
   };
 
   return (
