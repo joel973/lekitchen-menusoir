@@ -14,10 +14,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 export function LabelsManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingLabel, setEditingLabel] = useState<any>(null);
+  const isMobile = useIsMobile();
 
   const { data: labels, isLoading } = useQuery({
     queryKey: ["labels"],
@@ -63,41 +66,61 @@ export function LabelsManager() {
         </Button>
       }
     >
-      <Card className="p-6">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Nom</TableHead>
-              <TableHead>Couleur</TableHead>
-              <TableHead className="w-[100px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {labels?.map((label) => (
-              <TableRow key={label.id}>
-                <TableCell>{label.nom}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <div 
-                      className="w-6 h-6 rounded" 
-                      style={{ backgroundColor: label.couleur }}
-                    />
-                    <span>{label.couleur}</span>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setEditingLabel(label)}
-                  >
-                    Modifier
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <Card className="relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
+        <div className="p-4 md:p-6">
+          <div className="space-y-6">
+            <div className="overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className={cn(isMobile && "px-2 py-3 text-xs")}>
+                      Nom
+                    </TableHead>
+                    <TableHead className={cn(isMobile && "px-2 py-3 text-xs")}>
+                      Couleur
+                    </TableHead>
+                    <TableHead className={cn("w-[100px]", isMobile && "px-2 py-3 text-xs")}>
+                      Actions
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {labels?.map((label) => (
+                    <TableRow 
+                      key={label.id}
+                      className={cn(
+                        "hover:bg-secondary/50 transition-colors",
+                        isMobile && "text-sm"
+                      )}
+                    >
+                      <TableCell className={cn(isMobile && "px-2 py-3")}>
+                        {label.nom}
+                      </TableCell>
+                      <TableCell className={cn(isMobile && "px-2 py-3")}>
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="w-6 h-6 rounded" 
+                            style={{ backgroundColor: label.couleur }}
+                          />
+                          <span>{label.couleur}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className={cn(isMobile && "px-2 py-3")}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingLabel(label)}
+                        >
+                          Modifier
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </div>
+        </div>
       </Card>
     </AdminPageLayout>
   );
