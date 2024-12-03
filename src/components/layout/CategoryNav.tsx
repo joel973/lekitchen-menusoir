@@ -42,14 +42,14 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
 
   return (
     <nav className="sticky top-20 z-40 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container h-14 flex items-center">
-        <div className="relative w-full">
+      <div className="container h-14 flex items-center justify-center">
+        <div className="relative w-full max-w-2xl mx-auto">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 bg-gradient-to-r from-background/80 via-background/60 to-transparent w-8 h-full flex items-center justify-start sm:hidden">
             <ChevronLeft className="h-4 w-4 text-content-secondary" />
           </div>
           
           <div className="overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-2 px-6 sm:px-0">
+            <div className="flex items-center justify-center gap-2 px-6 sm:px-0">
               {categories?.map((category) => (
                 <Button
                   key={category.id}
