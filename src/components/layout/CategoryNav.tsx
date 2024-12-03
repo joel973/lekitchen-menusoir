@@ -72,7 +72,10 @@ export const CategoryNav = ({ selectedCategory }: CategoryNavProps) => {
           
           <div 
             ref={scrollContainerRef}
-            className="overflow-x-auto no-scrollbar"
+            className={cn(
+              "overflow-x-auto no-scrollbar",
+              !showLeftArrow && "pl-0"
+            )}
           >
             <div className="flex items-center justify-center gap-2 px-6 sm:px-0">
               {categories?.map((category) => (
