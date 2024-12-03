@@ -60,7 +60,7 @@ export function AdminSidebar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const currentTab = searchParams.get("tab");
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const isMobile = useIsMobile();
 
   const { data: profile } = useQuery({

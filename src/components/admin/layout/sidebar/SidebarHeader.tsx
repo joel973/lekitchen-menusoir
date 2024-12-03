@@ -22,7 +22,7 @@ export function SidebarHeader({ isCollapsed, isMobile, onToggle }: SidebarHeader
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="absolute -right-4 top-[14px] h-8 w-8 translate-x-1/2 rounded-full border bg-background"
+          className="absolute -right-3 top-[14px] h-8 w-8 translate-x-1/2 rounded-full border bg-background"
         >
           <ChevronLeft className={cn(
             "h-4 w-4 transition-transform duration-200",

@@ -30,7 +30,7 @@ export function AdminMainLayout({ children, className }: AdminMainLayoutProps) {
             </Sheet>
           </div>
         </div>
-        <main className={cn("flex-1", className)}>
+        <main className={cn("flex-1 p-4", className)}>
           {children}
         </main>
       </div>
