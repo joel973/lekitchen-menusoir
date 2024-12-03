@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CategoryForm } from "./CategoryForm";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import {
   DndContext,
@@ -29,12 +29,15 @@ import {
 import { SortableRow } from "./SortableRow";
 import { useToast } from "@/hooks/use-toast";
 import { AdminPageLayout } from "./shared/AdminPageLayout";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 
 export function CategoriesManager() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const isMobile = useIsMobile();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -131,38 +134,48 @@ export function CategoriesManager() {
         </Button>
       }
     >
-      <Card>
-        <CardContent className="p-0">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Mode d'affichage</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <SortableContext
-                  items={categories?.map((cat) => cat.id) || []}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {categories?.map((category) => (
-                    <SortableRow
-                      key={category.id}
-                      item={category}
-                      onEdit={() => setEditingCategory(category)}
-                    />
-                  ))}
-                </SortableContext>
-              </TableBody>
-            </Table>
-          </DndContext>
-        </CardContent>
+      <Card className="relative overflow-hidden glass-card animate-scale-in border-0 shadow-none">
+        <div className="p-4 md:p-6">
+          <div className="space-y-6">
+            <div className="overflow-hidden">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+              >
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className={cn(isMobile && "px-2 py-3 text-xs")}>
+                        Nom
+                      </TableHead>
+                      <TableHead className={cn(isMobile && "px-2 py-3 text-xs")}>
+                        Mode d'affichage
+                      </TableHead>
+                      <TableHead className={cn("w-[100px]", isMobile && "px-2 py-3 text-xs")}>
+                        Actions
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <SortableContext
+                      items={categories?.map((cat) => cat.id) || []}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {categories?.map((category) => (
+                        <SortableRow
+                          key={category.id}
+                          item={category}
+                          onEdit={() => setEditingCategory(category)}
+                        />
+                      ))}
+                    </SortableContext>
+                  </TableBody>
+                </Table>
+              </DndContext>
+            </div>
+          </div>
+        </div>
       </Card>
     </AdminPageLayout>
   );
