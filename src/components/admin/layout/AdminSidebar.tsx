@@ -94,19 +94,12 @@ export function AdminSidebar() {
   const handleLogout = async () => {
     try {
       console.log("Starting logout process from AdminSidebar");
-      const { error } = await supabase.auth.signOut();
-      
-      if (error) {
-        console.error("Logout error:", error);
-        toast.error("Une erreur est survenue, mais vous avez été déconnecté");
-      }
-      
-      // Always navigate to login page
+      await supabase.auth.signOut();
       console.log("Redirecting to login page from AdminSidebar");
       navigate("/login", { replace: true });
-      
     } catch (error) {
-      console.error("Unexpected logout error:", error);
+      console.error("Logout error:", error);
+      toast.error("Une erreur est survenue lors de la déconnexion");
       // Still redirect to login page
       navigate("/login", { replace: true });
     }
