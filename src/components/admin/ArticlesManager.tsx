@@ -111,14 +111,13 @@ export function ArticlesManager() {
       title="Liste des articles"
       actions={
         <div className="flex gap-2">
-          <Button onClick={() => setShowArchived(true)} variant="outline" size="sm" className="hidden sm:flex">
+          <Button onClick={() => setShowArchived(true)} variant="outline" size="sm">
             <Archive className="h-4 w-4 mr-2" />
             Articles archivés
           </Button>
           <Button 
             onClick={() => setSelectedArticle({})} 
-            size="sm" 
-            className="w-full sm:w-auto"
+            size="sm"
           >
             <Plus className="h-4 w-4 mr-2" />
             Nouvel article
@@ -137,27 +136,6 @@ export function ArticlesManager() {
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
           />
-          
-          {/* Boutons en version mobile */}
-          <div className="flex gap-2 sm:hidden">
-            <Button 
-              onClick={() => setShowArchived(true)} 
-              variant="outline" 
-              size="sm" 
-              className="flex-1"
-            >
-              <Archive className="h-4 w-4 mr-2" />
-              Articles archivés
-            </Button>
-            <Button 
-              onClick={() => setSelectedArticle({})} 
-              size="sm" 
-              className="flex-1"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Nouvel article
-            </Button>
-          </div>
         </div>
 
         <div className="space-y-4">
