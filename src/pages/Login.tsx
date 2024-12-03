@@ -4,9 +4,23 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const { data: parametres } = useQuery({
+    queryKey: ["parametres"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("parametres")
+        .select("*")
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+  });
 
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
@@ -37,8 +51,8 @@ export default function Login() {
               variables: {
                 default: {
                   colors: {
-                    brand: 'hsl(240 58% 70%)',
-                    brandAccent: 'hsl(240 58% 65%)',
+                    brand: parametres?.couleur_primaire || '#1f1f1f',
+                    brandAccent: parametres?.couleur_primaire || '#1f1f1f',
                   }
                 }
               },
